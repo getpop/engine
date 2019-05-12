@@ -1,0 +1,54 @@
+{
+    "name": "getpop/engine",
+    "type": "library",
+    "description": "Engine for PoP",
+    "keywords": [
+        "PoP",
+        "engine"
+    ],
+    "homepage": "https://github.com/getpop/engine",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Leonardo Losoviz",
+            "email": "leo@getpop.org",
+            "homepage": "https://getpop.org"
+        }
+    ],
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "require": {
+        "php": "~7.1",
+        "getpop/root": "^1.0@dev",
+        "getpop/hooks": "^1.0@dev",
+        "getpop/translation": "^1.0@dev",
+        "psr/cache": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit" : ">=7.0",
+        "squizlabs/php_codesniffer": "^3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "PoP\\Engine\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PoP\\Engine\\": "tests"
+        }
+    },
+    "scripts": {
+        "test": "phpunit",
+        "check-style": "phpcs src tests",
+        "fix-style": "phpcbf src tests"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    }
+}
