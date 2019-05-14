@@ -18,3 +18,9 @@ services:
         arguments:
             $translationAPI: '@\PoP\Translation\Contracts\TranslationAPI'
             $hooksAPI: '@\PoP\Hooks\Contracts\HooksAPI'
+            $applicationInfo: '@\PoP\Engine\Contracts\ApplicationInfo'
+
+    \PoP\Engine\Contracts\ApplicationInfo:
+        class: \PoP\Engine\Info\ApplicationInfo
+        arguments:
+            $version: '0.1.0'

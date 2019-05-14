@@ -2,16 +2,22 @@
 namespace PoP\Engine\ModelInstance;
 use PoP\Translation\Contracts\TranslationAPIInterface;
 use PoP\Hooks\Contracts\HooksAPIInterface;
+use PoP\Engine\Info\ApplicationInfoInterface;
 
 class ModelInstance implements ModelInstanceInterface
 {
     private $translationAPI;
     private $hooksAPI;
+    private $applicationInfo;
 
-    public function __construct(TranslationAPIInterface $translationAPI, HooksAPIInterface $hooksAPI)
-    {
+    public function __construct(
+        TranslationAPIInterface $translationAPI,
+        HooksAPIInterface $hooksAPI,
+        ApplicationInfoInterface $applicationInfo
+    ) {
         $this->translationAPI = $translationAPI;
         $this->hooksAPI = $hooksAPI;
+        $this->applicationInfo = $applicationInfo;
     }
 
     public function getModelInstanceId(): string
@@ -26,7 +32,7 @@ class ModelInstance implements ModelInstanceInterface
 
         // Add the version, because otherwise there may be PHP errors
         // happening from stale configuration that is not deleted, and still served, after a new version is deployed
-        $components[] = $this->translationAPI->__('version:', 'engine').\popVersion();
+        $components[] = $this->translationAPI->__('version:', 'engine').$this->applicationInfo->getVersion();
 
         // Mix the information specific to the module, with that present in $vars
         return $this->hooksAPI->applyFilters(
