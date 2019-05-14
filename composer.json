@@ -19,8 +19,8 @@
     "prefer-stable": true,
     "require": {
         "php": "~7.1",
-        "getpop/root": "^1.0@dev",
         "getpop/hooks": "^1.0@dev",
+        "getpop/root": "^1.0@dev",
         "getpop/translation": "^1.0@dev",
         "psr/cache": "^1.0"
     },

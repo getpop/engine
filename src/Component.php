@@ -2,6 +2,7 @@
 namespace PoP\Engine;
 
 use PoP\Root\Component\ConfigurableServicesTrait;
+use PoP\Root\Component\InstantiateNamespaceClassesTrait;
 
 /**
  * Class required to check if this component exists and is active
@@ -9,6 +10,7 @@ use PoP\Root\Component\ConfigurableServicesTrait;
 class Component
 {
     use ConfigurableServicesTrait;
+    use InstantiateNamespaceClassesTrait;
 
     /**
      * Initialize services
@@ -16,5 +18,8 @@ class Component
     public static function init()
     {
         self::initServiceConfiguration(dirname(__DIR__));
+        self::instantiateNamespaceClasses([
+            __NAMESPACE__.'\HookImplementations',
+        ]);
     }
 }
