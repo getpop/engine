@@ -69,13 +69,13 @@ class Cache implements CacheInterface
 
     public function getCacheByModelInstance($type)
     {
-        $model_instance_id = ModelInstanceProcessor_Utils::getModelInstanceId();
+        $model_instance_id = \ModelInstanceProcessor_Utils::getModelInstanceId();
         return $this->getCache($model_instance_id, $type);
     }
 
     public function storeCacheByModelInstance($type, $content)
     {
-        $model_instance_id = ModelInstanceProcessor_Utils::getModelInstanceId();
+        $model_instance_id = \ModelInstanceProcessor_Utils::getModelInstanceId();
         return $this->storeCache($model_instance_id, $type, $content);
     }
 }
