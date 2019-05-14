@@ -72,14 +72,7 @@ class ModelInstance implements ModelInstanceInterface
         if ($modulefilter = $vars['modulefilter']) {
             $components[] = $this->translationAPI->__('module filter:', 'engine').$modulefilter;
 
-            if ($modulefilter == POP_MODULEFILTER_MODULEPATHS && ($modulepaths = $vars['modulepaths'])) {
-                $paths = array();
-                foreach ($modulepaths as $modulepath) {
-                    $paths[] = \PoP\Engine\ModulePathManager_Utils::stringifyModulePath($modulepath);
-                }
-                
-                $components[] = $this->translationAPI->__('module paths:', 'engine').implode(',', $paths);
-            } elseif ($modulefilter == POP_MODULEFILTER_HEADMODULE && ($headmodule = $vars['headmodule'])) {
+            if ($modulefilter == POP_MODULEFILTER_HEADMODULE && ($headmodule = $vars['headmodule'])) {
                 $components[] = $this->translationAPI->__('head module:', 'engine').$headmodule;
             }
         }
