@@ -2,17 +2,23 @@
 namespace PoP\Engine\Cache;
 use Psr\Cache\CacheItemPoolInterface;
 use PoP\Hooks\Contracts\HooksAPIInterface;
+use PoP\Engine\ModelInstance\ModelInstance;
 
 class Cache implements CacheInterface
 {
     use ReplaceCurrentExecutionDataWithPlaceholdersTrait;
     private $cacheItemPool;
     private $hooksAPI;
+    private $modelInstance;
 
-    public function __construct(CacheItemPoolInterface $cacheItemPool, HooksAPIInterface $hooksAPI)
-    {
+    public function __construct(
+        CacheItemPoolInterface $cacheItemPool, 
+        HooksAPIInterface $hooksAPI,
+        ModelInstance $modelInstance
+    ) {
         $this->cacheItemPool = $cacheItemPool;
         $this->hooksAPI = $hooksAPI;
+        $this->modelInstance = $modelInstance;
 
         // When a plugin is activated/deactivated, ANY plugin, delete the corresponding cached files
         // This is particularly important for the MEMORY, since we can't set by constants to not use it
@@ -69,13 +75,11 @@ class Cache implements CacheInterface
 
     public function getCacheByModelInstance($type)
     {
-        $model_instance_id = \ModelInstanceProcessor_Utils::getModelInstanceId();
-        return $this->getCache($model_instance_id, $type);
+        return $this->getCache($this->modelInstance->getModelInstanceId(), $type);
     }
 
     public function storeCacheByModelInstance($type, $content)
     {
-        $model_instance_id = \ModelInstanceProcessor_Utils::getModelInstanceId();
-        return $this->storeCache($model_instance_id, $type, $content);
+        return $this->storeCache($this->modelInstance->getModelInstanceId(), $type, $content);
     }
 }
