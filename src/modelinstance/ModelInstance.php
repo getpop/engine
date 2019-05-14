@@ -14,13 +14,13 @@ class ModelInstance implements ModelInstanceInterface
         $this->hooksAPI = $hooksAPI;
     }
 
-    public function getModelInstanceId()
+    public function getModelInstanceId(): string
     {
         // The string is too long. Use a hashing function to shorten it
         return md5(implode('-', $this->getModelInstanceComponents()));
     }
 
-    protected function getModelInstanceComponents()
+    protected function getModelInstanceComponents(): array
     {
         $components = array();
 
@@ -38,7 +38,7 @@ class ModelInstance implements ModelInstanceInterface
         );
     }
 
-    protected function getModelInstanceComponentsFromVars()
+    protected function getModelInstanceComponentsFromVars(): array
     {
         $components = array();
         

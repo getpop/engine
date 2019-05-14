@@ -3,5 +3,5 @@ namespace PoP\Engine\ModelInstance;
 
 interface ModelInstanceInterface
 {
-    public function getModelInstanceId();
+    public function getModelInstanceId(): string;
 }
