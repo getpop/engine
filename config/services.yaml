@@ -1,24 +1,30 @@
+parameters:
+    translationAPI: '@\PoP\Translation\Contracts\TranslationAPI'
+    hooksAPI: '@\PoP\Hooks\Contracts\HooksAPI'
+    modelInstance: '@\PoP\Engine\Contracts\ModelInstance'
+    applicationInfo: '@\PoP\Engine\Contracts\ApplicationInfo'
+
 services:
     \PoP\Engine\Contracts\PersistentCache:
         class: \PoP\Engine\Cache\Cache
         arguments:
             $cacheItemPool: '@\PoP\Engine\Contracts\PersistentCacheItemPool'
-            $hooksAPI: '@\PoP\Hooks\Contracts\HooksAPI'
-            $modelInstance: '@\PoP\Engine\Contracts\ModelInstance'
+            $hooksAPI: '%hooksAPI%'
+            $modelInstance: '%modelInstance%'
 
     \PoP\Engine\Contracts\RequestCache:
         class: \PoP\Engine\Cache\Cache
         arguments:
             $cacheItemPool: '@\PoP\Engine\Contracts\RequestCacheItemPool'
-            $hooksAPI: '@\PoP\Hooks\Contracts\HooksAPI'
-            $modelInstance: '@\PoP\Engine\Contracts\ModelInstance'
+            $hooksAPI: '%hooksAPI%'
+            $modelInstance: '%modelInstance%'
 
     \PoP\Engine\Contracts\ModelInstance:
         class: \PoP\Engine\ModelInstance\ModelInstance
         arguments:
-            $translationAPI: '@\PoP\Translation\Contracts\TranslationAPI'
-            $hooksAPI: '@\PoP\Hooks\Contracts\HooksAPI'
-            $applicationInfo: '@\PoP\Engine\Contracts\ApplicationInfo'
+            $translationAPI: '%translationAPI%'
+            $hooksAPI: '%hooksAPI%'
+            $applicationInfo: '%applicationInfo%'
 
     \PoP\Engine\Contracts\ApplicationInfo:
         class: \PoP\Engine\Info\ApplicationInfo
