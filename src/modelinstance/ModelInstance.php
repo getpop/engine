@@ -1,14 +1,14 @@
 <?php
 namespace PoP\Engine\ModelInstance;
-use PoP\Translation\Facades\TranslationAPI;
-use PoP\Hooks\Facades\HooksAPI;
+use PoP\Translation\Contracts\TranslationAPIInterface;
+use PoP\Hooks\Contracts\HooksAPIInterface;
 
 class ModelInstance implements ModelInstanceInterface
 {
     private $translationAPI;
     private $hooksAPI;
 
-    public function __construct(TranslationAPI $translationAPI, HooksAPI $hooksAPI)
+    public function __construct(TranslationAPIInterface $translationAPI, HooksAPIInterface $hooksAPI)
     {
         $this->translationAPI = $translationAPI;
         $this->hooksAPI = $hooksAPI;
