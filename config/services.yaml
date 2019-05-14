@@ -1,0 +1,12 @@
+services:
+    \PoP\Engine\Contracts\PersistentCache:
+        class: \PoP\Engine\Cache\Cache
+        arguments:
+            $cacheItemPool: '@\PoP\Engine\Contracts\PersistentCacheItemPool'
+            $hooksAPI: '@\PoP\Hooks\Contracts\HooksAPI'
+
+    \PoP\Engine\Contracts\RequestCache:
+        class: \PoP\Engine\Cache\Cache
+        arguments:
+            $cacheItemPool: '@\PoP\Engine\Contracts\RequestCacheItemPool'
+            $hooksAPI: '@\PoP\Hooks\Contracts\HooksAPI'
