@@ -42,7 +42,7 @@ class ModelInstance implements ModelInstanceInterface
     {
         $components = array();
         
-        $vars = \Engine_Vars::getVars();
+        $vars = \PoP\Engine\Engine_Vars::getVars();
 
         // There will always be a nature. Add it.
         $nature = $vars['nature'];
@@ -69,7 +69,7 @@ class ModelInstance implements ModelInstanceInterface
             if ($modulefilter == POP_MODULEFILTER_MODULEPATHS && ($modulepaths = $vars['modulepaths'])) {
                 $paths = array();
                 foreach ($modulepaths as $modulepath) {
-                    $paths[] = \ModulePathManager_Utils::stringifyModulePath($modulepath);
+                    $paths[] = \PoP\Engine\ModulePathManager_Utils::stringifyModulePath($modulepath);
                 }
                 
                 $components[] = $this->translationAPI->__('module paths:', 'engine').implode(',', $paths);
