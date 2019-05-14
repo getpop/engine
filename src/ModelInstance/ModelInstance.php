@@ -71,10 +71,6 @@ class ModelInstance implements ModelInstanceInterface
         }
         if ($modulefilter = $vars['modulefilter']) {
             $components[] = $this->translationAPI->__('module filter:', 'engine').$modulefilter;
-
-            if ($modulefilter == POP_MODULEFILTER_HEADMODULE && ($headmodule = $vars['headmodule'])) {
-                $components[] = $this->translationAPI->__('head module:', 'engine').$headmodule;
-            }
         }
 
         // Can the configuration change when doing a POST or GET?
