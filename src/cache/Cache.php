@@ -5,7 +5,7 @@ use PoP\Hooks\Contracts\HooksAPIInterface;
 
 class Cache implements CacheInterface
 {
-    use ReplaceInstanceDataWithPlaceholdersTrait;
+    use ReplaceCurrentExecutionDataWithPlaceholdersTrait;
     private $cacheItemPool;
     private $hooksAPI;
 
