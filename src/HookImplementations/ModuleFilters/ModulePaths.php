@@ -12,6 +12,19 @@ class ModulePaths extends AbstractHookImplementation
             'PoP\Engine\ModelInstance\ModelInstance:componentsFromVars:result',
             [$this, 'maybeAddComponent']
         );
+        $this->hooksAPI->addAction(
+            '\PoP\Engine\Engine_Vars:addVars',
+            [$this, 'addVars'],
+            10,
+            1
+        );
+    }
+    public function addVars($vars_in_array)
+    {
+        $vars = &$vars_in_array[0];
+        if ($vars['modulefilter'] == POP_MODULEFILTER_MODULEPATHS) {
+            $vars['modulepaths'] = \PoP\Engine\Engine_Vars::getModulepaths();
+        }
     }
     public function maybeAddComponent($components)
     {
