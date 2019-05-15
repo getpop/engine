@@ -5,7 +5,7 @@ interface ModuleFilterManagerInterface
 {
     public function getSelectedFilterName();
     public function getNotExcludedModuleSets();
-    public function add($modulefilter);
+    public function add(ModuleFilterInterface $moduleFilter);
     public function neverExclude($neverExclude);
     public function excludeModule($module, &$props);
     public function removeExcludedSubmodules($module, $submodules);

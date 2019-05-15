@@ -1,16 +1,8 @@
 <?php
 namespace PoP\Engine\ModuleFilters;
-use PoP\Engine\Facades\ModuleFilterManager;
 
-abstract class AbstractModuleFilter
+abstract class AbstractModuleFilter implements ModuleFilterInterface
 {
-    public function __construct()
-    {
-        ModuleFilterManager::getInstance()->add($this);
-    }
-    
-    abstract public function getName();
-
     public function excludeModule($module, &$props)
     {
         return false;

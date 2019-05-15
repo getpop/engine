@@ -2,6 +2,7 @@
 namespace PoP\Engine;
 
 use PoP\Root\Component\ConfigurableServicesTrait;
+use PoP\Root\Component\PHPConfigurableServicesTrait;
 use PoP\Engine\Component\InstantiateNamespaceClassesTrait;
 
 /**
@@ -10,6 +11,7 @@ use PoP\Engine\Component\InstantiateNamespaceClassesTrait;
 class Component
 {
     use ConfigurableServicesTrait;
+    use PHPConfigurableServicesTrait;
     use InstantiateNamespaceClassesTrait;
 
     /**
@@ -18,6 +20,7 @@ class Component
     public static function init()
     {
         self::initServiceConfiguration(dirname(__DIR__));
+        self::initPHPServiceConfiguration(dirname(__DIR__));
         self::instantiateNamespaceClasses([
             __NAMESPACE__.'\HookImplementations',
         ]);

@@ -4,7 +4,8 @@ namespace PoP\Engine\ModuleFilters;
 class ModuleFilterManager implements ModuleFilterManagerInterface
 {
     protected $selected_filter_name;
-    protected $modulefilters;
+    protected $selected_filter;
+    protected $modulefilters = [];
 
     // From the moment in which a module is not excluded, every module from then on must also be included
     protected $not_excluded_ancestor_module;
@@ -14,46 +15,43 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
     // When targeting modules in pop-engine.php (eg: when doing ->get_dbobjectids()) those modules are already and always included, so no need to check for their ancestors or anything
     protected $neverExclude = false;
 
-    public function __construct()
-    {
-        $this->modulefilters = array();
-        $this->init();
-    }
-
     protected function init()
     {
+        // Lazy initialize so that we can inject all the moduleFilters before checking the selected one
         if ($selected = $this->getSelectedFilterName()) {
             $this->selected_filter_name = $selected;
+            $this->selected_filter = $this->modulefilters[$selected];
 
             // Initialize only if we are intending to filter modules. This way, passing modulefilter=somewrongpath will return an empty array, meaning to not render anything
             $this->not_excluded_module_sets = $this->not_excluded_module_sets_as_string = array();
+        } else {
+            // If false, the check to lazy init will not happen anymore
+            $this->selected_filter_name = false;
         }
+    }
+
+    public function add(ModuleFilterInterface $moduleFilter)
+    {
+        $this->modulefilters[$moduleFilter->getName()] = $moduleFilter;
     }
 
     public function getSelectedFilterName()
     {
-        if ($selected = $_REQUEST[GD_URLPARAM_MODULEFILTER]) {
+        if ($selected = $_REQUEST[Constants::URLPARAM_MODULEFILTER]) {
             
-            return $selected;
+            // Only valid if there's a corresponding moduleFilter
+            if (in_array($selected, array_keys($this->modulefilters))) {
+                return $selected;
+            }
         }
 
         return null;
-    }
-
-    protected function validateSelectedFilter() {
-        // Validate that the selected filter exists
-        return in_array($this->selected_filter_name, array_keys($this->modulefilters));
     }
 
     public function getNotExcludedModuleSets()
     {
         // It shall be used for requestmeta.rendermodules, to know from which modules the client must start rendering
         return $this->not_excluded_module_sets;
-    }
-
-    public function add($modulefilter)
-    {
-        $this->modulefilters[$modulefilter->getName()] = $modulefilter;
     }
 
     public function neverExclude($neverExclude)
@@ -63,7 +61,10 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
 
     public function excludeModule($module, &$props)
     {
-        if ($this->selected_filter_name && $this->validateSelectedFilter()) {
+        if (is_null($this->selected_filter_name)) {
+            $this->init();
+        }
+        if ($this->selected_filter_name) {
             if ($this->neverExclude) {
                 return false;
             }
@@ -71,7 +72,7 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
                 return false;
             }
 
-            return $this->modulefilters[$this->selected_filter_name]->excludeModule($module, $props);
+            return $this->selected_filter->excludeModule($module, $props);
         }
 
         return false;
@@ -79,12 +80,15 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
 
     public function removeExcludedSubmodules($module, $submodules)
     {
-        if ($this->selected_filter_name && $this->validateSelectedFilter()) {
+        if (is_null($this->selected_filter_name)) {
+            $this->init();
+        }
+        if ($this->selected_filter_name) {
             if ($this->neverExclude) {
                 return $submodules;
             }
 
-            return $this->modulefilters[$this->selected_filter_name]->removeExcludedSubmodules($module, $submodules);
+            return $this->selected_filter->removeExcludedSubmodules($module, $submodules);
         }
 
         return $submodules;
@@ -95,7 +99,10 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
      */
     public function prepareForPropagation($module, &$props)
     {
-        if ($this->selected_filter_name && $this->validateSelectedFilter()) {
+        if (is_null($this->selected_filter_name)) {
+            $this->init();
+        }
+        if ($this->selected_filter_name) {
             if (!$this->neverExclude && is_null($this->not_excluded_ancestor_module) && $this->excludeModule($module, $props) === false) {
                 // Set the current module as the one which is not excluded.
                 $module_path_manager = \PoP\Engine\ModulePathManagerFactory::getInstance();
@@ -111,12 +118,15 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
                 }
             }
 
-            $this->modulefilters[$this->selected_filter_name]->prepareForPropagation($module, $props);
+            $this->selected_filter->prepareForPropagation($module, $props);
         }
     }
     public function restoreFromPropagation($module, &$props)
     {
-        if ($this->selected_filter_name && $this->validateSelectedFilter()) {
+        if (is_null($this->selected_filter_name)) {
+            $this->init();
+        }
+        if ($this->selected_filter_name) {
             if (!$this->neverExclude && !is_null($this->not_excluded_ancestor_module) && $this->excludeModule($module, $props) === false) {
                 $module_path_manager = \PoP\Engine\ModulePathManagerFactory::getInstance();
                 $module_propagation_current_path = $module_path_manager->getPropagationCurrentPath();
@@ -128,7 +138,7 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
                 }
             }
 
-            $this->modulefilters[$this->selected_filter_name]->restoreFromPropagation($module, $props);
+            $this->selected_filter->restoreFromPropagation($module, $props);
         }
     }
 }

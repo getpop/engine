@@ -22,14 +22,14 @@ class HeadModule extends AbstractHookImplementation
     public function addVars($vars_in_array)
     {
         $vars = &$vars_in_array[0];
-        if ($vars['modulefilter'] == POP_MODULEFILTER_HEADMODULE) {
+        if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\HeadModule::MODULEFILTER_HEADMODULE) {
             $vars['headmodule'] = $_REQUEST[GD_URLPARAM_HEADMODULE];
         }
     }
     public function maybeAddComponent($components)
     {
         $vars = \PoP\Engine\Engine_Vars::getVars();
-        if ($vars['modulefilter'] == POP_MODULEFILTER_HEADMODULE) {
+        if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\HeadModule::MODULEFILTER_HEADMODULE) {
             if ($headmodule = $vars['headmodule']) {
                 $components[] = $this->translationAPI->__('head module:', 'engine') . $headmodule;
             }
