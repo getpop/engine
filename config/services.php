@@ -6,6 +6,6 @@ $containerBuilder = ContainerBuilderFactory::getInstance();
 
 // ModuleFilters
 $moduleFilterManager = $containerBuilder->get('\PoP\Engine\Contracts\ModuleFilterManager');
-$moduleFilterManager->add(
-    new \PoP\Engine\ModuleFilters\HeadModule()
-);
+$moduleFilterManager->add([
+    new \PoP\Engine\ModuleFilters\HeadModule(),
+]);

@@ -30,9 +30,11 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
         }
     }
 
-    public function add(ModuleFilterInterface $moduleFilter)
+    public function add(array $moduleFilters)
     {
-        $this->modulefilters[$moduleFilter->getName()] = $moduleFilter;
+        foreach ($moduleFilters as $moduleFilter) {
+            $this->modulefilters[$moduleFilter->getName()] = $moduleFilter;
+        }
     }
 
     public function getSelectedFilterName()
