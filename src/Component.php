@@ -2,7 +2,7 @@
 namespace PoP\Engine;
 
 use PoP\Root\Component\ConfigurableServicesTrait;
-use PoP\Root\Component\InstantiateNamespaceClassesTrait;
+use PoP\Engine\Component\InstantiateNamespaceClassesTrait;
 
 /**
  * Class required to check if this component exists and is active
