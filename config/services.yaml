@@ -3,6 +3,7 @@ parameters:
     hooksAPI: '@\PoP\Hooks\Contracts\HooksAPI'
     modelInstance: '@\PoP\Engine\Contracts\ModelInstance'
     applicationInfo: '@\PoP\Engine\Contracts\ApplicationInfo'
+    moduleFilterManager: '@\PoP\Engine\Contracts\ModuleFilterManager'
 
 services:
     \PoP\Engine\Contracts\PersistentCache:
@@ -30,3 +31,6 @@ services:
         class: \PoP\Engine\Info\ApplicationInfo
         arguments:
             $version: '0.1.0'
+
+    \PoP\Engine\Contracts\ModuleFilterManager:
+        class: \PoP\Engine\ModuleFilters\ModuleFilterManager
