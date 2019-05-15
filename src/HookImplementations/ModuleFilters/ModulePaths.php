@@ -23,7 +23,7 @@ class ModulePaths extends AbstractHookImplementation
     {
         $vars = &$vars_in_array[0];
         if ($vars['modulefilter'] == POP_MODULEFILTER_MODULEPATHS) {
-            $vars['modulepaths'] = \PoP\Engine\Engine_Vars::getModulepaths();
+            $vars['modulepaths'] = \PoP\Engine\Engine_Vars::getModulePaths();
         }
     }
     public function maybeAddComponent($components)
