@@ -2,6 +2,7 @@
 namespace PoP\Engine\HookImplementations\ModuleFilters;
 
 use PoP\Engine\Hooks\AbstractHookImplementation;
+use PoP\Engine\ModuleFilters\Constants;
 
 class HeadModule extends AbstractHookImplementation
 {
@@ -23,7 +24,7 @@ class HeadModule extends AbstractHookImplementation
     {
         $vars = &$vars_in_array[0];
         if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\HeadModule::MODULEFILTER_HEADMODULE) {
-            $vars['headmodule'] = $_REQUEST[GD_URLPARAM_HEADMODULE];
+            $vars['headmodule'] = $_REQUEST[Constants::URLPARAM_HEADMODULE];
         }
     }
     public function maybeAddComponent($components)
