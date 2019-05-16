@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine;
 
-use PoP\Root\Component\YAMLConfigurableServicesTrait;
+use PoP\Root\Component\YAMLServicesTrait;
 use PoP\Root\Component\PHPConfigurableServicesTrait;
 use PoP\Engine\Component\InstantiateNamespaceClassesTrait;
 
@@ -10,7 +10,7 @@ use PoP\Engine\Component\InstantiateNamespaceClassesTrait;
  */
 class Component
 {
-    use YAMLConfigurableServicesTrait;
+    use YAMLServicesTrait;
     use PHPConfigurableServicesTrait;
     use InstantiateNamespaceClassesTrait;
 
@@ -19,7 +19,7 @@ class Component
      */
     public static function init()
     {
-        self::initYAMLServiceConfiguration(dirname(__DIR__));
+        self::initYAMLServices(dirname(__DIR__));
         self::initPHPServiceConfiguration(dirname(__DIR__));
         self::instantiateNamespaceClasses([
             __NAMESPACE__.'\HookImplementations',
