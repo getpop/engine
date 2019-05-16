@@ -8,6 +8,6 @@ class ApplicationInfo
 {
     public static function getInstance(): ApplicationInfoInterface
     {
-        return ContainerBuilderFactory::getInstance()->get('\PoP\Engine\Contracts\ApplicationInfo');
+        return ContainerBuilderFactory::getInstance()->get('application_info');
     }
 }

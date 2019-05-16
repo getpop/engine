@@ -8,6 +8,6 @@ class PersistentCache
 {
     public static function getInstance(): CacheInterface
     {
-        return ContainerBuilderFactory::getInstance()->get('\PoP\Engine\Contracts\PersistentCache');
+        return ContainerBuilderFactory::getInstance()->get('persistent_cache');
     }
 }

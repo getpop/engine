@@ -8,6 +8,6 @@ class RequestCache
 {
     public static function getInstance(): CacheInterface
     {
-        return ContainerBuilderFactory::getInstance()->get('\PoP\Engine\Contracts\RequestCache');
+        return ContainerBuilderFactory::getInstance()->get('request_cache');
     }
 }

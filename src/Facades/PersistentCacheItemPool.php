@@ -8,6 +8,6 @@ class PersistentCacheItemPool
 {
     public static function getInstance(): CacheItemPoolInterface
     {
-        return ContainerBuilderFactory::getInstance()->get('\PoP\Engine\Contracts\PersistentCacheItemPool');
+        return ContainerBuilderFactory::getInstance()->get('persistent_cache_item_pool');
     }
 }

@@ -1,36 +1,36 @@
 parameters:
-    translationAPI: '@\PoP\Translation\Contracts\TranslationAPI'
-    hooksAPI: '@\PoP\Hooks\Contracts\HooksAPI'
-    modelInstance: '@\PoP\Engine\Contracts\ModelInstance'
-    applicationInfo: '@\PoP\Engine\Contracts\ApplicationInfo'
-    moduleFilterManager: '@\PoP\Engine\Contracts\ModuleFilterManager'
+    translationAPI: '@translation_api'
+    hooksAPI: '@hooks_api'
+    modelInstance: '@model_instance'
+    applicationInfo: '@application_info'
+    moduleFilterManager: '@module_filter_manager'
 
 services:
-    \PoP\Engine\Contracts\PersistentCache:
+    persistent_cache:
         class: \PoP\Engine\Cache\Cache
         arguments:
-            $cacheItemPool: '@\PoP\Engine\Contracts\PersistentCacheItemPool'
+            $cacheItemPool: '@persistent_cache_item_pool'
             $hooksAPI: '%hooksAPI%'
             $modelInstance: '%modelInstance%'
 
-    \PoP\Engine\Contracts\RequestCache:
+    request_cache:
         class: \PoP\Engine\Cache\Cache
         arguments:
-            $cacheItemPool: '@\PoP\Engine\Contracts\RequestCacheItemPool'
+            $cacheItemPool: '@request_cache_item_pool'
             $hooksAPI: '%hooksAPI%'
             $modelInstance: '%modelInstance%'
 
-    \PoP\Engine\Contracts\ModelInstance:
+    model_instance:
         class: \PoP\Engine\ModelInstance\ModelInstance
         arguments:
             $translationAPI: '%translationAPI%'
             $hooksAPI: '%hooksAPI%'
             $applicationInfo: '%applicationInfo%'
 
-    \PoP\Engine\Contracts\ApplicationInfo:
+    application_info:
         class: \PoP\Engine\Info\ApplicationInfo
         arguments:
             $version: '0.1.0'
 
-    \PoP\Engine\Contracts\ModuleFilterManager:
+    module_filter_manager:
         class: \PoP\Engine\ModuleFilters\ModuleFilterManager

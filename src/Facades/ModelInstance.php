@@ -8,6 +8,6 @@ class ModelInstance
 {
     public static function getInstance(): ModelInstanceInterface
     {
-        return ContainerBuilderFactory::getInstance()->get('\PoP\Engine\Contracts\ModelInstance');
+        return ContainerBuilderFactory::getInstance()->get('model_instance');
     }
 }

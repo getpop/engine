@@ -8,6 +8,6 @@ class ModuleFilterManager
 {
     public static function getInstance(): ModuleFilterManagerInterface
     {
-        return ContainerBuilderFactory::getInstance()->get('\PoP\Engine\Contracts\ModuleFilterManager');
+        return ContainerBuilderFactory::getInstance()->get('module_filter_manager');
     }
 }

@@ -8,6 +8,6 @@ class RequestCacheItemPool
 {
     public static function getInstance(): CacheItemPoolInterface
     {
-        return ContainerBuilderFactory::getInstance()->get('\PoP\Engine\Contracts\RequestCacheItemPool');
+        return ContainerBuilderFactory::getInstance()->get('request_cache_item_pool');
     }
 }
