@@ -1,13 +1,16 @@
 <?php
 namespace PoP\Engine\HookImplementations\ModuleFilters;
 
+use PoP\Engine\Facades\ModulePathHelpers;
 use PoP\Engine\Hooks\AbstractHookImplementation;
 
 class ModulePaths extends AbstractHookImplementation
 {
+    protected $modulePathHelpers;
     public function __construct()
     {
         parent::__construct();
+        $this->modulePathHelpers = ModulePathHelpers::getInstance();
         $this->hooksAPI->addFilter(
             'PoP\Engine\ModelInstance\ModelInstance:componentsFromVars:result',
             [$this, 'maybeAddComponent']
@@ -34,7 +37,7 @@ class ModulePaths extends AbstractHookImplementation
             if ($modulepaths = $vars['modulepaths']) {
                 $paths = array();
                 foreach ($modulepaths as $modulepath) {
-                    $paths[] = \PoP\Engine\ModulePathManager_Utils::stringifyModulePath($modulepath);
+                    $paths[] = $this->modulePathHelpers->stringifyModulePath($modulepath);
                 }
                 $components[] = $this->translationAPI->__('module paths:', 'engine') . implode(',', $paths);
             }

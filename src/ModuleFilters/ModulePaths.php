@@ -1,6 +1,8 @@
 <?php
 namespace PoP\Engine\ModuleFilters;
 
+use PoP\Engine\ModulePath\ModulePathManagerInterface;
+
 class ModulePaths extends AbstractModuleFilter
 {
     const MODULEFILTER_MODULEPATHS = 'modulepaths';
@@ -8,6 +10,11 @@ class ModulePaths extends AbstractModuleFilter
     protected $paths;
     protected $propagation_unsettled_paths;
     protected $backlog_unsettled_paths;
+
+    protected $modulePathManager;
+    public function __construct(ModulePathManagerInterface $modulePathManager) {
+        $this->modulePathManager = $modulePathManager;
+    }
 
     protected function init()
     {
@@ -126,7 +133,6 @@ class ModulePaths extends AbstractModuleFilter
     }
     protected function getBacklogEntry()
     {
-        $module_path_manager = \PoP\Engine\ModulePathManagerFactory::getInstance();
-        return json_encode($module_path_manager->getPropagationCurrentPath());
+        return json_encode($this->modulePathManager->getPropagationCurrentPath());
     }
 }

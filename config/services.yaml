@@ -4,6 +4,8 @@ parameters:
     modelInstance: '@model_instance'
     applicationInfo: '@application_info'
     moduleFilterManager: '@module_filter_manager'
+    modulePathManager: '@module_path_manager'
+    modulePathHelpers: '@module_path_helpers'
 
 services:
     persistent_cache:
@@ -33,4 +35,15 @@ services:
             $version: '0.1.0'
 
     module_filter_manager:
-        class: \PoP\Engine\ModuleFilters\ModuleFilterManager
+        class: '\PoP\Engine\ModuleFilters\ModuleFilterManager'
+        arguments:
+            $modulePathManager: '%modulePathManager%'
+            $modulePathHelpers: '%modulePathHelpers%'
+
+    module_path_manager:
+        class: \PoP\Engine\ModulePath\ModulePathManager
+
+    module_path_helpers:
+        class: \PoP\Engine\ModulePath\ModulePathHelpers
+        arguments:
+            $modulePathManager: '%modulePathManager%'
