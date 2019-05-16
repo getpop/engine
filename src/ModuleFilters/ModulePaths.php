@@ -5,7 +5,7 @@ use PoP\Engine\ModulePath\ModulePathManagerInterface;
 
 class ModulePaths extends AbstractModuleFilter
 {
-    const MODULEFILTER_MODULEPATHS = 'modulepaths';
+    const NAME = 'modulepaths';
 
     protected $paths;
     protected $propagation_unsettled_paths;
@@ -25,7 +25,7 @@ class ModulePaths extends AbstractModuleFilter
 
     public function getName()
     {
-        return self::MODULEFILTER_MODULEPATHS;
+        return self::NAME;
     }
 
     public function excludeModule($module, &$props)

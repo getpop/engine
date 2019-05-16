@@ -3,11 +3,11 @@ namespace PoP\Engine\ModuleFilters;
 
 class HeadModule extends AbstractModuleFilter
 {
-    const MODULEFILTER_HEADMODULE = 'headmodule';
+    const NAME = 'headmodule';
 
     public function getName()
     {
-        return self::MODULEFILTER_HEADMODULE;
+        return self::NAME;
     }
 
     public function excludeModule($module, &$props)

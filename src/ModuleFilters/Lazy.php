@@ -3,11 +3,11 @@ namespace PoP\Engine\ModuleFilters;
 
 class Lazy extends AbstractModuleFilter
 {
-    const MODULEFILTER_LAZY = 'lazy';
+    const NAME = 'lazy';
 
     public function getName()
     {
-        return self::MODULEFILTER_LAZY;
+        return self::NAME;
     }
 
     public function excludeModule($module, &$props)

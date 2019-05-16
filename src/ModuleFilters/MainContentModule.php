@@ -5,11 +5,11 @@ use PoP\Hooks\Facades\HooksAPI;
 
 class MainContentModule extends AbstractModuleFilter
 {
-    const MODULEFILTER_MAINCONTENTMODULE = 'maincontentmodule';
+    const NAME = 'maincontentmodule';
     
     public function getName()
     {
-        return self::MODULEFILTER_MAINCONTENTMODULE;
+        return self::NAME;
     }
 
     public function excludeModule($module, &$props)
