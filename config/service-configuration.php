@@ -8,4 +8,6 @@ $containerBuilder = ContainerBuilderFactory::getInstance();
 $containerBuilder->get('module_filter_manager')->add([
     new \PoP\Engine\ModuleFilters\HeadModule(),
     new \PoP\Engine\ModuleFilters\ModulePaths(),
+    new \PoP\Engine\ModuleFilters\Lazy(),
+    new \PoP\Engine\ModuleFilters\MainContentModule(),
 ]);
