@@ -3,7 +3,7 @@ namespace PoP\Engine\HookImplementations\ModuleFilters;
 
 use PoP\Engine\Hooks\AbstractHookImplementation;
 use PoP\Engine\ModuleFilters\Constants;
-use \PoP\Engine\ModuleUtils;
+use PoP\Engine\ModuleUtils;
 
 class HeadModule extends AbstractHookImplementation
 {
