@@ -10,7 +10,7 @@ class Lazy extends AbstractModuleFilter
         return self::NAME;
     }
 
-    public function excludeModule($module, &$props)
+    public function excludeModule(array $module, &$props)
     {
         // Exclude if it is not lazy
         $moduleprocessor_manager = \PoP\Engine\ModuleProcessorManagerFactory::getInstance();

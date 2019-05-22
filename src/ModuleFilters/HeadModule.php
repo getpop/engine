@@ -10,7 +10,7 @@ class HeadModule extends AbstractModuleFilter
         return self::NAME;
     }
 
-    public function excludeModule($module, &$props)
+    public function excludeModule(array $module, &$props)
     {
         $vars = \PoP\Engine\Engine_Vars::getVars();
         return $vars['headmodule'] != $module;

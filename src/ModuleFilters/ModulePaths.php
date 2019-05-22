@@ -28,7 +28,7 @@ class ModulePaths extends AbstractModuleFilter
         return self::NAME;
     }
 
-    public function excludeModule($module, &$props)
+    public function excludeModule(array $module, &$props)
     {
         if (is_null($this->paths)) {
             $this->init();
@@ -55,7 +55,7 @@ class ModulePaths extends AbstractModuleFilter
         return true;
     }
 
-    public function removeExcludedSubmodules($module, $submodules)
+    public function removeExcludedSubmodules(array $module, $submodules)
     {
         if (is_null($this->paths)) {
             $this->init();
@@ -94,7 +94,7 @@ class ModulePaths extends AbstractModuleFilter
     /**
      * The `prepare` function advances the modulepath one level down, when interating into the submodules, and then calling `restore` the value goes one level up again
      */
-    public function prepareForPropagation($module, &$props)
+    public function prepareForPropagation(array $module, &$props)
     {
         if (is_null($this->paths)) {
             $this->init();
@@ -117,7 +117,7 @@ class ModulePaths extends AbstractModuleFilter
             $this->propagation_unsettled_paths = $matching_unsettled_paths;
         }
     }
-    public function restoreFromPropagation($module, &$props)
+    public function restoreFromPropagation(array $module, &$props)
     {
         if (is_null($this->paths)) {
             $this->init();
