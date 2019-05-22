@@ -26,7 +26,7 @@ class HeadModule extends AbstractHookImplementation
         $vars = &$vars_in_array[0];
         if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\HeadModule::NAME) {
             if ($headmodule = $_REQUEST[Constants::URLPARAM_HEADMODULE]) {
-                $vars['headmodule'] = ModuleUtils::getModuleFromFullName($headmodule);
+                $vars['headmodule'] = ModuleUtils::getModuleFromOutputName($headmodule);
             }
         }
     }
