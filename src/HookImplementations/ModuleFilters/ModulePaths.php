@@ -33,13 +33,14 @@ class ModulePaths extends AbstractHookImplementation
     {
         $vars = \PoP\Engine\Engine_Vars::getVars();
         if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\ModulePaths::NAME) {
-            
             if ($modulepaths = $vars['modulepaths']) {
-                $paths = array();
-                foreach ($modulepaths as $modulepath) {
-                    $paths[] = $this->modulePathHelpers->stringifyModulePath($modulepath);
-                }
-                $components[] = $this->translationAPI->__('module paths:', 'engine') . implode(',', $paths);
+                $paths = array_map(
+                    function($modulepath) {
+                        return $this->modulePathHelpers->stringifyModulePath($modulepath);
+                    },
+                    $modulepaths
+                );
+                $components[] = $this->translationAPI->__('module paths:', 'engine').implode(',', $paths);
             }
         }
 
