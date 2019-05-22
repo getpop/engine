@@ -1,6 +1,7 @@
 <?php
 namespace PoP\Engine\ModulePath;
 use \PoP\Engine\Modules\Constants;
+use \PoP\Engine\ModuleUtils;
 
 class ModulePathHelpers implements ModulePathHelpersInterface
 {
@@ -19,13 +20,10 @@ class ModulePathHelpers implements ModulePathHelpersInterface
 
     public function stringifyModulePath($modulepath)
     {
-        $moduleprocessor_manager = \PoP\Engine\ModuleProcessorManagerFactory::getInstance();
         return implode(
             POP_CONSTANT_MODULESTARTPATH_SEPARATOR, 
             array_map(
-                function($module) use ($moduleprocessor_manager) {
-                    return $moduleprocessor_manager->getProcessor($module)->getModuleFullName($module);
-                },
+                [ModuleUtils::class, 'getModuleFullName'],
                 $modulepath
             )
         );
@@ -34,12 +32,7 @@ class ModulePathHelpers implements ModulePathHelpersInterface
     public function recastModulePath($modulepath_as_string)
     {
         return array_map(
-            function($moduleFullName) {
-                return explode(
-                    Constants::SEPARATOR_MODULEFULLNAME, 
-                    $moduleFullName
-                );
-            },
+            [ModuleUtils::class, 'getModule'],
             explode(
                 POP_CONSTANT_MODULESTARTPATH_SEPARATOR, 
                 $modulepath_as_string
