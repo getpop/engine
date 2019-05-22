@@ -1,6 +1,5 @@
 <?php
 namespace PoP\Engine\ModulePath;
-use \PoP\Engine\Modules\Constants;
 use \PoP\Engine\ModuleUtils;
 
 class ModulePathHelpers implements ModulePathHelpersInterface
