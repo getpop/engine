@@ -12,7 +12,7 @@ class MainContentModule extends AbstractModuleFilter
         return self::NAME;
     }
 
-    public function excludeModule(array $module, &$props)
+    public function excludeModule(array $module, array &$props)
     {
         $vars = \PoP\Engine\Engine_Vars::getVars();
         return $vars['maincontentmodule'] != $module;

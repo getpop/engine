@@ -76,7 +76,7 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
         $this->neverExclude = $neverExclude;
     }
 
-    public function excludeModule(array $module, &$props)
+    public function excludeModule(array $module, array &$props)
     {
         if (is_null($this->selected_filter_name)) {
             $this->init();
@@ -114,7 +114,7 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
     /**
      * The `prepare` function advances the modulepath one level down, when interating into the submodules, and then calling `restore` the value goes one level up again
      */
-    public function prepareForPropagation(array $module, &$props)
+    public function prepareForPropagation(array $module, array &$props)
     {
         if (is_null($this->selected_filter_name)) {
             $this->init();
@@ -140,7 +140,7 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
         // Add the module to the path
         $this->modulePathManager->prepareForPropagation($module, $props);
     }
-    public function restoreFromPropagation(array $module, &$props)
+    public function restoreFromPropagation(array $module, array &$props)
     {
         if (is_null($this->selected_filter_name)) {
             $this->init();

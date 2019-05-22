@@ -3,7 +3,7 @@ namespace PoP\Engine\ModuleFilters;
 
 abstract class AbstractModuleFilter implements ModuleFilterInterface
 {
-    public function excludeModule(array $module, &$props)
+    public function excludeModule(array $module, array &$props)
     {
         return false;
     }
@@ -13,11 +13,11 @@ abstract class AbstractModuleFilter implements ModuleFilterInterface
         return $submodules;
     }
 
-    public function prepareForPropagation(array $module, &$props)
+    public function prepareForPropagation(array $module, array &$props)
     {
     }
 
-    public function restoreFromPropagation(array $module, &$props)
+    public function restoreFromPropagation(array $module, array &$props)
     {
     }
 }
