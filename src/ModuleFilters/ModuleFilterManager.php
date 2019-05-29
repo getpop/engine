@@ -45,7 +45,7 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
         }
     }
 
-    public function add(array $moduleFilters)
+    public function add(ModuleFilterInterface ...$moduleFilters)
     {
         foreach ($moduleFilters as $moduleFilter) {
             $this->modulefilters[$moduleFilter->getName()] = $moduleFilter;

@@ -3,7 +3,7 @@ namespace PoP\Engine;
 
 use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Component\YAMLServicesTrait;
-use PoP\Engine\Configuration\ServiceConfiguration;
+use PoP\Engine\Config\ServiceConfiguration;
 use PoP\Engine\Component\InstantiateNamespaceClassesTrait;
 
 /**
@@ -24,15 +24,7 @@ class Component extends AbstractComponent
         self::instantiateNamespaceClasses([
             __NAMESPACE__.'\HookImplementations',
         ]);
-    }
 
-    /**
-     * Initialize Service Configuration
-     *
-     * @return void
-     */
-    public static function boot()
-    {
-        ServiceConfiguration::configure();
+        ServiceConfiguration::init();
     }
 }
