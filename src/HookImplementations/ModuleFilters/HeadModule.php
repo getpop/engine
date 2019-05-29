@@ -1,9 +1,10 @@
 <?php
 namespace PoP\Engine\HookImplementations\ModuleFilters;
 
-use PoP\Engine\Hooks\AbstractHookImplementation;
-use PoP\Engine\ModuleFilters\Constants;
 use PoP\Engine\ModuleUtils;
+use PoP\Engine\ModuleFilters\Constants;
+use PoP\Engine\ModelInstance\ModelInstance;
+use PoP\Engine\Hooks\AbstractHookImplementation;
 
 class HeadModule extends AbstractHookImplementation
 {
@@ -11,7 +12,7 @@ class HeadModule extends AbstractHookImplementation
     {
         parent::__construct();
         $this->hooksAPI->addFilter(
-            'PoP\Engine\ModelInstance\ModelInstance:componentsFromVars:result',
+            ModelInstance::class.ModelInstance::HOOK_COMPONENTSFROMVARS_RESULT,
             [$this, 'maybeAddComponent']
         );
         $this->hooksAPI->addAction(
