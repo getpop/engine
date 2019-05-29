@@ -8,26 +8,27 @@ parameters:
     modulePathHelpers: '@module_path_helpers'
 
 services:
+    _defaults:
+        bind:
+            $translationAPI: '%translationAPI%'
+            $hooksAPI: '%hooksAPI%'
+            $modelInstance: '%modelInstance%'
+            $applicationInfo: '%applicationInfo%'
+            $modulePathManager: '%modulePathManager%'
+        public: true
+
     persistent_cache:
         class: \PoP\Engine\Cache\Cache
         arguments:
             $cacheItemPool: '@persistent_cache_item_pool'
-            $hooksAPI: '%hooksAPI%'
-            $modelInstance: '%modelInstance%'
 
     request_cache:
         class: \PoP\Engine\Cache\Cache
         arguments:
             $cacheItemPool: '@request_cache_item_pool'
-            $hooksAPI: '%hooksAPI%'
-            $modelInstance: '%modelInstance%'
 
     model_instance:
         class: \PoP\Engine\ModelInstance\ModelInstance
-        arguments:
-            $translationAPI: '%translationAPI%'
-            $hooksAPI: '%hooksAPI%'
-            $applicationInfo: '%applicationInfo%'
 
     application_info:
         class: \PoP\Engine\Info\ApplicationInfo
@@ -37,7 +38,6 @@ services:
     module_filter_manager:
         class: '\PoP\Engine\ModuleFilters\ModuleFilterManager'
         arguments:
-            $modulePathManager: '%modulePathManager%'
             $modulePathHelpers: '%modulePathHelpers%'
 
     module_path_manager:
@@ -45,8 +45,6 @@ services:
 
     module_path_helpers:
         class: \PoP\Engine\ModulePath\ModulePathHelpers
-        arguments:
-            $modulePathManager: '%modulePathManager%'
 
     # ModuleFilters
     module_filters.head_module:
@@ -57,6 +55,4 @@ services:
         class: \PoP\Engine\ModuleFilters\MainContentModule
     module_filters.module_paths:
         class: \PoP\Engine\ModuleFilters\ModulePaths
-        arguments:
-            $modulePathManager: '%modulePathManager%'
             
