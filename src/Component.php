@@ -1,7 +1,6 @@
 <?php
 namespace PoP\Engine;
 
-// use PoP\Hooks\Facades\HooksAPI;
 use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Component\YAMLServicesTrait;
 use PoP\Engine\Configuration\ServiceConfiguration;
