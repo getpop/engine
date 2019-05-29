@@ -4,7 +4,7 @@ namespace PoP\Engine;
 // use PoP\Hooks\Facades\HooksAPI;
 use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Component\YAMLServicesTrait;
-use PoP\Root\Component\PHPConfigurableServicesTrait;
+use PoP\Engine\Configuration\ServiceConfiguration;
 use PoP\Engine\Component\InstantiateNamespaceClassesTrait;
 
 /**
@@ -13,17 +13,7 @@ use PoP\Engine\Component\InstantiateNamespaceClassesTrait;
 class Component extends AbstractComponent
 {
     use YAMLServicesTrait;
-    use PHPConfigurableServicesTrait;
     use InstantiateNamespaceClassesTrait;
-
-    // protected static function initializeServices()
-    // {
-    //     HooksAPI::getInstance()->addAction(
-    //         'popcms:init', 
-    //         array($this, 'init'), 
-    //         PHP_INT_MAX
-    //     );
-    // }
 
     /**
      * Initialize services
@@ -44,6 +34,6 @@ class Component extends AbstractComponent
      */
     public static function boot()
     {
-        self::initPHPServiceConfiguration(dirname(__DIR__));
+        ServiceConfiguration::configure();
     }
 }
