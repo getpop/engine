@@ -2,11 +2,14 @@
 namespace PoP\Engine\Config;
 
 use PoP\Root\Container\ContainerBuilderFactory;
+use PoP\Root\Component\PHPServiceConfigurationTrait;
 use Symfony\Component\DependencyInjection\Reference;
 
 class ServiceConfiguration
 {
-    public static function init()
+    use PHPServiceConfigurationTrait;
+    
+    public static function configure()
     {
         $containerBuilder = ContainerBuilderFactory::getInstance();
         

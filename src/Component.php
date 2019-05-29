@@ -25,6 +25,6 @@ class Component extends AbstractComponent
             __NAMESPACE__.'\HookImplementations',
         ]);
 
-        ServiceConfiguration::init();
+        ServiceConfiguration::initPHPServiceConfiguration();
     }
 }

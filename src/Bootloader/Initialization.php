@@ -8,9 +8,8 @@ class Initialization
 {
     public static function init()
     {
-        // Compile Symfony's DependencyInjection Container Builder
-        $containerBuilder = ContainerBuilderFactory::getInstance();
-        $containerBuilder->compile();
+        // Compile and Cache Symfony's DependencyInjection Container Builder
+        ContainerBuilderFactory::maybeCompileAndCacheContainer();
 
         // Boot all the components
         ComponentManager::boot();
