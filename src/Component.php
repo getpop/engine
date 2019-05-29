@@ -21,7 +21,7 @@ class Component extends AbstractComponent
     {
         parent::init();
         self::initYAMLServices(dirname(__DIR__));
-        ServiceConfiguration::initPHPServiceConfiguration();
+        ServiceConfiguration::init();
     }
 
     /**
