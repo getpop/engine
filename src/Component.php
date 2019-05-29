@@ -21,10 +21,19 @@ class Component extends AbstractComponent
     {
         parent::init();
         self::initYAMLServices(dirname(__DIR__));
+        ServiceConfiguration::initPHPServiceConfiguration();
+    }
+
+    /**
+     * Boot component
+     *
+     * @return void
+     */
+    public static function boot()
+    {
+        parent::boot();
         self::instantiateNamespaceClasses([
             __NAMESPACE__.'\HookImplementations',
         ]);
-
-        ServiceConfiguration::initPHPServiceConfiguration();
     }
 }

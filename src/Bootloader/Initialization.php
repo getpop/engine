@@ -9,8 +9,5 @@ class Initialization
     {
         // Boot all the components
         ComponentManager::boot();
-
-        // Instantiate all those immediately-required files
-        InstantiateNamespaceClasses::init();
     }
 }
