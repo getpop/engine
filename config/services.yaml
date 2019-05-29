@@ -1,20 +1,14 @@
 parameters:
-    translationAPI: '@translation_api'
-    hooksAPI: '@hooks_api'
-    modelInstance: '@model_instance'
-    applicationInfo: '@application_info'
-    moduleFilterManager: '@module_filter_manager'
-    modulePathManager: '@module_path_manager'
-    modulePathHelpers: '@module_path_helpers'
+    version: '0.1.0'
 
 services:
     _defaults:
         bind:
-            $translationAPI: '%translationAPI%'
-            $hooksAPI: '%hooksAPI%'
-            $modelInstance: '%modelInstance%'
-            $applicationInfo: '%applicationInfo%'
-            $modulePathManager: '%modulePathManager%'
+            $translationAPI: '@translation_api'
+            $hooksAPI: '@hooks_api'
+            $modelInstance: '@model_instance'
+            $applicationInfo: '@application_info'
+            $modulePathManager: '@module_path_manager'
         public: true
 
     persistent_cache:
@@ -33,12 +27,12 @@ services:
     application_info:
         class: \PoP\Engine\Info\ApplicationInfo
         arguments:
-            $version: '0.1.0'
+            $version: '%version%'
 
     module_filter_manager:
         class: '\PoP\Engine\ModuleFilters\ModuleFilterManager'
         arguments:
-            $modulePathHelpers: '%modulePathHelpers%'
+            $modulePathHelpers: '@module_path_helpers'
 
     module_path_manager:
         class: \PoP\Engine\ModulePath\ModulePathManager
