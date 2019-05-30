@@ -4,7 +4,7 @@ namespace PoP\Engine\Facades;
 use PoP\Engine\ModelInstance\ModelInstanceInterface;
 use PoP\Root\Container\ContainerBuilderFactory;
 
-class ModelInstance
+class ModelInstanceFacade
 {
     public static function getInstance(): ModelInstanceInterface
     {

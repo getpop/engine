@@ -4,7 +4,7 @@ namespace PoP\Engine\Facades;
 use PoP\Engine\ModulePath\ModulePathManagerInterface;
 use PoP\Root\Container\ContainerBuilderFactory;
 
-class ModulePathManager
+class ModulePathManagerFacade
 {
     public static function getInstance(): ModulePathManagerInterface
     {

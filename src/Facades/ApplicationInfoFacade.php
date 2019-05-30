@@ -4,7 +4,7 @@ namespace PoP\Engine\Facades;
 use PoP\Engine\Info\ApplicationInfoInterface;
 use PoP\Root\Container\ContainerBuilderFactory;
 
-class ApplicationInfo
+class ApplicationInfoFacade
 {
     public static function getInstance(): ApplicationInfoInterface
     {

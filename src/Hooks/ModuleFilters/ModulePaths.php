@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\Hooks\ModuleFilters;
 
-use PoP\Engine\Facades\ModulePathHelpers;
+use PoP\Engine\Facades\ModulePathHelpersFacade;
 use PoP\Engine\Hooks\AbstractHookImplementation;
 
 class ModulePaths extends AbstractHookImplementation
@@ -10,7 +10,7 @@ class ModulePaths extends AbstractHookImplementation
     public function __construct()
     {
         parent::__construct();
-        $this->modulePathHelpers = ModulePathHelpers::getInstance();
+        $this->modulePathHelpers = ModulePathHelpersFacade::getInstance();
         $this->hooksAPI->addFilter(
             'PoP\Engine\ModelInstance\ModelInstance:componentsFromVars:result',
             [$this, 'maybeAddComponent']

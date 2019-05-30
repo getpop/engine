@@ -1,8 +1,8 @@
 <?php
 namespace PoP\Engine\Hooks;
 
-use PoP\Hooks\Facades\HooksAPI;
-use PoP\Translation\Facades\TranslationAPI;
+use PoP\Hooks\Facades\HooksAPIFacade;
+use PoP\Translation\Facades\TranslationAPIFacade;
 
 class AbstractHookImplementation
 {
@@ -10,7 +10,7 @@ class AbstractHookImplementation
     protected $translationAPI;
     public function __construct()
     {
-        $this->hooksAPI = HooksAPI::getInstance();
-        $this->translationAPI = TranslationAPI::getInstance();
+        $this->hooksAPI = HooksAPIFacade::getInstance();
+        $this->translationAPI = TranslationAPIFacade::getInstance();
     }
 }

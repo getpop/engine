@@ -4,7 +4,7 @@ namespace PoP\Engine\Facades;
 use PoP\Engine\Cache\CacheInterface;
 use PoP\Root\Container\ContainerBuilderFactory;
 
-class RequestCache
+class RequestCacheFacade
 {
     public static function getInstance(): CacheInterface
     {
