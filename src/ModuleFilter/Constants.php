@@ -1,5 +1,5 @@
 <?php
-namespace PoP\Engine\ModuleFilters;
+namespace PoP\Engine\ModuleFilter;
 
 class Constants
 {

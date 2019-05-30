@@ -1,5 +1,5 @@
 <?php
-namespace PoP\Engine\ModuleFilters;
+namespace PoP\Engine\ModuleFilter;
 
 abstract class AbstractModuleFilter implements ModuleFilterInterface
 {

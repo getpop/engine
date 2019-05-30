@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\Facades;
 
-use PoP\Engine\ModuleFilters\ModuleFilterManagerInterface;
+use PoP\Engine\ModuleFilter\ModuleFilterManagerInterface;
 use PoP\Root\Container\ContainerBuilderFactory;
 
 class ModuleFilterManager

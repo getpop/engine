@@ -14,6 +14,9 @@ services:
         resource: '../src/HookImplementations/*'
         public: true
 
+    PoP\Engine\ModuleFilter\Implementations\:
+        resource: '../src/ModuleFilter/Implementations/*'
+
     persistent_cache:
         class: \PoP\Engine\Cache\Cache
         public: true
@@ -37,7 +40,7 @@ services:
             $version: '%version%'
 
     module_filter_manager:
-        class: '\PoP\Engine\ModuleFilters\ModuleFilterManager'
+        class: '\PoP\Engine\ModuleFilter\ModuleFilterManager'
         public: true
         arguments:
             $modulePathHelpers: '@module_path_helpers'
@@ -49,14 +52,4 @@ services:
     module_path_helpers:
         class: \PoP\Engine\ModulePath\ModulePathHelpers
         public: true
-
-    # ModuleFilters
-    module_filters.head_module:
-        class: \PoP\Engine\ModuleFilters\HeadModule
-    module_filters.lazy:
-        class: \PoP\Engine\ModuleFilters\Lazy
-    module_filters.main_content_module:
-        class: \PoP\Engine\ModuleFilters\MainContentModule
-    module_filters.module_paths:
-        class: \PoP\Engine\ModuleFilters\ModulePaths
             

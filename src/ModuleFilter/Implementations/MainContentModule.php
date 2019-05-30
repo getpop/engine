@@ -1,7 +1,7 @@
 <?php
-namespace PoP\Engine\ModuleFilters;
-use PoP\Hooks\Facades\HooksAPI;
+namespace PoP\Engine\ModuleFilter\Implementations;
 
+use PoP\Engine\ModuleFilter\AbstractModuleFilter;
 
 class MainContentModule extends AbstractModuleFilter
 {

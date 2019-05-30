@@ -1,5 +1,5 @@
 <?php
-namespace PoP\Engine\ModuleFilters;
+namespace PoP\Engine\ModuleFilter;
 
 use PoP\Engine\ModulePath\ModulePathHelpersInterface;
 use PoP\Engine\ModulePath\ModulePathManagerInterface;
