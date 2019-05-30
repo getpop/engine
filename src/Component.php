@@ -5,8 +5,6 @@ use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Component\YAMLServicesTrait;
 use PoP\Engine\Config\ServiceConfiguration;
 use PoP\Root\Container\ContainerBuilderUtils;
-use PoP\Root\Container\ContainerBuilderFactory;
-use PoP\Engine\Component\InstantiateNamespaceClassesTrait;
 
 /**
  * Class required to check if this component exists and is active
@@ -14,7 +12,6 @@ use PoP\Engine\Component\InstantiateNamespaceClassesTrait;
 class Component extends AbstractComponent
 {
     use YAMLServicesTrait;
-    use InstantiateNamespaceClassesTrait;
 
     /**
      * Initialize services
