@@ -5,7 +5,7 @@ use PoP\Engine\ModuleFilters\AbstractModuleFilter;
 
 class Lazy extends AbstractModuleFilter
 {
-    const NAME = 'lazy';
+    public const NAME = 'lazy';
 
     public function getName()
     {

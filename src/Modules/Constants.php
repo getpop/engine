@@ -3,5 +3,5 @@ namespace PoP\Engine\Modules;
 
 class Constants
 {
-    const SEPARATOR_PROCESSORITEMFULLNAME = "::";
+    public const SEPARATOR_PROCESSORITEMFULLNAME = "::";
 }

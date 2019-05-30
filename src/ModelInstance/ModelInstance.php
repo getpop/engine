@@ -6,9 +6,9 @@ use PoP\Engine\Info\ApplicationInfoInterface;
 
 class ModelInstance implements ModelInstanceInterface
 {
-    const HOOK_COMPONENTS_RESULT = __CLASS__.':components:result';
-    const HOOK_COMPONENTSFROMVARS_POSTORGETCHANGE = __CLASS__.':componentsFromVars:postOrGetChange';
-    const HOOK_COMPONENTSFROMVARS_RESULT = __CLASS__.':componentsFromVars:result';
+    public const HOOK_COMPONENTS_RESULT = __CLASS__.':components:result';
+    public const HOOK_COMPONENTSFROMVARS_POSTORGETCHANGE = __CLASS__.':componentsFromVars:postOrGetChange';
+    public const HOOK_COMPONENTSFROMVARS_RESULT = __CLASS__.':componentsFromVars:result';
 
     private $translationAPI;
     private $hooksAPI;

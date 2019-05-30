@@ -5,7 +5,7 @@ use PoP\Engine\ModuleFilters\AbstractModuleFilter;
 
 class MainContentModule extends AbstractModuleFilter
 {
-    const NAME = 'maincontentmodule';
+    public const NAME = 'maincontentmodule';
     
     public function getName()
     {

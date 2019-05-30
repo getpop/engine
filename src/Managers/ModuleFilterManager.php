@@ -7,7 +7,7 @@ use PoP\Engine\Managers\ModulePathManagerInterface;
 
 class ModuleFilterManager implements ModuleFilterManagerInterface
 {
-    const URLPARAM_MODULEFILTER = 'modulefilter';
+    public const URLPARAM_MODULEFILTER = 'modulefilter';
 
     protected $selected_filter_name;
     protected $selected_filter;

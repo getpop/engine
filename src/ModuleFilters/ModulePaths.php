@@ -6,8 +6,8 @@ use PoP\Engine\ModuleFilters\AbstractModuleFilter;
 
 class ModulePaths extends AbstractModuleFilter
 {
-    const NAME = 'modulepaths';
-    const URLPARAM_MODULEPATHS = 'modulepaths';
+    public const NAME = 'modulepaths';
+    public const URLPARAM_MODULEPATHS = 'modulepaths';
 
     protected $paths;
     protected $propagation_unsettled_paths;

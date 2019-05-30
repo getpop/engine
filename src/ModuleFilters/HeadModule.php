@@ -5,8 +5,8 @@ use PoP\Engine\ModuleFilters\AbstractModuleFilter;
 
 class HeadModule extends AbstractModuleFilter
 {
-    const NAME = 'headmodule';
-    const URLPARAM_HEADMODULE = 'headmodule';
+    public const NAME = 'headmodule';
+    public const URLPARAM_HEADMODULE = 'headmodule';
 
     public function getName()
     {
