@@ -9,39 +9,46 @@ services:
             $modelInstance: '@model_instance'
             $applicationInfo: '@application_info'
             $modulePathManager: '@module_path_manager'
-        public: true
 
     PoP\Engine\HookImplementations\:
         resource: '../src/HookImplementations/*'
+        public: true
 
     persistent_cache:
         class: \PoP\Engine\Cache\Cache
+        public: true
         arguments:
             $cacheItemPool: '@persistent_cache_item_pool'
 
     request_cache:
         class: \PoP\Engine\Cache\Cache
+        public: true
         arguments:
             $cacheItemPool: '@request_cache_item_pool'
 
     model_instance:
         class: \PoP\Engine\ModelInstance\ModelInstance
+        public: true
 
     application_info:
         class: \PoP\Engine\Info\ApplicationInfo
+        public: true
         arguments:
             $version: '%version%'
 
     module_filter_manager:
         class: '\PoP\Engine\ModuleFilters\ModuleFilterManager'
+        public: true
         arguments:
             $modulePathHelpers: '@module_path_helpers'
 
     module_path_manager:
         class: \PoP\Engine\ModulePath\ModulePathManager
+        public: true
 
     module_path_helpers:
         class: \PoP\Engine\ModulePath\ModulePathHelpers
+        public: true
 
     # ModuleFilters
     module_filters.head_module:
