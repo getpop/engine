@@ -12,7 +12,7 @@ class HeadModule extends AbstractHookImplementation
     {
         parent::__construct();
         $this->hooksAPI->addFilter(
-            ModelInstance::class.ModelInstance::HOOK_COMPONENTSFROMVARS_RESULT,
+            ModelInstance::HOOK_COMPONENTSFROMVARS_RESULT,
             [$this, 'maybeAddComponent']
         );
         $this->hooksAPI->addAction(

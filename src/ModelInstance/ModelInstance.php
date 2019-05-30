@@ -6,9 +6,9 @@ use PoP\Engine\Info\ApplicationInfoInterface;
 
 class ModelInstance implements ModelInstanceInterface
 {
-    const HOOK_COMPONENTS_RESULT = ':components:result';
-    const HOOK_COMPONENTSFROMVARS_POSTORGETCHANGE = ':componentsFromVars:postOrGetChange';
-    const HOOK_COMPONENTSFROMVARS_RESULT = ':componentsFromVars:result';
+    const HOOK_COMPONENTS_RESULT = __CLASS__.':components:result';
+    const HOOK_COMPONENTSFROMVARS_POSTORGETCHANGE = __CLASS__.':componentsFromVars:postOrGetChange';
+    const HOOK_COMPONENTSFROMVARS_RESULT = __CLASS__.':componentsFromVars:result';
 
     private $translationAPI;
     private $hooksAPI;
@@ -40,7 +40,7 @@ class ModelInstance implements ModelInstanceInterface
 
         // Mix the information specific to the module, with that present in $vars
         return $this->hooksAPI->applyFilters(
-            self::class.self::HOOK_COMPONENTS_RESULT,
+            self::HOOK_COMPONENTS_RESULT,
             array_merge(
                 $components,
                 $this->getModelInstanceComponentsFromVars()
@@ -79,7 +79,7 @@ class ModelInstance implements ModelInstanceInterface
 
         // Can the configuration change when doing a POST or GET?
         if ($this->hooksAPI->applyFilters(
-            self::class.self::HOOK_COMPONENTSFROMVARS_POSTORGETCHANGE, 
+            self::HOOK_COMPONENTSFROMVARS_POSTORGETCHANGE, 
             false
         )) {
             $components[] = $this->translationAPI->__('operation:', 'engine').(doingPost() ? 'post' : 'get');
@@ -92,7 +92,7 @@ class ModelInstance implements ModelInstanceInterface
 
         // Allow for plug-ins to add their own vars. Eg: URE source parameter
         return $this->hooksAPI->applyFilters(
-            self::class.self::HOOK_COMPONENTSFROMVARS_RESULT, 
+            self::HOOK_COMPONENTSFROMVARS_RESULT, 
             $components
         );
     }
