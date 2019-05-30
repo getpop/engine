@@ -1,10 +1,10 @@
 <?php
 namespace PoP\Engine\Facades;
 
-use PoP\Engine\ModuleFilter\ModuleFilterManagerInterface;
+use PoP\Engine\Managers\ModuleFilterManagerInterface;
 use PoP\Root\Container\ContainerBuilderFactory;
 
-class ModuleFilterManager
+class ModuleFilterManagerFacade
 {
     public static function getInstance(): ModuleFilterManagerInterface
     {

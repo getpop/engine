@@ -1,11 +1,14 @@
 <?php
-namespace PoP\Engine\ModuleFilter;
+namespace PoP\Engine\Managers;
 
+use PoP\Engine\ModuleFilter\ModuleFilterInterface;
 use PoP\Engine\ModulePath\ModulePathHelpersInterface;
 use PoP\Engine\ModulePath\ModulePathManagerInterface;
 
 class ModuleFilterManager implements ModuleFilterManagerInterface
 {
+    const URLPARAM_MODULEFILTER = 'modulefilter';
+
     protected $selected_filter_name;
     protected $selected_filter;
     protected $modulefilters = [];
@@ -54,7 +57,7 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
 
     public function getSelectedFilterName()
     {
-        if ($selected = $_REQUEST[Constants::URLPARAM_MODULEFILTER]) {
+        if ($selected = $_REQUEST[self::URLPARAM_MODULEFILTER]) {
             
             // Only valid if there's a corresponding moduleFilter
             if (in_array($selected, array_keys($this->modulefilters))) {

@@ -40,7 +40,7 @@ services:
             $version: '%version%'
 
     module_filter_manager:
-        class: '\PoP\Engine\ModuleFilter\ModuleFilterManager'
+        class: '\PoP\Engine\Managers\ModuleFilterManager'
         public: true
         arguments:
             $modulePathHelpers: '@module_path_helpers'
