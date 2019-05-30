@@ -11,6 +11,9 @@ services:
             $modulePathManager: '@module_path_manager'
         public: true
 
+    PoP\Engine\HookImplementations\:
+        resource: '../src/HookImplementations/*'
+
     persistent_cache:
         class: \PoP\Engine\Cache\Cache
         arguments:

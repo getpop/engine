@@ -4,6 +4,8 @@ namespace PoP\Engine;
 use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Component\YAMLServicesTrait;
 use PoP\Engine\Config\ServiceConfiguration;
+use PoP\Root\Container\ContainerBuilderUtils;
+use PoP\Root\Container\ContainerBuilderFactory;
 use PoP\Engine\Component\InstantiateNamespaceClassesTrait;
 
 /**
@@ -32,8 +34,8 @@ class Component extends AbstractComponent
     public static function boot()
     {
         parent::boot();
-        self::instantiateNamespaceClasses([
-            __NAMESPACE__.'\HookImplementations',
-        ]);
+
+        // Initialize all hooks
+        ContainerBuilderUtils::instantiateNamespaceServices(__NAMESPACE__.'\\HookImplementations');
     }
 }
