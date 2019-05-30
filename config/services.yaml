@@ -10,8 +10,8 @@ services:
             $applicationInfo: '@application_info'
             $modulePathManager: '@module_path_manager'
 
-    PoP\Engine\Hook\Implementations\:
-        resource: '../src/Hook/Implementations/*'
+    PoP\Engine\Hooks\:
+        resource: '../src/Hooks/*'
         public: true
 
     PoP\Engine\ModuleFilter\Implementations\:

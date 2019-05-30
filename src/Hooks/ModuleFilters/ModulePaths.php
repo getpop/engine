@@ -1,8 +1,8 @@
 <?php
-namespace PoP\Engine\Hook\Implementations\ModuleFilters;
+namespace PoP\Engine\Hooks\ModuleFilters;
 
 use PoP\Engine\Facades\ModulePathHelpers;
-use PoP\Engine\Hook\AbstractHookImplementation;
+use PoP\Engine\Hooks\AbstractHookImplementation;
 
 class ModulePaths extends AbstractHookImplementation
 {
