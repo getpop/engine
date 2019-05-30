@@ -52,4 +52,8 @@ services:
     module_path_helpers:
         class: \PoP\Engine\Managers\ModulePathHelpers
         public: true
+
+    instance_manager:
+        class: \PoP\Engine\Managers\InstanceManager
+        public: true
             
