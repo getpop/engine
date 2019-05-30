@@ -2,8 +2,8 @@
 namespace PoP\Engine\Managers;
 
 use PoP\Engine\ModuleFilter\ModuleFilterInterface;
-use PoP\Engine\ModulePath\ModulePathHelpersInterface;
-use PoP\Engine\ModulePath\ModulePathManagerInterface;
+use PoP\Engine\Managers\ModulePathHelpersInterface;
+use PoP\Engine\Managers\ModulePathManagerInterface;
 
 class ModuleFilterManager implements ModuleFilterManagerInterface
 {

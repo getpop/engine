@@ -1,5 +1,5 @@
 <?php
-namespace PoP\Engine\ModulePath;
+namespace PoP\Engine\Managers;
 
 interface ModulePathHelpersInterface
 {

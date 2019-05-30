@@ -46,10 +46,10 @@ services:
             $modulePathHelpers: '@module_path_helpers'
 
     module_path_manager:
-        class: \PoP\Engine\ModulePath\ModulePathManager
+        class: \PoP\Engine\Managers\ModulePathManager
         public: true
 
     module_path_helpers:
-        class: \PoP\Engine\ModulePath\ModulePathHelpers
+        class: \PoP\Engine\Managers\ModulePathHelpers
         public: true
             
