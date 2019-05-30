@@ -1,5 +1,5 @@
 <?php
-namespace PoP\Engine\ModuleFilter;
+namespace PoP\Engine\ModuleFilters;
 
 interface ModuleFilterInterface
 {

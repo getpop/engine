@@ -1,11 +1,12 @@
 <?php
-namespace PoP\Engine\ModuleFilter\Implementations;
+namespace PoP\Engine\ModuleFilters;
 
-use PoP\Engine\ModuleFilter\AbstractModuleFilter;
+use PoP\Engine\ModuleFilters\AbstractModuleFilter;
 
 class HeadModule extends AbstractModuleFilter
 {
     const NAME = 'headmodule';
+    const URLPARAM_HEADMODULE = 'headmodule';
 
     public function getName()
     {

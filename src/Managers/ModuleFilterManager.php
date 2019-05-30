@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\Managers;
 
-use PoP\Engine\ModuleFilter\ModuleFilterInterface;
+use PoP\Engine\ModuleFilters\ModuleFilterInterface;
 use PoP\Engine\Managers\ModulePathHelpersInterface;
 use PoP\Engine\Managers\ModulePathManagerInterface;
 

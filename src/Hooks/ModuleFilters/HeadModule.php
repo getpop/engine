@@ -2,7 +2,7 @@
 namespace PoP\Engine\Hooks\ModuleFilters;
 
 use PoP\Engine\ModuleUtils;
-use PoP\Engine\ModuleFilter\Constants;
+use PoP\Engine\ModuleFilters\Constants;
 use PoP\Engine\ModelInstance\ModelInstance;
 use PoP\Engine\Hooks\AbstractHookImplementation;
 
@@ -25,7 +25,7 @@ class HeadModule extends AbstractHookImplementation
     public function addVars($vars_in_array)
     {
         $vars = &$vars_in_array[0];
-        if ($vars['modulefilter'] == \PoP\Engine\ModuleFilter\Implementations\HeadModule::NAME) {
+        if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\HeadModule::NAME) {
             if ($headmodule = $_REQUEST[Constants::URLPARAM_HEADMODULE]) {
                 $vars['headmodule'] = ModuleUtils::getModuleFromOutputName($headmodule);
             }
@@ -34,7 +34,7 @@ class HeadModule extends AbstractHookImplementation
     public function maybeAddComponent($components)
     {
         $vars = \PoP\Engine\Engine_Vars::getVars();
-        if ($vars['modulefilter'] == \PoP\Engine\ModuleFilter\Implementations\HeadModule::NAME) {
+        if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\HeadModule::NAME) {
             if ($headmodule = $vars['headmodule']) {
                 $components[] = $this->translationAPI->__('head module:', 'engine').ModuleUtils::getModuleFullName($headmodule);
             }

@@ -1,7 +1,7 @@
 <?php
-namespace PoP\Engine\ModuleFilter\Implementations;
+namespace PoP\Engine\ModuleFilters;
 
-use PoP\Engine\ModuleFilter\AbstractModuleFilter;
+use PoP\Engine\ModuleFilters\AbstractModuleFilter;
 
 class Lazy extends AbstractModuleFilter
 {

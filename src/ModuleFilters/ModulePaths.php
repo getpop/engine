@@ -1,12 +1,13 @@
 <?php
-namespace PoP\Engine\ModuleFilter\Implementations;
+namespace PoP\Engine\ModuleFilters;
 
 use PoP\Engine\Managers\ModulePathManagerInterface;
-use PoP\Engine\ModuleFilter\AbstractModuleFilter;
+use PoP\Engine\ModuleFilters\AbstractModuleFilter;
 
 class ModulePaths extends AbstractModuleFilter
 {
     const NAME = 'modulepaths';
+    const URLPARAM_MODULEPATHS = 'modulepaths';
 
     protected $paths;
     protected $propagation_unsettled_paths;

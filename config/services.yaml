@@ -14,8 +14,8 @@ services:
         resource: '../src/Hooks/*'
         public: true
 
-    PoP\Engine\ModuleFilter\Implementations\:
-        resource: '../src/ModuleFilter/Implementations/*'
+    PoP\Engine\ModuleFilters\:
+        resource: '../src/ModuleFilters/*'
 
     persistent_cache:
         class: \PoP\Engine\Cache\Cache

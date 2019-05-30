@@ -13,7 +13,7 @@ class ServiceConfiguration
         // Add ModuleFilter to the ModuleFilterManager
         ContainerBuilderUtils::injectServicesIntoService(
             'module_filter_manager',
-            'PoP\\Engine\\ModuleFilter\\Implementations',
+            'PoP\\Engine\\ModuleFilters',
             'add'
         );
     }
