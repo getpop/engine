@@ -16,7 +16,9 @@ class ServiceConfiguration
         
         // Add ModuleFilter to the ModuleFilterManager
         $definition = $containerBuilder->getDefinition('module_filter_manager');
-        $moduleFilterServiceIds = ContainerBuilderUtils::getNamespaceServiceIds('PoP\\Engine\\ModuleFilter\\Implementations');
+        $moduleFilterServiceIds = ContainerBuilderUtils::getNamespaceServiceIds(
+            'PoP\\Engine\\ModuleFilter\\Implementations'
+        );
         foreach ($moduleFilterServiceIds as $moduleFilterServiceId) {
             $definition->addMethodCall('add', [new Reference($moduleFilterServiceId)]);
         }
