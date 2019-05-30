@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\Bootloader;
 
-use PoP\Root\Component\ComponentManager;
+use PoP\Root\Managers\ComponentManager;
 
 class Initialization
 {
