@@ -2,7 +2,7 @@
 namespace PoP\Engine\Cache;
 use Psr\Cache\CacheItemPoolInterface;
 use PoP\Hooks\Contracts\HooksAPIInterface;
-use PoP\Engine\ModelInstance\ModelInstance;
+use PoP\Engine\ModelInstance\ModelInstanceInterface;
 
 class Cache implements CacheInterface
 {
@@ -14,7 +14,7 @@ class Cache implements CacheInterface
     public function __construct(
         CacheItemPoolInterface $cacheItemPool, 
         HooksAPIInterface $hooksAPI,
-        ModelInstance $modelInstance
+        ModelInstanceInterface $modelInstance
     ) {
         $this->cacheItemPool = $cacheItemPool;
         $this->hooksAPI = $hooksAPI;

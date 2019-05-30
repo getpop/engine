@@ -4,11 +4,11 @@ parameters:
 services:
     _defaults:
         bind:
-            $translationAPI: '@translation_api'
-            $hooksAPI: '@hooks_api'
-            $modelInstance: '@model_instance'
-            $applicationInfo: '@application_info'
-            $modulePathManager: '@module_path_manager'
+            PoP\Translation\Contracts\TranslationAPIInterface: '@translation_api'
+            PoP\Hooks\Contracts\HooksAPIInterface: '@hooks_api'
+            PoP\Engine\ModelInstance\ModelInstanceInterface: '@model_instance'
+            PoP\Engine\Info\ApplicationInfoInterface: '@application_info'
+            PoP\Engine\Managers\ModulePathManagerInterface: '@module_path_manager'
 
     PoP\Engine\Hooks\:
         resource: '../src/Hooks/*'
