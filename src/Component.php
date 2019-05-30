@@ -33,6 +33,6 @@ class Component extends AbstractComponent
         parent::boot();
 
         // Initialize all hooks
-        ContainerBuilderUtils::instantiateNamespaceServices(__NAMESPACE__.'\\HookImplementations');
+        ContainerBuilderUtils::instantiateNamespaceServices(__NAMESPACE__.'\\Hook\\Implementations');
     }
 }

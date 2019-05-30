@@ -1,5 +1,5 @@
 <?php
-namespace PoP\Engine\Hooks;
+namespace PoP\Engine\Hook;
 
 use PoP\Hooks\Facades\HooksAPI;
 use PoP\Translation\Facades\TranslationAPI;
