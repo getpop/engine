@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\Managers;
 
-class InstanceManager
+class InstanceManager implements InstanceManagerInterface
 {
     use InstanceManagerTrait;
 }
