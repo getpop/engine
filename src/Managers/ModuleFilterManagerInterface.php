@@ -5,7 +5,8 @@ use PoP\Engine\ModuleFilters\ModuleFilterInterface;
 
 interface ModuleFilterManagerInterface
 {
-    public function getSelectedFilterName();
+    public function getSelectedModuleFilterName(): ?string;
+    public function setSelectedModuleFilterName(string $selectedModuleFilterName);
     public function getNotExcludedModuleSets();
     public function add(ModuleFilterInterface ...$moduleFilters);
     public function neverExclude($neverExclude);

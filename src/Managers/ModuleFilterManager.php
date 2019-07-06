@@ -12,6 +12,7 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
     protected $selected_filter_name;
     protected $selected_filter;
     protected $modulefilters = [];
+    protected $initialized = false;
 
     // From the moment in which a module is not excluded, every module from then on must also be included
     protected $not_excluded_ancestor_module;
@@ -36,16 +37,14 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
     protected function init()
     {
         // Lazy initialize so that we can inject all the moduleFilters before checking the selected one
-        if ($selected = $this->getSelectedFilterName()) {
-            $this->selected_filter_name = $selected;
-            $this->selected_filter = $this->modulefilters[$selected];
+        $this->selected_filter_name = $this->selected_filter_name ?? $this->getSelectedModuleFilterName();
+        if ($this->selected_filter_name) {
+            $this->selected_filter = $this->modulefilters[$this->selected_filter_name];
 
             // Initialize only if we are intending to filter modules. This way, passing modulefilter=somewrongpath will return an empty array, meaning to not render anything
             $this->not_excluded_module_sets = $this->not_excluded_module_sets_as_string = array();
-        } else {
-            // If false, the check to lazy init will not happen anymore
-            $this->selected_filter_name = false;
-        }
+        } 
+        $this->initialized = true;
     }
 
     public function add(ModuleFilterInterface ...$moduleFilters)
@@ -55,13 +54,23 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
         }
     }
 
-    public function getSelectedFilterName()
+    /**
+     * The selected filter can be set from outside by the engine
+     */
+    public function setSelectedModuleFilterName(string $selectedModuleFilterName)
     {
-        if ($selected = $_REQUEST[self::URLPARAM_MODULEFILTER]) {
+        $this->selected_filter_name = $selectedModuleFilterName;
+    }
+
+    public function getSelectedModuleFilterName(): ?string
+    {
+        if ($this->selected_filter_name) {
+            return $this->selected_filter_name;
+        } elseif ($selectedModuleFilterName = $_REQUEST[self::URLPARAM_MODULEFILTER]) {
             
             // Only valid if there's a corresponding moduleFilter
-            if (in_array($selected, array_keys($this->modulefilters))) {
-                return $selected;
+            if (in_array($selectedModuleFilterName, array_keys($this->modulefilters))) {
+                return $selectedModuleFilterName;
             }
         }
 
@@ -81,7 +90,7 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
 
     public function excludeModule(array $module, array &$props)
     {
-        if (is_null($this->selected_filter_name)) {
+        if (!$this->initialized) {
             $this->init();
         }
         if ($this->selected_filter_name) {
@@ -100,7 +109,7 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
 
     public function removeExcludedSubmodules(array $module, $submodules)
     {
-        if (is_null($this->selected_filter_name)) {
+        if (!$this->initialized) {
             $this->init();
         }
         if ($this->selected_filter_name) {
@@ -119,7 +128,7 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
      */
     public function prepareForPropagation(array $module, array &$props)
     {
-        if (is_null($this->selected_filter_name)) {
+        if (!$this->initialized) {
             $this->init();
         }
         if ($this->selected_filter_name) {
@@ -145,7 +154,7 @@ class ModuleFilterManager implements ModuleFilterManagerInterface
     }
     public function restoreFromPropagation(array $module, array &$props)
     {
-        if (is_null($this->selected_filter_name)) {
+        if (!$this->initialized) {
             $this->init();
         }
 
