@@ -19,10 +19,13 @@
     "prefer-stable": true,
     "require": {
         "php": "~7.1",
+        "getpop/migrate-engine": "^1.0@dev",
         "getpop/hooks": "^1.0@dev",
         "getpop/root": "^1.0@dev",
         "getpop/translation": "^1.0@dev",
-        "getpop/migrate-engine": "^1.0@dev",
+        "getpop/loosecontracts": "dev-master",
+        "getpop/modulerouting": "dev-master",
+        "getpop/definitions": "dev-master",
         "psr/cache": "^1.0"
     },
     "require-dev": {
