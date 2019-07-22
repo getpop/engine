@@ -7,7 +7,7 @@ use PoP\Engine\Config\ServiceConfiguration;
 use PoP\Root\Container\ContainerBuilderUtils;
 
 /**
- * Class required to check if this component exists and is active
+ * Initialize component
  */
 class Component extends AbstractComponent
 {
