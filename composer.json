@@ -24,6 +24,7 @@
         "getpop/root": "^1.0@dev",
         "getpop/translation": "^1.0@dev",
         "getpop/loosecontracts": "dev-master",
+        "getpop/routing": "dev-master",
         "getpop/modulerouting": "dev-master",
         "getpop/definitions": "dev-master",
         "psr/cache": "^1.0"
