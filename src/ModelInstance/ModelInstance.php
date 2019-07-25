@@ -76,6 +76,9 @@ class ModelInstance implements ModelInstanceInterface
         if ($modulefilter = $vars['modulefilter']) {
             $components[] = $this->translationAPI->__('module filter:', 'engine').$modulefilter;
         }
+        if ($stratum = $vars['stratum']) {
+            $components[] = $this->translationAPI->__('stratum:', 'engine').$stratum;
+        }
 
         // Can the configuration change when doing a POST or GET?
         if ($this->hooksAPI->applyFilters(
