@@ -2,6 +2,11 @@ parameters:
     version: '0.1.0'
 
 services:
+    _defaults:
+        bind:
+            PoP\ComponentModel\ModelInstance\ModelInstanceInterface: '@model_instance'
+            PoP\ComponentModel\Managers\ModulePathManagerInterface: '@module_path_manager'
+
     persistent_cache:
         class: \PoP\Engine\Cache\Cache
         public: true
