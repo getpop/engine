@@ -2,21 +2,6 @@ parameters:
     version: '0.1.0'
 
 services:
-    _defaults:
-        bind:
-            PoP\Translation\Contracts\TranslationAPIInterface: '@translation_api'
-            PoP\Hooks\Contracts\HooksAPIInterface: '@hooks_api'
-            PoP\Engine\ModelInstance\ModelInstanceInterface: '@model_instance'
-            PoP\Engine\Info\ApplicationInfoInterface: '@application_info'
-            PoP\Engine\Managers\ModulePathManagerInterface: '@module_path_manager'
-
-    PoP\Engine\Hooks\:
-        resource: '../src/Hooks/*'
-        public: true
-
-    PoP\Engine\ModuleFilters\:
-        resource: '../src/ModuleFilters/*'
-
     persistent_cache:
         class: \PoP\Engine\Cache\Cache
         public: true
@@ -29,31 +14,9 @@ services:
         arguments:
             $cacheItemPool: '@request_cache_item_pool'
 
-    model_instance:
-        class: \PoP\Engine\ModelInstance\ModelInstance
+    PoP\Engine\Hooks\:
+        resource: '../src/Hooks/*'
         public: true
 
-    application_info:
-        class: \PoP\Engine\Info\ApplicationInfo
-        public: true
-        arguments:
-            $version: '%version%'
-
-    module_filter_manager:
-        class: '\PoP\Engine\Managers\ModuleFilterManager'
-        public: true
-        arguments:
-            $modulePathHelpers: '@module_path_helpers'
-
-    module_path_manager:
-        class: \PoP\Engine\Managers\ModulePathManager
-        public: true
-
-    module_path_helpers:
-        class: \PoP\Engine\Managers\ModulePathHelpers
-        public: true
-
-    instance_manager:
-        class: \PoP\Engine\Managers\InstanceManager
-        public: true
-            
+    PoP\Engine\ModuleFilters\:
+        resource: '../src/ModuleFilters/*'

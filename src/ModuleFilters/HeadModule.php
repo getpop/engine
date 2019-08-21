@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\ModuleFilters;
 
-use PoP\Engine\ModuleFilters\AbstractModuleFilter;
+use PoP\ComponentModel\ModuleFilters\AbstractModuleFilter;
 
 class HeadModule extends AbstractModuleFilter
 {
@@ -15,7 +15,7 @@ class HeadModule extends AbstractModuleFilter
 
     public function excludeModule(array $module, array &$props)
     {
-        $vars = \PoP\Engine\Engine_Vars::getVars();
+        $vars = \PoP\ComponentModel\Engine_Vars::getVars();
         return $vars['headmodule'] != $module;
     }
 }

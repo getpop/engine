@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\Hooks\ModuleFilters;
 
-use PoP\Engine\Facades\ModulePathHelpersFacade;
+use PoP\ComponentModel\Facades\ModulePathHelpersFacade;
 use PoP\Engine\Hooks\AbstractHookImplementation;
 
 class ModulePaths extends AbstractHookImplementation
@@ -12,11 +12,11 @@ class ModulePaths extends AbstractHookImplementation
         parent::__construct();
         $this->modulePathHelpers = ModulePathHelpersFacade::getInstance();
         $this->hooksAPI->addFilter(
-            'PoP\Engine\ModelInstance\ModelInstance:componentsFromVars:result',
+            'PoP\ComponentModel\ModelInstance\ModelInstance:componentsFromVars:result',
             [$this, 'maybeAddComponent']
         );
         $this->hooksAPI->addAction(
-            '\PoP\Engine\Engine_Vars:addVars',
+            '\PoP\ComponentModel\Engine_Vars:addVars',
             [$this, 'addVars'],
             10,
             1
@@ -26,12 +26,12 @@ class ModulePaths extends AbstractHookImplementation
     {
         $vars = &$vars_in_array[0];
         if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\ModulePaths::NAME) {
-            $vars['modulepaths'] = \PoP\Engine\Engine_Vars::getModulePaths();
+            $vars['modulepaths'] = \PoP\ComponentModel\Engine_Vars::getModulePaths();
         }
     }
     public function maybeAddComponent($components)
     {
-        $vars = \PoP\Engine\Engine_Vars::getVars();
+        $vars = \PoP\ComponentModel\Engine_Vars::getVars();
         if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\ModulePaths::NAME) {
             if ($modulepaths = $vars['modulepaths']) {
                 $paths = array_map(
