@@ -11,11 +11,11 @@ services:
         arguments:
             $cacheItemPool: '@persistent_cache_item_pool'
 
-    request_cache:
+    memory_cache:
         class: \PoP\Engine\Cache\Cache
         public: true
         arguments:
-            $cacheItemPool: '@request_cache_item_pool'
+            $cacheItemPool: '@memory_cache_item_pool'
 
     PoP\Engine\Hooks\:
         resource: '../src/Hooks/*'
