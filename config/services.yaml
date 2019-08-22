@@ -10,7 +10,6 @@ services:
         public: true
         arguments:
             $cacheItemPool: '@persistent_cache_item_pool'
-            $modelInstance: '@model_instance'
 
     request_cache:
         class: \PoP\Engine\Cache\Cache
