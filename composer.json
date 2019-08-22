@@ -19,7 +19,6 @@
     "prefer-stable": true,
     "require": {
         "php": "~7.1",
-        "getpop/virtual-engine-persistentcache-service-implementation": "dev-master",
         "getpop/migrate-engine": "^1.0@dev",
         "getpop/hooks": "^1.0@dev",
         "getpop/root": "^1.0@dev",
