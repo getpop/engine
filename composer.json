@@ -28,7 +28,6 @@
         "getpop/modulerouting": "dev-master",
         "getpop/definitions": "dev-master",
         "getpop/component-model": "dev-master",
-        "getpop/configurationengine": "dev-master",
         "psr/cache": "^1.0"
     },
     "require-dev": {
