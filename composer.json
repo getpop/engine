@@ -19,7 +19,6 @@
     "prefer-stable": true,
     "require": {
         "php": "~7.1",
-        "composer/semver": "^1.5",
         "getpop/migrate-engine": "^1.0@dev",
         "getpop/hooks": "^1.0@dev",
         "getpop/root": "^1.0@dev",
