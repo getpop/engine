@@ -12,7 +12,7 @@ use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
 {
     public const HOOK_SAFEVARS = __CLASS__.':safeVars';
-    public function getFieldNamesToResolve(): array
+    public static function getFieldNamesToResolve(): array
     {
         return [
             'if',
