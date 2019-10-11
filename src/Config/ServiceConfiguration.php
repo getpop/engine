@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\Config;
 
-use PoP\Root\Container\ContainerBuilderUtils;
+use PoP\ComponentModel\Container\ContainerBuilderUtils;
 use PoP\Root\Component\PHPServiceConfigurationTrait;
 
 class ServiceConfiguration
