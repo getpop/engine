@@ -7,6 +7,7 @@ use PoP\ComponentModel\Engine_Vars;
 use PoP\ComponentModel\DataloadUtils;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorFieldValueResolver;
+use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 
 class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
 {
@@ -27,7 +28,7 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
         ];
     }
 
-    public function getFieldDocumentationType($fieldResolver, string $fieldName): ?string
+    public function getFieldDocumentationType(FieldResolverInterface $fieldResolver, string $fieldName): ?string
     {
         $types = [
             'if' => SchemaDefinition::TYPE_MIXED,
@@ -44,7 +45,7 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
         return $types[$fieldName] ?? parent::getFieldDocumentationType($fieldResolver, $fieldName);
     }
 
-    public function getFieldDocumentationDescription($fieldResolver, string $fieldName): ?string
+    public function getFieldDocumentationDescription(FieldResolverInterface $fieldResolver, string $fieldName): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
@@ -62,7 +63,7 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
         return $descriptions[$fieldName] ?? parent::getFieldDocumentationDescription($fieldResolver, $fieldName);
     }
 
-    public function getFieldDocumentationArgs($fieldResolver, string $fieldName): array
+    public function getFieldDocumentationArgs(FieldResolverInterface $fieldResolver, string $fieldName): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
@@ -183,7 +184,7 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
         return parent::getFieldDocumentationArgs($fieldResolver, $fieldName);
     }
 
-    public function resolveSchemaValidationErrorDescription($fieldResolver, string $fieldName, array $fieldArgs = []): ?string
+    public function resolveSchemaValidationErrorDescription(FieldResolverInterface $fieldResolver, string $fieldName, array $fieldArgs = []): ?string
     {
         if ($error = parent::resolveSchemaValidationErrorDescription($fieldResolver, $fieldName, $fieldArgs)) {
             return $error;
@@ -216,7 +217,7 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
         return $this->safeVars;
     }
 
-    public function resolveValue($fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [])
+    public function resolveValue(FieldResolverInterface $fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [])
     {
         switch ($fieldName) {
             case 'if':

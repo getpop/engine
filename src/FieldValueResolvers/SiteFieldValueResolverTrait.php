@@ -1,9 +1,10 @@
 <?php
 namespace PoP\Engine\FieldValueResolvers;
+use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 
 trait SiteFieldValueResolverTrait
 {
-    public function resolveCanProcessResultItem($fieldResolver, $resultItem, string $fieldName, array $fieldArgs = []): bool
+    public function resolveCanProcessResultItem(FieldResolverInterface $fieldResolver, $resultItem, string $fieldName, array $fieldArgs = []): bool
     {
         $cmsengineapi = \PoP\Engine\FunctionAPIFactory::getInstance();
         $site = $resultItem;
