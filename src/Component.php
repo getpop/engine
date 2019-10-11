@@ -33,7 +33,8 @@ class Component extends AbstractComponent
     {
         parent::boot();
 
-        // Initialize all hooks
+        // Initialize classes
         ContainerBuilderUtils::instantiateNamespaceServices(__NAMESPACE__.'\\Hooks');
+        ContainerBuilderUtils::attachFieldValueResolversFromNamespace(__NAMESPACE__.'\\FieldValueResolvers');
     }
 }

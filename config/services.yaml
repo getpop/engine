@@ -23,3 +23,7 @@ services:
 
     PoP\Engine\ModuleFilters\:
         resource: '../src/ModuleFilters/*'
+
+    PoP\Engine\FieldValueResolvers\:
+        resource: '../src/FieldValueResolvers/*'
+        public: true
