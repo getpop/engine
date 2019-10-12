@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\Hooks\ModuleFilters;
 
-use PoP\ComponentModel\ModuleUtils;
+use PoP\ComponentModel\Modules\ModuleUtils;
 use PoP\Engine\ModuleFilters\Constants;
 use PoP\ComponentModel\ModelInstance\ModelInstance;
 use PoP\Engine\Hooks\AbstractHookImplementation;
