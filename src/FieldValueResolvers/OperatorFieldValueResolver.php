@@ -147,7 +147,6 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
                         SchemaDefinition::ARGNAME_NAME => 'value',
                         SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to check if it is null', 'pop-component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
 
