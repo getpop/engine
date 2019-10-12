@@ -21,6 +21,7 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
             'or',
             'equals',
             'empty',
+            'isNull',
             'var',
             'context',
             'sprintf',
@@ -37,6 +38,7 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
             'or' => SchemaDefinition::TYPE_BOOL,
             'equals' => SchemaDefinition::TYPE_BOOL,
             'empty' => SchemaDefinition::TYPE_BOOL,
+            'isNull' => SchemaDefinition::TYPE_BOOL,
             'var' => SchemaDefinition::TYPE_MIXED,
             'context' => SchemaDefinition::TYPE_OBJECT,
             'sprintf' => SchemaDefinition::TYPE_STRING,
@@ -54,7 +56,8 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
             'and' => $translationAPI->__('Return an `AND` operation among several boolean properties', 'pop-component-model'),
             'or' => $translationAPI->__('Return an `OR` operation among several boolean properties', 'pop-component-model'),
             'equals' => $translationAPI->__('Indicate if the result from a field equals a certain value', 'pop-component-model'),
-            'empty' => $translationAPI->__('Indicate if the result from a field is empty', 'pop-component-model'),
+            'empty' => $translationAPI->__('Indicate if a value is empty', 'pop-component-model'),
+            'isNull' => $translationAPI->__('Indicate if a value is null', 'pop-component-model'),
             'var' => $translationAPI->__('Retrieve the value of a certain property from the `$vars` context object', 'pop-component-model'),
             'context' => $translationAPI->__('Retrieve the `$vars` context object', 'pop-component-model'),
             'sprintf' => $translationAPI->__('Replace placeholders inside a string with provided values', 'pop-component-model'),
@@ -134,6 +137,16 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
                         SchemaDefinition::ARGNAME_NAME => 'value',
                         SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to check if it is empty', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                ];
+
+            case 'isNull':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'value',
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to check if it is null', 'pop-component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
@@ -243,6 +256,8 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
                 return $fieldArgs['value1'] == $fieldArgs['value2'];
             case 'empty':
                 return empty($fieldArgs['value']);
+            case 'isNull':
+                return is_null($fieldArgs['value']);
             case 'var':
                 $safeVars = $this->getSafeVars();
                 return $safeVars[$fieldArgs['name']];
