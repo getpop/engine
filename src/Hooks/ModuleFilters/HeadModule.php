@@ -1,16 +1,21 @@
 <?php
 namespace PoP\Engine\Hooks\ModuleFilters;
 
-use PoP\ComponentModel\Modules\ModuleUtils;
 use PoP\Engine\ModuleFilters\Constants;
+use PoP\Hooks\Contracts\HooksAPIInterface;
+use PoP\ComponentModel\Modules\ModuleUtils;
+use PoP\ComponentModel\Hooks\AbstractHookSet;
 use PoP\ComponentModel\ModelInstance\ModelInstance;
-use PoP\Engine\Hooks\AbstractHookImplementation;
+use PoP\Translation\Contracts\TranslationAPIInterface;
 
-class HeadModule extends AbstractHookImplementation
+class HeadModule extends AbstractHookSet
 {
-    public function __construct()
-    {
-        parent::__construct();
+    public function __construct(
+        HooksAPIInterface $hooksAPI,
+        TranslationAPIInterface $translationAPI
+    ) {
+        parent::__construct($hooksAPI, $translationAPI);
+
         $this->hooksAPI->addFilter(
             ModelInstance::HOOK_COMPONENTSFROMVARS_RESULT,
             [$this, 'maybeAddComponent']

@@ -1,16 +1,21 @@
 <?php
 namespace PoP\Engine\Hooks\ModuleFilters;
 
-use PoP\Engine\Hooks\AbstractHookImplementation;
+use PoP\Hooks\Contracts\HooksAPIInterface;
+use PoP\ComponentModel\Hooks\AbstractHookSet;
+use PoP\Translation\Contracts\TranslationAPIInterface;
 
-class MainContentModule extends AbstractHookImplementation
+class MainContentModule extends AbstractHookSet
 {
-    public function __construct()
-    {
-        parent::__construct();
+    public function __construct(
+        HooksAPIInterface $hooksAPI,
+        TranslationAPIInterface $translationAPI
+    ) {
+        parent::__construct($hooksAPI, $translationAPI);
+
         $this->hooksAPI->addAction(
-            'augmentVarsProperties', 
-            [$this, 'augmentVarsProperties'], 
+            'augmentVarsProperties',
+            [$this, 'augmentVarsProperties'],
             PHP_INT_MAX,
             1
         );

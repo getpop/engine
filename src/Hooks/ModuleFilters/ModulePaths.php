@@ -1,15 +1,21 @@
 <?php
 namespace PoP\Engine\Hooks\ModuleFilters;
 
+use PoP\Hooks\Contracts\HooksAPIInterface;
+use PoP\ComponentModel\Hooks\AbstractHookSet;
+use PoP\Translation\Contracts\TranslationAPIInterface;
 use PoP\ComponentModel\Facades\Managers\ModulePathHelpersFacade;
-use PoP\Engine\Hooks\AbstractHookImplementation;
 
-class ModulePaths extends AbstractHookImplementation
+class ModulePaths extends AbstractHookSet
 {
     protected $modulePathHelpers;
-    public function __construct()
-    {
-        parent::__construct();
+
+    public function __construct(
+        HooksAPIInterface $hooksAPI,
+        TranslationAPIInterface $translationAPI
+    ) {
+        parent::__construct($hooksAPI, $translationAPI);
+
         $this->modulePathHelpers = ModulePathHelpersFacade::getInstance();
         $this->hooksAPI->addFilter(
             'PoP\ComponentModel\ModelInstance\ModelInstance:componentsFromVars:result',
