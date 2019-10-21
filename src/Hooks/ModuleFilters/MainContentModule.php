@@ -7,12 +7,8 @@ use PoP\Translation\Contracts\TranslationAPIInterface;
 
 class MainContentModule extends AbstractHookSet
 {
-    public function __construct(
-        HooksAPIInterface $hooksAPI,
-        TranslationAPIInterface $translationAPI
-    ) {
-        parent::__construct($hooksAPI, $translationAPI);
-
+    protected function init()
+    {
         $this->hooksAPI->addAction(
             'augmentVarsProperties',
             [$this, 'augmentVarsProperties'],

@@ -10,12 +10,8 @@ use PoP\Translation\Contracts\TranslationAPIInterface;
 
 class HeadModule extends AbstractHookSet
 {
-    public function __construct(
-        HooksAPIInterface $hooksAPI,
-        TranslationAPIInterface $translationAPI
-    ) {
-        parent::__construct($hooksAPI, $translationAPI);
-
+    protected function init()
+    {
         $this->hooksAPI->addFilter(
             ModelInstance::HOOK_COMPONENTSFROMVARS_RESULT,
             [$this, 'maybeAddComponent']

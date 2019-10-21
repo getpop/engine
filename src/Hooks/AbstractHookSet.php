@@ -4,7 +4,7 @@ namespace PoP\Engine\Hooks;
 use PoP\Hooks\Contracts\HooksAPIInterface;
 use PoP\Translation\Contracts\TranslationAPIInterface;
 
-class AbstractHookSet
+abstract class AbstractHookSet
 {
     protected $hooksAPI;
     protected $translationAPI;
@@ -14,5 +14,14 @@ class AbstractHookSet
     ) {
         $this->hooksAPI = $hooksAPI;
         $this->translationAPI = $translationAPI;
+
+        // Initialize the hooks
+        $this->init();
     }
+    /**
+     * Initialize the hooks
+     *
+     * @return void
+     */
+    protected abstract function init();
 }

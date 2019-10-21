@@ -10,12 +10,8 @@ class ModulePaths extends AbstractHookSet
 {
     protected $modulePathHelpers;
 
-    public function __construct(
-        HooksAPIInterface $hooksAPI,
-        TranslationAPIInterface $translationAPI
-    ) {
-        parent::__construct($hooksAPI, $translationAPI);
-
+    protected function init()
+    {
         $this->modulePathHelpers = ModulePathHelpersFacade::getInstance();
         $this->hooksAPI->addFilter(
             'PoP\ComponentModel\ModelInstance\ModelInstance:componentsFromVars:result',
