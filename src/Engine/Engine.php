@@ -3,8 +3,10 @@ namespace PoP\Engine\Engine;
 
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\LooseContracts\Facades\Contracts\LooseContractManagerFacade;
+use PoP\ComponentModel\Utils;
+use PoP\ComponentModel\Settings\SettingsManagerFactory;
 
-class Engine extends \PoP\ComponentModel\Engine\Engine
+class Engine extends \PoP\ComponentModel\Engine\Engine implements EngineInterface
 {
     public function generateData()
     {
@@ -30,5 +32,31 @@ class Engine extends \PoP\ComponentModel\Engine\Engine
         }
 
         parent::generateData();
+    }
+
+    protected function maybeRedirectAndExit()
+    {
+        if ($redirect = SettingsManagerFactory::getInstance()->getRedirectUrl()) {
+            if ($query = $_SERVER['QUERY_STRING']) {
+                $redirect .= '?'.$query;
+            }
+
+            $cmsengineapi = \PoP\Engine\FunctionAPIFactory::getInstance();
+            $cmsengineapi->redirect($redirect);
+            exit;
+        }
+    }
+
+    public function outputResponse(): void
+    {
+        // Before anything: check if to do a redirect, and exit
+        $this->maybeRedirectAndExit();
+
+        // 1. Generate the data
+        $this->generateData();
+
+        // 2. Get the data, and ask the formatter to output it
+        $formatter = Utils::getDatastructureFormatter();
+        $formatter->outputResponse($this->getOutputData());
     }
 }
