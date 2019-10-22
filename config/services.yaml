@@ -17,6 +17,10 @@ services:
         arguments:
             $cacheItemPool: '@memory_cache_item_pool'
 
+    engine:
+        class: \PoP\Engine\Engine\Engine
+        public: true
+
     PoP\Engine\Hooks\:
         resource: '../src/Hooks/*'
         public: true
