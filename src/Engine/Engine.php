@@ -29,6 +29,6 @@ class Engine extends \PoP\ComponentModel\Engine\Engine
             );
         }
 
-        parent::generateDate();
+        parent::generateData();
     }
 }
