@@ -2,11 +2,9 @@
 namespace PoP\Engine\Hooks\ModuleFilters;
 
 use PoP\Engine\ModuleFilters\Constants;
-use PoP\Hooks\Contracts\HooksAPIInterface;
 use PoP\ComponentModel\Modules\ModuleUtils;
 use PoP\Engine\Hooks\AbstractHookSet;
 use PoP\ComponentModel\ModelInstance\ModelInstance;
-use PoP\Translation\Contracts\TranslationAPIInterface;
 
 class HeadModule extends AbstractHookSet
 {

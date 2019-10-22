@@ -1,9 +1,7 @@
 <?php
 namespace PoP\Engine\Hooks\ModuleFilters;
 
-use PoP\Hooks\Contracts\HooksAPIInterface;
 use PoP\Engine\Hooks\AbstractHookSet;
-use PoP\Translation\Contracts\TranslationAPIInterface;
 use PoP\ComponentModel\Facades\Managers\ModulePathHelpersFacade;
 
 class ModulePaths extends AbstractHookSet
