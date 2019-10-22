@@ -34,7 +34,7 @@ class Engine extends \PoP\ComponentModel\Engine\Engine implements EngineInterfac
         parent::generateData();
     }
 
-    protected function maybeRedirectAndExit()
+    public function maybeRedirectAndExit(): void
     {
         if ($redirect = SettingsManagerFactory::getInstance()->getRedirectUrl()) {
             if ($query = $_SERVER['QUERY_STRING']) {
