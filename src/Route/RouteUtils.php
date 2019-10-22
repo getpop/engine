@@ -11,6 +11,7 @@ class RouteUtils {
         $homeurl = GeneralUtils::maybeAddTrailingSlash($cmsengineapi->getHomeURL());
         return $homeurl.$route.'/';
     }
+
     public static function getRouteTitle($route)
     {
         $title = HooksAPIFacade::getInstance()->applyFilters(
