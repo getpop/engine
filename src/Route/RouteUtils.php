@@ -1,6 +1,9 @@
 <?php
 namespace PoP\Engine\Route;
 
+use PoP\Hooks\Facades\HooksAPIFacade;
+use PoP\ComponentModel\GeneralUtils;
+
 class RouteUtils {
 
     public static function getRouteURL($route)
