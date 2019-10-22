@@ -23,7 +23,6 @@
         "getpop/hooks": "^1.0@dev",
         "getpop/root": "^1.0@dev",
         "getpop/translation": "^1.0@dev",
-        "getpop/loosecontracts": "dev-master",
         "getpop/routing": "dev-master",
         "getpop/modulerouting": "dev-master",
         "getpop/component-model": "dev-master",
