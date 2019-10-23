@@ -2,7 +2,7 @@
 namespace PoP\Engine\Engine;
 
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\LooseContracts\Facades\Contracts\LooseContractManagerFacade;
+use PoP\LooseContracts\Facades\LooseContractManagerFacade;
 use PoP\ComponentModel\Utils;
 use PoP\ComponentModel\Settings\SettingsManagerFactory;
 

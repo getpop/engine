@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\Cache;
 
-use PoP\Hooks\Contracts\HooksAPIInterface;
+use PoP\Hooks\HooksAPIInterface;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Cache\CacheItemInterface;
 use PoP\ComponentModel\ModelInstance\ModelInstanceInterface;

@@ -1,8 +1,8 @@
 <?php
 namespace PoP\Engine\Hooks;
 
-use PoP\Hooks\Contracts\HooksAPIInterface;
-use PoP\Translation\Contracts\TranslationAPIInterface;
+use PoP\Hooks\HooksAPIInterface;
+use PoP\Translation\TranslationAPIInterface;
 
 abstract class AbstractHookSet
 {
