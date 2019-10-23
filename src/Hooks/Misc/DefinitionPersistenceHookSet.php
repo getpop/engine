@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\Hooks\Misc;
 
-use PoP\Engine\Settings\Environment;
+use PoP\Engine\Configuration\Environment;
 use PoP\Engine\Hooks\AbstractHookSet;
 use PoP\Definitions\Facades\DefinitionManagerFacade;
 
