@@ -31,3 +31,7 @@ services:
     PoP\Engine\FieldValueResolvers\:
         resource: '../src/FieldValueResolvers/*'
         public: true
+
+    PoP\Engine\RouteModuleProcessors\:
+        resource: '../src/RouteModuleProcessors/*'
+        public: true
