@@ -16,5 +16,12 @@ class ServiceConfiguration
             'PoP\\Engine\\ModuleFilters',
             'add'
         );
+
+        // Add RouteModuleProcessors to the Manager
+        ContainerBuilderUtils::injectServicesIntoService(
+            'route_module_processor_manager',
+            'PoP\\Engine\\RouteModuleProcessors',
+            'add'
+        );
     }
 }
