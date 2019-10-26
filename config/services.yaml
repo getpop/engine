@@ -35,3 +35,7 @@ services:
     PoP\Engine\RouteModuleProcessors\:
         resource: '../src/RouteModuleProcessors/*'
         public: true
+
+    PoP\Engine\DataStructureFormatters\:
+        resource: '../src/DataStructureFormatters/*'
+        public: true
