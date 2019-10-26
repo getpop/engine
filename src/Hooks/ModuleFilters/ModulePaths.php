@@ -2,7 +2,7 @@
 namespace PoP\Engine\Hooks\ModuleFilters;
 
 use PoP\Engine\Hooks\AbstractHookSet;
-use PoP\ComponentModel\Facades\Managers\ModulePathHelpersFacade;
+use PoP\ComponentModel\Facades\ModulePath\ModulePathHelpersFacade;
 
 class ModulePaths extends AbstractHookSet
 {
