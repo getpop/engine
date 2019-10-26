@@ -5,6 +5,7 @@ use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\LooseContracts\Facades\LooseContractManagerFacade;
 use PoP\ComponentModel\Utils;
 use PoP\ComponentModel\Settings\SettingsManagerFactory;
+use PoP\ComponentModel\Facades\DataStructure\DataStructureManagerFacade;
 
 class Engine extends \PoP\ComponentModel\Engine\Engine implements EngineInterface
 {
@@ -56,7 +57,8 @@ class Engine extends \PoP\ComponentModel\Engine\Engine implements EngineInterfac
         $this->generateData();
 
         // 2. Get the data, and ask the formatter to output it
-        $formatter = Utils::getDatastructureFormatter();
+        $dataStructureManager = DataStructureManagerFacade::getInstance();
+        $formatter = $dataStructureManager->getDataStructureFormatter();
         $formatter->outputResponse($this->getOutputData());
     }
 }

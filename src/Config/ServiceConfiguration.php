@@ -23,5 +23,11 @@ class ServiceConfiguration
             'PoP\\Engine\\RouteModuleProcessors',
             'add'
         );
+
+        ContainerBuilderUtils::injectServicesIntoService(
+            'data_structure_manager',
+            'PoP\\Engine\\DataStructureFormatters',
+            'add'
+        );
     }
 }
