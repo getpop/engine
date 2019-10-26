@@ -3,9 +3,9 @@ namespace PoP\Engine\DataStructureFormatters;
 
 use PoP\ComponentModel\DataStructure\AbstractDataStructureFormatter;
 
-class ListDataStructureFormatter extends AbstractDataStructureFormatter
+class DBItemListDataStructureFormatter extends AbstractDataStructureFormatter
 {
-    public const NAME = 'list';
+    public const NAME = 'dbitemlist';
     public static function getName()
     {
         return self::NAME;
