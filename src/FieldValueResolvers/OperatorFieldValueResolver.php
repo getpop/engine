@@ -26,6 +26,7 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
             'context',
             'sprintf',
             'divide',
+            'arrayRandom',
         ];
     }
 
@@ -43,6 +44,7 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
             'context' => SchemaDefinition::TYPE_OBJECT,
             'sprintf' => SchemaDefinition::TYPE_STRING,
             'divide' => SchemaDefinition::TYPE_FLOAT,
+            'arrayRandom' => SchemaDefinition::TYPE_MIXED,
         ];
         return $types[$fieldName] ?? parent::getFieldDocumentationType($fieldResolver, $fieldName);
     }
@@ -62,6 +64,7 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
             'context' => $translationAPI->__('Retrieve the `$vars` context object', 'pop-component-model'),
             'sprintf' => $translationAPI->__('Replace placeholders inside a string with provided values', 'pop-component-model'),
             'divide' => $translationAPI->__('Divide a number by another number', 'pop-component-model'),
+            'arrayRandom' => $translationAPI->__('Randomly select one element from the provided ones', 'pop-component-model'),
         ];
         return $descriptions[$fieldName] ?? parent::getFieldDocumentationDescription($fieldResolver, $fieldName);
     }
@@ -191,6 +194,16 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
                             SchemaDefinition::ARGNAME_MANDATORY => true,
                         ],
                     ];
+
+                case 'arrayRandom':
+                    return [
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'elements',
+                            SchemaDefinition::ARGNAME_TYPE => DataloadUtils::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array of elements from which to randomly select one', 'pop-component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ]
+                    ];
         }
 
         return parent::getFieldDocumentationArgs($fieldResolver, $fieldName);
@@ -266,6 +279,8 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
                 return sprintf($fieldArgs['string'], ...$fieldArgs['values']);
             case 'divide':
                 return (float)$fieldArgs['number']/(float)$fieldArgs['by'];
+            case 'arrayRandom':
+                return $fieldArgs['elements'][array_rand($fieldArgs['elements'])];
         }
 
         return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
