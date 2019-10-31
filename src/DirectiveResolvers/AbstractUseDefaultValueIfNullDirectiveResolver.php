@@ -1,5 +1,7 @@
 <?php
 namespace PoP\Engine\DirectiveResolvers;
+use PoP\ComponentModel\Schema\SchemaDefinition;
+use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\PipelinePositions;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
@@ -60,5 +62,21 @@ abstract class AbstractUseDefaultValueIfNullDirectiveResolver extends AbstractSc
                 }
             }
         }
+    }
+    public function getSchemaDirectiveDescription(FieldResolverInterface $fieldResolver): ?string
+    {
+        $translationAPI = TranslationAPIFacade::getInstance();
+        return $translationAPI->__('If the value of the field is `NULL`, replace it with either the value provided under arg \'value\', or with a default value configured in the directive resolver', 'api');
+    }
+    public function getSchemaDirectiveArgs(FieldResolverInterface $fieldResolver): array
+    {
+        $translationAPI = TranslationAPIFacade::getInstance();
+        return [
+            [
+                SchemaDefinition::ARGNAME_NAME => 'value',
+                SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
+                SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('If the value of the field is `NULL`, replace it with the value from this argument. If this value is not provided, the default value configured in the directive resolver will be used', 'api'),
+            ],
+        ];
     }
 }
