@@ -19,6 +19,16 @@ abstract class AbstractUseDefaultValueIfNullDirectiveResolver extends AbstractSc
         return PipelinePositions::BACK;
     }
 
+    /**
+     * The result of a <default> could itself be null, so these can be chained: <default(condition1),default(condition2)>
+     *
+     * @return boolean
+     */
+    public function canExecuteMultipleTimesInField(): bool
+    {
+        return true;
+    }
+
     public function resolveDirective(FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbItems, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         // Replace all the NULL results with the default value
