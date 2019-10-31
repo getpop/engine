@@ -3,9 +3,9 @@ namespace PoP\Engine\DirectiveResolvers;
 use PoP\ComponentModel\FieldResolvers\PipelinePositions;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
-use PoP\ComponentModel\DirectiveResolvers\AbstractDirectiveResolver;
+use PoP\ComponentModel\DirectiveResolvers\AbstractSchemaDirectiveResolver;
 
-abstract class AbstractUseDefaultValueIfNullDirectiveResolver extends AbstractDirectiveResolver
+abstract class AbstractUseDefaultValueIfNullDirectiveResolver extends AbstractSchemaDirectiveResolver
 {
     protected abstract function getDefaultValue();
 
