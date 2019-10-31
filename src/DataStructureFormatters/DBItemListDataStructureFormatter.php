@@ -1,9 +1,9 @@
 <?php
 namespace PoP\Engine\DataStructureFormatters;
 
-use PoP\ComponentModel\DataStructure\AbstractDataStructureFormatter;
+use PoP\ComponentModel\DataStructure\AbstractJSONDataStructureFormatter;
 
-class DBItemListDataStructureFormatter extends AbstractDataStructureFormatter
+class DBItemListDataStructureFormatter extends AbstractJSONDataStructureFormatter
 {
     public const NAME = 'dbitemlist';
     public static function getName()
@@ -11,7 +11,7 @@ class DBItemListDataStructureFormatter extends AbstractDataStructureFormatter
         return self::NAME;
     }
 
-    public function getJsonEncodeType()
+    protected function getJsonEncodeType()
     {
         return JSON_FORCE_OBJECT;
     }
@@ -30,7 +30,6 @@ class DBItemListDataStructureFormatter extends AbstractDataStructureFormatter
 
     public function getFormattedData($data)
     {
-
         // If we are requesting only the databases, then return these as a list of items
         $vars = \PoP\ComponentModel\Engine_Vars::getVars();
         $dataoutputitems = $vars['dataoutputitems'];
