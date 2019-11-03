@@ -1,13 +1,14 @@
 <?php
 namespace PoP\Engine\FieldValueResolvers;
 
-use PoP\Hooks\Facades\HooksAPIFacade;
-use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\Engine_Vars;
 use PoP\ComponentModel\DataloadUtils;
+use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorFieldValueResolver;
+use PoP\ComponentModel\Schema\TypeCastingHelpers;
+use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorFieldValueResolver;
 
 class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
 {
@@ -109,7 +110,7 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'values',
-                        SchemaDefinition::ARGNAME_TYPE => DataloadUtils::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_BOOL),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_BOOL),
                         SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
                             $translationAPI->__('The array of values on which to execute the `%s` operation', 'pop-component-model'),
                             strtoupper($fieldName)
@@ -173,7 +174,7 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
                     ],
                     [
                         SchemaDefinition::ARGNAME_NAME => 'values',
-                        SchemaDefinition::ARGNAME_TYPE => DataloadUtils::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_STRING),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_STRING),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The values to replace the placeholders with inside the string', 'pop-component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -199,7 +200,7 @@ class OperatorFieldValueResolver extends AbstractOperatorFieldValueResolver
                     return [
                         [
                             SchemaDefinition::ARGNAME_NAME => 'elements',
-                            SchemaDefinition::ARGNAME_TYPE => DataloadUtils::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
                             SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array of elements from which to randomly select one', 'pop-component-model'),
                             SchemaDefinition::ARGNAME_MANDATORY => true,
                         ]
