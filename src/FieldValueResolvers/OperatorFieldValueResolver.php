@@ -2,7 +2,6 @@
 namespace PoP\Engine\FieldValueResolvers;
 
 use PoP\ComponentModel\Engine_Vars;
-use PoP\ComponentModel\DataloadUtils;
 use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
