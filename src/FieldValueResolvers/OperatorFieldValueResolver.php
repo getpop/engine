@@ -27,6 +27,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'sprintf',
             'divide',
             'arrayRandom',
+            'arrayJoin',
         ];
     }
 
@@ -45,6 +46,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'sprintf' => SchemaDefinition::TYPE_STRING,
             'divide' => SchemaDefinition::TYPE_FLOAT,
             'arrayRandom' => SchemaDefinition::TYPE_MIXED,
+            'arrayJoin' => SchemaDefinition::TYPE_STRING,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($fieldResolver, $fieldName);
     }
@@ -65,6 +67,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'sprintf' => $translationAPI->__('Replace placeholders inside a string with provided values', 'pop-component-model'),
             'divide' => $translationAPI->__('Divide a number by another number', 'pop-component-model'),
             'arrayRandom' => $translationAPI->__('Randomly select one element from the provided ones', 'pop-component-model'),
+            'arrayJoin' => $translationAPI->__('Join all the strings in an array, using a provided separator', 'pop-component-model'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
     }
@@ -204,6 +207,21 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                             SchemaDefinition::ARGNAME_MANDATORY => true,
                         ]
                     ];
+
+                case 'arrayJoin':
+                    return [
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'array',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_STRING),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array of strings to be joined all together', 'pop-component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'separator',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Separator with which to join all strings in the array', 'pop-component-model'),
+                        ],
+                    ];
         }
 
         return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
@@ -281,6 +299,8 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 return (float)$fieldArgs['number']/(float)$fieldArgs['by'];
             case 'arrayRandom':
                 return $fieldArgs['elements'][array_rand($fieldArgs['elements'])];
+            case 'arrayJoin':
+                return implode($fieldArgs['separator'] ?? '', $fieldArgs['array']);
         }
 
         return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
