@@ -25,6 +25,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'var',
             'context',
             'sprintf',
+            'echo',
             'divide',
             'arrayRandom',
             'arrayJoin',
@@ -44,6 +45,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'var' => SchemaDefinition::TYPE_MIXED,
             'context' => SchemaDefinition::TYPE_OBJECT,
             'sprintf' => SchemaDefinition::TYPE_STRING,
+            'echo' => SchemaDefinition::TYPE_STRING,
             'divide' => SchemaDefinition::TYPE_FLOAT,
             'arrayRandom' => SchemaDefinition::TYPE_MIXED,
             'arrayJoin' => SchemaDefinition::TYPE_STRING,
@@ -55,19 +57,20 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            'if' => $translationAPI->__('If a boolean property is true, execute a field, else, execute another field', 'pop-component-model'),
-            'not' => $translationAPI->__('Return the opposite value of a boolean property', 'pop-component-model'),
-            'and' => $translationAPI->__('Return an `AND` operation among several boolean properties', 'pop-component-model'),
-            'or' => $translationAPI->__('Return an `OR` operation among several boolean properties', 'pop-component-model'),
-            'equals' => $translationAPI->__('Indicate if the result from a field equals a certain value', 'pop-component-model'),
-            'empty' => $translationAPI->__('Indicate if a value is empty', 'pop-component-model'),
-            'isNull' => $translationAPI->__('Indicate if a value is null', 'pop-component-model'),
-            'var' => $translationAPI->__('Retrieve the value of a certain property from the `$vars` context object', 'pop-component-model'),
-            'context' => $translationAPI->__('Retrieve the `$vars` context object', 'pop-component-model'),
-            'sprintf' => $translationAPI->__('Replace placeholders inside a string with provided values', 'pop-component-model'),
-            'divide' => $translationAPI->__('Divide a number by another number', 'pop-component-model'),
-            'arrayRandom' => $translationAPI->__('Randomly select one element from the provided ones', 'pop-component-model'),
-            'arrayJoin' => $translationAPI->__('Join all the strings in an array, using a provided separator', 'pop-component-model'),
+            'if' => $translationAPI->__('If a boolean property is true, execute a field, else, execute another field', 'component-model'),
+            'not' => $translationAPI->__('Return the opposite value of a boolean property', 'component-model'),
+            'and' => $translationAPI->__('Return an `AND` operation among several boolean properties', 'component-model'),
+            'or' => $translationAPI->__('Return an `OR` operation among several boolean properties', 'component-model'),
+            'equals' => $translationAPI->__('Indicate if the result from a field equals a certain value', 'component-model'),
+            'empty' => $translationAPI->__('Indicate if a value is empty', 'component-model'),
+            'isNull' => $translationAPI->__('Indicate if a value is null', 'component-model'),
+            'var' => $translationAPI->__('Retrieve the value of a certain property from the `$vars` context object', 'component-model'),
+            'context' => $translationAPI->__('Retrieve the `$vars` context object', 'component-model'),
+            'sprintf' => $translationAPI->__('Replace placeholders inside a string with provided values', 'component-model'),
+            'echo' => $translationAPI->__('Repeat the input back', 'component-model'),
+            'divide' => $translationAPI->__('Divide a number by another number', 'component-model'),
+            'arrayRandom' => $translationAPI->__('Randomly select one element from the provided ones', 'component-model'),
+            'arrayJoin' => $translationAPI->__('Join all the strings in an array, using a provided separator', 'component-model'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
     }
@@ -81,19 +84,19 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                     [
                         SchemaDefinition::ARGNAME_NAME => 'condition',
                         SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_BOOL,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The condition to check if its value is `true` or `false`', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The condition to check if its value is `true` or `false`', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                     [
                         SchemaDefinition::ARGNAME_NAME => 'then',
                         SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to return if the condition evals to `true`', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to return if the condition evals to `true`', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                     [
                         SchemaDefinition::ARGNAME_NAME => 'else',
                         SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to return if the condition evals to `false`', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to return if the condition evals to `false`', 'component-model'),
                     ],
                 ];
 
@@ -102,7 +105,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                     [
                         SchemaDefinition::ARGNAME_NAME => 'value',
                         SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_BOOL,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value from which to return its opposite value', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value from which to return its opposite value', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
@@ -114,7 +117,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                         SchemaDefinition::ARGNAME_NAME => 'values',
                         SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_BOOL),
                         SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
-                            $translationAPI->__('The array of values on which to execute the `%s` operation', 'pop-component-model'),
+                            $translationAPI->__('The array of values on which to execute the `%s` operation', 'component-model'),
                             strtoupper($fieldName)
                         ),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
@@ -126,13 +129,13 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                     [
                         SchemaDefinition::ARGNAME_NAME => 'value1',
                         SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The first value to compare', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The first value to compare', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                     [
                         SchemaDefinition::ARGNAME_NAME => 'value2',
                         SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The second value to compare', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The second value to compare', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
@@ -142,7 +145,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                     [
                         SchemaDefinition::ARGNAME_NAME => 'value',
                         SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to check if it is empty', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to check if it is empty', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
@@ -152,7 +155,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                     [
                         SchemaDefinition::ARGNAME_NAME => 'value',
                         SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to check if it is null', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to check if it is null', 'component-model'),
                     ],
                 ];
 
@@ -161,7 +164,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                     [
                         SchemaDefinition::ARGNAME_NAME => 'name',
                         SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The name of the variable to retrieve from the `$vars` context object', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The name of the variable to retrieve from the `$vars` context object', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
@@ -171,57 +174,67 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                     [
                         SchemaDefinition::ARGNAME_NAME => 'string',
                         SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The string containing the placeholders', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The string containing the placeholders', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                     [
                         SchemaDefinition::ARGNAME_NAME => 'values',
                         SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_STRING),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The values to replace the placeholders with inside the string', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The values to replace the placeholders with inside the string', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
 
-                case 'divide':
-                    return [
-                        [
-                            SchemaDefinition::ARGNAME_NAME => 'number',
-                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_FLOAT,
-                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Number to divide', 'pop-component-model'),
-                            SchemaDefinition::ARGNAME_MANDATORY => true,
-                        ],
-                        [
-                            SchemaDefinition::ARGNAME_NAME => 'by',
-                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_FLOAT,
-                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The division operandum', 'pop-component-model'),
-                            SchemaDefinition::ARGNAME_MANDATORY => true,
-                        ],
-                    ];
+            case 'echo':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'value',
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to be echoed', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                ];
 
-                case 'arrayRandom':
-                    return [
-                        [
-                            SchemaDefinition::ARGNAME_NAME => 'elements',
-                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
-                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array of elements from which to randomly select one', 'pop-component-model'),
-                            SchemaDefinition::ARGNAME_MANDATORY => true,
-                        ]
-                    ];
+            case 'divide':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'number',
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_FLOAT,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Number to divide', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'by',
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_FLOAT,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The division operandum', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                ];
 
-                case 'arrayJoin':
-                    return [
-                        [
-                            SchemaDefinition::ARGNAME_NAME => 'array',
-                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_STRING),
-                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array of strings to be joined all together', 'pop-component-model'),
-                            SchemaDefinition::ARGNAME_MANDATORY => true,
-                        ],
-                        [
-                            SchemaDefinition::ARGNAME_NAME => 'separator',
-                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Separator with which to join all strings in the array', 'pop-component-model'),
-                        ],
-                    ];
+            case 'arrayRandom':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'elements',
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array of elements from which to randomly select one', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ]
+                ];
+
+            case 'arrayJoin':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'array',
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_STRING),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array of strings to be joined all together', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'separator',
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Separator with which to join all strings in the array', 'component-model'),
+                    ],
+                ];
         }
 
         return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
@@ -239,7 +252,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 $safeVars = $this->getSafeVars();
                 if (!isset($safeVars[$fieldArgs['name']])) {
                     return sprintf(
-                        $translationAPI->__('Var \'%s\' does not exist in `$vars`', 'pop-component-model'),
+                        $translationAPI->__('Var \'%s\' does not exist in `$vars`', 'component-model'),
                         $fieldArgs['name']
                     );
                 };
@@ -295,6 +308,8 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 return $this->getSafeVars();
             case 'sprintf':
                 return sprintf($fieldArgs['string'], ...$fieldArgs['values']);
+            case 'echo':
+                return $fieldArgs['value'];
             case 'divide':
                 return (float)$fieldArgs['number']/(float)$fieldArgs['by'];
             case 'arrayRandom':
