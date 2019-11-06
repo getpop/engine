@@ -414,12 +414,12 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 // If the value for the index property is the same, then copy the properties
                 $value = $fieldArgs['target'];
                 $index = $fieldArgs['index'];
-                foreach ($fieldArgs['target'] as $targetProps) {
+                foreach ($value as &$targetProps) {
                     foreach ($fieldArgs['source'] as $sourceProps) {
                         if (array_key_exists($index, $targetProps) && $targetProps[$index] == $sourceProps[$index]) {
                             $properties = $fieldArgs['properties'] ? $fieldArgs['properties'] : array_keys($sourceProps);
                             foreach ($properties as $property) {
-                                $value[$property] = $sourceProps[$property];
+                                $targetProps[$property] = $sourceProps[$property];
                             }
                         }
                     }
