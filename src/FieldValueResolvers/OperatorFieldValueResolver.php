@@ -33,6 +33,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arraySearch',
             'arrayFill',
             'arrayValues',
+            'arrayUnique',
         ];
     }
 
@@ -57,6 +58,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arraySearch' => SchemaDefinition::TYPE_MIXED,
             'arrayFill' => SchemaDefinition::TYPE_ARRAY,
             'arrayValues' => SchemaDefinition::TYPE_ARRAY,
+            'arrayUnique' => SchemaDefinition::TYPE_ARRAY,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($fieldResolver, $fieldName);
     }
@@ -83,6 +85,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arraySearch' => $translationAPI->__('Search in what position is an element placed in the array. If found, it returns its position (integer), otherwise it returns `false` (boolean)', 'component-model'),
             'arrayFill' => $translationAPI->__('Fill a target array with elements from a source array, where a certain property is the same', 'component-model'),
             'arrayValues' => $translationAPI->__('Return the values from a two-dimensional array', 'component-model'),
+            'arrayUnique' => $translationAPI->__('Filters out all duplicated elements in the array', 'component-model'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
     }
@@ -316,6 +319,16 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
+
+            case 'arrayUnique':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'array',
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array to operate on', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                ];
         }
 
         return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
@@ -427,6 +440,8 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 return $value;
             case 'arrayValues':
                 return array_values($fieldArgs['array']);
+            case 'arrayUnique':
+                return array_unique($fieldArgs['array']);
         }
 
         return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
