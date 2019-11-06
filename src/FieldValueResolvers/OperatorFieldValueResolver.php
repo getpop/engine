@@ -29,6 +29,8 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'divide',
             'arrayRandom',
             'arrayJoin',
+            'arrayItem',
+            'arraySearch',
         ];
     }
 
@@ -45,10 +47,12 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'var' => SchemaDefinition::TYPE_MIXED,
             'context' => SchemaDefinition::TYPE_OBJECT,
             'sprintf' => SchemaDefinition::TYPE_STRING,
-            'echo' => SchemaDefinition::TYPE_STRING,
+            'echo' => SchemaDefinition::TYPE_MIXED,
             'divide' => SchemaDefinition::TYPE_FLOAT,
             'arrayRandom' => SchemaDefinition::TYPE_MIXED,
             'arrayJoin' => SchemaDefinition::TYPE_STRING,
+            'arrayItem' => SchemaDefinition::TYPE_MIXED,
+            'arraySearch' => SchemaDefinition::TYPE_MIXED,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($fieldResolver, $fieldName);
     }
@@ -67,10 +71,12 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'var' => $translationAPI->__('Retrieve the value of a certain property from the `$vars` context object', 'component-model'),
             'context' => $translationAPI->__('Retrieve the `$vars` context object', 'component-model'),
             'sprintf' => $translationAPI->__('Replace placeholders inside a string with provided values', 'component-model'),
-            'echo' => $translationAPI->__('Repeat the input back', 'component-model'),
+            'echo' => $translationAPI->__('Repeat back the input, whatever it is', 'component-model'),
             'divide' => $translationAPI->__('Divide a number by another number', 'component-model'),
             'arrayRandom' => $translationAPI->__('Randomly select one element from the provided ones', 'component-model'),
             'arrayJoin' => $translationAPI->__('Join all the strings in an array, using a provided separator', 'component-model'),
+            'arrayItem' => $translationAPI->__('Access the element on the given position in the array', 'component-model'),
+            'arraySearch' => $translationAPI->__('Search in what position is an element placed in the array. If found, it returns its position (integer), otherwise it returns `false` (boolean)', 'component-model'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
     }
@@ -189,8 +195,8 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'value',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to be echoed', 'component-model'),
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The input to be echoed back', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
@@ -235,6 +241,38 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Separator with which to join all strings in the array', 'component-model'),
                     ],
                 ];
+
+            case 'arrayItem':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'array',
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array containing the element to retrieve', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'position',
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Position where the element is placed in the array, starting from 0', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                ];
+
+            case 'arraySearch':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'array',
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array containing the element to search', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'element',
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Element to search in the array and retrieve its position', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                ];
         }
 
         return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
@@ -254,6 +292,14 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                     return sprintf(
                         $translationAPI->__('Var \'%s\' does not exist in `$vars`', 'component-model'),
                         $fieldArgs['name']
+                    );
+                };
+                return null;
+            case 'arrayItem':
+                if (count($fieldArgs['array']) < $fieldArgs['position']) {
+                    return sprintf(
+                        $translationAPI->__('The array contains no element at position \'%s\'', 'component-model'),
+                        $fieldArgs['position']
                     );
                 };
                 return null;
@@ -316,6 +362,10 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 return $fieldArgs['elements'][array_rand($fieldArgs['elements'])];
             case 'arrayJoin':
                 return implode($fieldArgs['separator'] ?? '', $fieldArgs['array']);
+            case 'arrayItem':
+                return $fieldArgs['array'][$fieldArgs['position']];
+            case 'arraySearch':
+                return array_search($fieldArgs['element'], $fieldArgs['array']);
         }
 
         return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
