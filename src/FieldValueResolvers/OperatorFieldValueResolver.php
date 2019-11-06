@@ -34,6 +34,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayFill',
             'arrayValues',
             'arrayUnique',
+            'arrayDiff',
         ];
     }
 
@@ -59,6 +60,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayFill' => SchemaDefinition::TYPE_ARRAY,
             'arrayValues' => SchemaDefinition::TYPE_ARRAY,
             'arrayUnique' => SchemaDefinition::TYPE_ARRAY,
+            'arrayDiff' => SchemaDefinition::TYPE_ARRAY,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($fieldResolver, $fieldName);
     }
@@ -86,6 +88,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayFill' => $translationAPI->__('Fill a target array with elements from a source array, where a certain property is the same', 'component-model'),
             'arrayValues' => $translationAPI->__('Return the values from a two-dimensional array', 'component-model'),
             'arrayUnique' => $translationAPI->__('Filters out all duplicated elements in the array', 'component-model'),
+            'arrayDiff' => $translationAPI->__('Return an array containing all the elements from the first array which are not present on any of the other arrays', 'component-model'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
     }
@@ -329,6 +332,16 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
+
+            case 'arrayDiff':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'arrays',
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array containing all the arrays. It must have at least 2 elements', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                ];
         }
 
         return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
@@ -358,6 +371,25 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                         $fieldArgs['position']
                     );
                 };
+                return null;
+            case 'arrayDiff':
+                if (count($fieldArgs['arrays']) < 2) {
+                    return sprintf(
+                        $translationAPI->__('The array must contain at least 2 elements: \'%s\'', 'component-model'),
+                        json_encode($fieldArgs['arrays'])
+                    );
+                };
+                // Check that all items are arrays
+                // This doesn't work before resolving the args! So doing arrayDiff([echo($langs),[en]]) fails
+                // $allArrays = array_reduce($fieldArgs['arrays'], function($carry, $item) {
+                //     return $carry && is_array($item);
+                // }, true);
+                // if (!$allArrays) {
+                //     return sprintf(
+                //         $translationAPI->__('The array must contain only arrays as elements: \'%s\'', 'component-model'),
+                //         json_encode($fieldArgs['arrays'])
+                //     );
+                // }
                 return null;
         }
 
@@ -442,6 +474,11 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 return array_values($fieldArgs['array']);
             case 'arrayUnique':
                 return array_unique($fieldArgs['array']);
+            case 'arrayDiff':
+                // Diff the first array against all the others
+                $arrays = $fieldArgs['arrays'];
+                $first = (array)array_shift($arrays);
+                return array_diff($first, ...$arrays);
         }
 
         return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
