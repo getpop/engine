@@ -32,6 +32,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayItem',
             'arraySearch',
             'arrayFill',
+            'arrayValues',
         ];
     }
 
@@ -55,6 +56,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayItem' => SchemaDefinition::TYPE_MIXED,
             'arraySearch' => SchemaDefinition::TYPE_MIXED,
             'arrayFill' => SchemaDefinition::TYPE_ARRAY,
+            'arrayValues' => SchemaDefinition::TYPE_ARRAY,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($fieldResolver, $fieldName);
     }
@@ -80,6 +82,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayItem' => $translationAPI->__('Access the element on the given position in the array', 'component-model'),
             'arraySearch' => $translationAPI->__('Search in what position is an element placed in the array. If found, it returns its position (integer), otherwise it returns `false` (boolean)', 'component-model'),
             'arrayFill' => $translationAPI->__('Fill a target array with elements from a source array, where a certain property is the same', 'component-model'),
+            'arrayValues' => $translationAPI->__('Return the values from a two-dimensional array', 'component-model'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
     }
@@ -303,6 +306,16 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Properties to copy from the source to the target array. If empty, all properties in the source array will be copied', 'component-model'),
                     ],
                 ];
+
+            case 'arrayValues':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'array',
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array from which to retrieve the values', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                ];
         }
 
         return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
@@ -401,7 +414,6 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 // If the value for the index property is the same, then copy the properties
                 $value = $fieldArgs['target'];
                 $index = $fieldArgs['index'];
-                var_dump($fieldArgs['target'], $fieldArgs['source'], $index, $fieldArgs['properties']);
                 foreach ($fieldArgs['target'] as $targetProps) {
                     foreach ($fieldArgs['source'] as $sourceProps) {
                         if (array_key_exists($index, $targetProps) && $targetProps[$index] == $sourceProps[$index]) {
@@ -413,6 +425,8 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                     }
                 }
                 return $value;
+            case 'arrayValues':
+                return array_values($fieldArgs['array']);
         }
 
         return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
