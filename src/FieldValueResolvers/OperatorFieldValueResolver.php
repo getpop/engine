@@ -31,6 +31,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayJoin',
             'arrayItem',
             'arraySearch',
+            'arrayFill',
         ];
     }
 
@@ -53,6 +54,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayJoin' => SchemaDefinition::TYPE_STRING,
             'arrayItem' => SchemaDefinition::TYPE_MIXED,
             'arraySearch' => SchemaDefinition::TYPE_MIXED,
+            'arrayFill' => SchemaDefinition::TYPE_ARRAY,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($fieldResolver, $fieldName);
     }
@@ -77,6 +79,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayJoin' => $translationAPI->__('Join all the strings in an array, using a provided separator', 'component-model'),
             'arrayItem' => $translationAPI->__('Access the element on the given position in the array', 'component-model'),
             'arraySearch' => $translationAPI->__('Search in what position is an element placed in the array. If found, it returns its position (integer), otherwise it returns `false` (boolean)', 'component-model'),
+            'arrayFill' => $translationAPI->__('Fill a target array with elements from a source array, where a certain property is the same', 'component-model'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
     }
@@ -273,6 +276,33 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
+
+            case 'arrayFill':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'target',
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array to be added elements coming from the source array', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'source',
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array whose elements will be added to the target array', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'index',
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Property whose value must be the same on both arrays', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'properties',
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_STRING),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Properties to copy from the source to the target array. If empty, all properties in the source array will be copied', 'component-model'),
+                    ],
+                ];
         }
 
         return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
@@ -366,6 +396,23 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 return $fieldArgs['array'][$fieldArgs['position']];
             case 'arraySearch':
                 return array_search($fieldArgs['element'], $fieldArgs['array']);
+            case 'arrayFill':
+                // For each element in the source, iterate all the elements in the target
+                // If the value for the index property is the same, then copy the properties
+                $value = $fieldArgs['target'];
+                $index = $fieldArgs['index'];
+                var_dump($fieldArgs['target'], $fieldArgs['source'], $index, $fieldArgs['properties']);
+                foreach ($fieldArgs['target'] as $targetProps) {
+                    foreach ($fieldArgs['source'] as $sourceProps) {
+                        if (array_key_exists($index, $targetProps) && $targetProps[$index] == $sourceProps[$index]) {
+                            $properties = $fieldArgs['properties'] ? $fieldArgs['properties'] : array_keys($sourceProps);
+                            foreach ($properties as $property) {
+                                $value[$property] = $sourceProps[$property];
+                            }
+                        }
+                    }
+                }
+                return $value;
         }
 
         return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
