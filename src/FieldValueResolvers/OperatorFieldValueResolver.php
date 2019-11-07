@@ -35,6 +35,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayValues',
             'arrayUnique',
             'arrayDiff',
+            'arrayAddItem',
         ];
     }
 
@@ -61,6 +62,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayValues' => SchemaDefinition::TYPE_ARRAY,
             'arrayUnique' => SchemaDefinition::TYPE_ARRAY,
             'arrayDiff' => SchemaDefinition::TYPE_ARRAY,
+            'arrayAddItem' => SchemaDefinition::TYPE_ARRAY,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($fieldResolver, $fieldName);
     }
@@ -89,6 +91,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayValues' => $translationAPI->__('Return the values from a two-dimensional array', 'component-model'),
             'arrayUnique' => $translationAPI->__('Filters out all duplicated elements in the array', 'component-model'),
             'arrayDiff' => $translationAPI->__('Return an array containing all the elements from the first array which are not present on any of the other arrays', 'component-model'),
+            'arrayAddItem' => $translationAPI->__('Adds an element to the array', 'component-model'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
     }
@@ -342,6 +345,27 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
+
+            case 'arrayAddItem':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'array',
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array to add an item on', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'value',
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to add to the array', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'key',
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Key (string or integer) under which to add the value to the array. If not provided, the value is added without key', 'component-model'),
+                    ],
+                ];
         }
 
         return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
@@ -479,6 +503,14 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 $arrays = $fieldArgs['arrays'];
                 $first = (array)array_shift($arrays);
                 return array_diff($first, ...$arrays);
+            case 'arrayAddItem':
+                $array = $fieldArgs['array'];
+                if ($fieldArgs['key']) {
+                    $array[$fieldArgs['key']] = $fieldArgs['value'];
+                } else {
+                    $array[] = $fieldArgs['value'];
+                }
+                return $array;
         }
 
         return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
