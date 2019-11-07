@@ -232,7 +232,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             case 'arrayRandom':
                 return [
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'elements',
+                        SchemaDefinition::ARGNAME_NAME => 'array',
                         SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array of elements from which to randomly select one', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
@@ -447,7 +447,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             case 'divide':
                 return (float)$fieldArgs['number']/(float)$fieldArgs['by'];
             case 'arrayRandom':
-                return $fieldArgs['elements'][array_rand($fieldArgs['elements'])];
+                return $fieldArgs['array'][array_rand($fieldArgs['array'])];
             case 'arrayJoin':
                 return implode($fieldArgs['separator'] ?? '', $fieldArgs['array']);
             case 'arrayItem':
