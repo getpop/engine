@@ -7,6 +7,7 @@ use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorOrHelperFieldValueResolver;
 
 class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResolver
@@ -36,6 +37,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayUnique',
             'arrayDiff',
             'arrayAddItem',
+            'arrayAsQueryStr',
         ];
     }
 
@@ -63,6 +65,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayUnique' => SchemaDefinition::TYPE_ARRAY,
             'arrayDiff' => SchemaDefinition::TYPE_ARRAY,
             'arrayAddItem' => SchemaDefinition::TYPE_ARRAY,
+            'arrayAsQueryStr' => SchemaDefinition::TYPE_STRING,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($fieldResolver, $fieldName);
     }
@@ -92,6 +95,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayUnique' => $translationAPI->__('Filters out all duplicated elements in the array', 'component-model'),
             'arrayDiff' => $translationAPI->__('Return an array containing all the elements from the first array which are not present on any of the other arrays', 'component-model'),
             'arrayAddItem' => $translationAPI->__('Adds an element to the array', 'component-model'),
+            'arrayAsQueryStr' => $translationAPI->__('Represent an array as a string', 'component-model'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
     }
@@ -366,6 +370,16 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Key (string or integer) under which to add the value to the array. If not provided, the value is added without key', 'component-model'),
                     ],
                 ];
+
+            case 'arrayAsQueryStr':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'array',
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array to represented as a string', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                ];
         }
 
         return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
@@ -511,6 +525,9 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                     $array[] = $fieldArgs['value'];
                 }
                 return $array;
+            case 'arrayAsQueryStr':
+                $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
+                return $fieldQueryInterpreter->getArrayAsStringForQuery($fieldArgs['array']);
         }
 
         return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
