@@ -26,6 +26,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'var',
             'context',
             'sprintf',
+            'concat',
             'echo',
             'divide',
             'arrayRandom',
@@ -54,6 +55,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'var' => SchemaDefinition::TYPE_MIXED,
             'context' => SchemaDefinition::TYPE_OBJECT,
             'sprintf' => SchemaDefinition::TYPE_STRING,
+            'concat' => SchemaDefinition::TYPE_STRING,
             'echo' => SchemaDefinition::TYPE_MIXED,
             'divide' => SchemaDefinition::TYPE_FLOAT,
             'arrayRandom' => SchemaDefinition::TYPE_MIXED,
@@ -84,6 +86,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'var' => $translationAPI->__('Retrieve the value of a certain property from the `$vars` context object', 'component-model'),
             'context' => $translationAPI->__('Retrieve the `$vars` context object', 'component-model'),
             'sprintf' => $translationAPI->__('Replace placeholders inside a string with provided values', 'component-model'),
+            'concat' => $translationAPI->__('Concatenate two or more strings', 'component-model'),
             'echo' => $translationAPI->__('Repeat back the input, whatever it is', 'component-model'),
             'divide' => $translationAPI->__('Divide a number by another number', 'component-model'),
             'arrayRandom' => $translationAPI->__('Randomly select one element from the provided ones', 'component-model'),
@@ -206,6 +209,16 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                         SchemaDefinition::ARGNAME_NAME => 'values',
                         SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_STRING),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The values to replace the placeholders with inside the string', 'component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                ];
+
+            case 'concat':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'values',
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_STRING),
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Strings to concatenate', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
@@ -480,6 +493,14 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 return $this->getSafeVars();
             case 'sprintf':
                 return sprintf($fieldArgs['string'], ...$fieldArgs['values']);
+            case 'concat':
+                return array_reduce(
+                    $fieldArgs['values'],
+                    function($carry, $item) {
+                        return $carry.$item;
+                    },
+                    ''
+                );
             case 'echo':
                 return $fieldArgs['value'];
             case 'divide':
