@@ -1,8 +1,9 @@
 <?php
 namespace PoP\Engine\Config;
 
-use PoP\ComponentModel\Container\ContainerBuilderUtils;
 use PoP\Root\Component\PHPServiceConfigurationTrait;
+use PoP\ComponentModel\Container\ContainerBuilderUtils;
+use PoP\Engine\DirectiveResolvers\SetSelfAsVarDirectiveResolver;
 
 class ServiceConfiguration
 {
@@ -28,6 +29,13 @@ class ServiceConfiguration
             'data_structure_manager',
             'PoP\\Engine\\DataStructureFormatters',
             'add'
+        );
+
+        // Inject the mandatory root directives
+        ContainerBuilderUtils::injectValuesIntoService(
+            'dataloading_engine',
+            'addMandatoryRootDirectiveClass',
+            SetSelfAsVarDirectiveResolver::class
         );
     }
 }
