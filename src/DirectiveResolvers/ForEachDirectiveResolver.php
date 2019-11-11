@@ -82,7 +82,7 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
                     }
                     // Evaluate it
                     if ($resolvedValue) {
-                        $arrayItems[$key] = $resolvedValue;
+                        $arrayItems[$key] = $value;
                     }
                 }
                 return $arrayItems;
