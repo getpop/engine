@@ -39,3 +39,7 @@ services:
     PoP\Engine\DataStructureFormatters\:
         resource: '../src/DataStructureFormatters/*'
         public: true
+
+    PoP\Engine\DirectiveResolvers\:
+        resource: '../src/DirectiveResolvers/*'
+        public: true

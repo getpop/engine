@@ -1,5 +1,6 @@
 <?php
 namespace PoP\Engine\DirectiveResolvers;
+
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\PipelinePositions;
