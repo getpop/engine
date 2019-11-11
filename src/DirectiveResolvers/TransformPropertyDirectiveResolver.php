@@ -12,6 +12,7 @@ use PoP\ComponentModel\FieldResolvers\PipelinePositions;
 use PoP\ComponentModel\FieldResolvers\AbstractFieldResolver;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
+use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 
 class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
 {
@@ -136,7 +137,7 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
                 // Generate the fieldArgs from combining the query with the values in the context, through $variables
                 $expressions = $this->getExpressionsForResultItem($id, $variables, $messages);
                 list(
-                    $schemaValidField,
+                    $validFunction,
                     $schemaFieldName,
                     $schemaFieldArgs,
                     $schemaDBErrors,
@@ -187,7 +188,7 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
                 $options = [
                     AbstractFieldResolver::OPTION_VALIDATE_SCHEMA_ON_RESULT_ITEM => true,
                 ];
-                $functionValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $function, $variables, $expressions, $options);
+                $functionValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $validFunction, $variables, $expressions, $options);
 
                 // If there was an error (eg: a missing mandatory argument), then the function will be of type Error
                 if (GeneralUtils::isError($functionValue)) {
