@@ -61,7 +61,6 @@ class SetSelfAsVarDirectiveResolver extends AbstractGlobalDirectiveResolver
                 'previousDBItems' => &$previousDBItems[$dbKey][(string)$id],
             ];
             $this->addVariableValueForResultItem($id, Variables::NAME_SELF, $value, $messages);
-            // var_dump($messages);
         }
     }
 }
