@@ -343,8 +343,8 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
             $value = $isValueInDBItems ?
                 $dbItems[(string)$id][$fieldOutputKey] :
                 $previousDBItems[$dbKey][(string)$id][$fieldOutputKey];
-            $this->addVariableValueForResultItem($id, 'value', $value, $messages);
-            $expressions = $this->getVariablesForResultItem($id, $variables, $messages);
+            $this->addExpressionForResultItem($id, 'value', $value, $messages);
+            $expressions = $this->getExpressionsForResultItem($id, $variables, $messages);
 
             $options = [
                 AbstractFieldResolver::OPTION_VALIDATE_SCHEMA_ON_RESULT_ITEM => true,
@@ -354,15 +354,15 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 if ($fieldQueryInterpreter->isFieldArgumentValueAField($value)) {
                     $value = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
                 }
-                $this->addVariableValueForResultItem($id, $key, $value, $messages);
+                $this->addExpressionForResultItem($id, $key, $value, $messages);
             }
             foreach ($appendVariables as $key => $value) {
-                $existingValue = $this->getVariableValueForResultItem($id, $key, $messages) ?? [];
+                $existingValue = $this->getExpressionForResultItem($id, $key, $messages) ?? [];
                 // Evaluate the $value, since it may be a function
                 if ($fieldQueryInterpreter->isFieldArgumentValueAField($value)) {
                     $existingValue[] = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
                 }
-                $this->addVariableValueForResultItem($id, $key, $existingValue, $messages);
+                $this->addExpressionForResultItem($id, $key, $existingValue, $messages);
             }
         }
     }

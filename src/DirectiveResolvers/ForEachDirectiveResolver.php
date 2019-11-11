@@ -56,8 +56,8 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
                 ];
                 $arrayItems = [];
                 foreach ($array as $key => $value) {
-                    $this->addVariableValueForResultItem($id, 'value', $value, $messages);
-                    $expressions = $this->getVariablesForResultItem($id, $variables, $messages);
+                    $this->addExpressionForResultItem($id, 'value', $value, $messages);
+                    $expressions = $this->getExpressionsForResultItem($id, $variables, $messages);
                     if ($ifValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $if, $variables, $expressions, $options)) {
                         $arrayItems[$key] = $value;
                     }

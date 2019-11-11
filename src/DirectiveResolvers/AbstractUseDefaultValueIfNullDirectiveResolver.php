@@ -40,7 +40,7 @@ abstract class AbstractUseDefaultValueIfNullDirectiveResolver extends AbstractSc
         $fieldOutputKeyCache = [];
         foreach ($idsDataFields as $id => $dataFields) {
             // Use either the default value passed under param "value" or, if this is NULL, use a predefined value
-            $expressions = $this->getVariablesForResultItem($id, $variables, $messages);
+            $expressions = $this->getExpressionsForResultItem($id, $variables, $messages);
             $resultItem = $resultIDItems[$id];
             list(
                 $resultItemValidDirective,

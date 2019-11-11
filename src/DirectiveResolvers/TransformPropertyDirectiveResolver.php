@@ -134,7 +134,7 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
                 $this->addVariableValuesForResultItemInContext($dataloader, $fieldResolver, $id, $field, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
 
                 // Generate the fieldArgs from combining the query with the values in the context, through $variables
-                $expressions = $this->getVariablesForResultItem($id, $variables, $messages);
+                $expressions = $this->getExpressionsForResultItem($id, $variables, $messages);
                 list(
                     $schemaValidField,
                     $schemaFieldName,
@@ -241,6 +241,6 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
         $value = $isValueInDBItems ?
             $dbItems[(string)$id][$fieldOutputKey] :
             $previousDBItems[$dbKey][(string)$id][$fieldOutputKey];
-        $this->addVariableValueForResultItem($id, 'value', $value, $messages);
+        $this->addExpressionForResultItem($id, 'value', $value, $messages);
     }
 }

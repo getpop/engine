@@ -10,7 +10,7 @@ trait FilterIDsSatisfyingConditionDirectiveResolverTrait
         $idsSatisfyingCondition = [];
         foreach (array_keys($idsDataFields) as $id) {
             // Validate directive args for the resultItem
-            $expressions = $this->getVariablesForResultItem($id, $variables, $messages);
+            $expressions = $this->getExpressionsForResultItem($id, $variables, $messages);
             $resultItem = $resultIDItems[$id];
             list(
                 $resultItemValidDirective,
