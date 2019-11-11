@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\Dataloading;
 
-class Variables
+class Expressions
 {
     public const NAME_KEY = 'key';
     public const NAME_VALUE = 'value';

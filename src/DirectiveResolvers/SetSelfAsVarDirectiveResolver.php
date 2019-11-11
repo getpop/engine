@@ -3,7 +3,7 @@ namespace PoP\Engine\DirectiveResolvers;
 
 use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\DataloaderInterface;
-use PoP\Engine\Dataloading\Variables;
+use PoP\Engine\Dataloading\Expressions;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\PipelinePositions;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
@@ -30,7 +30,7 @@ class SetSelfAsVarDirectiveResolver extends AbstractGlobalDirectiveResolver
         $translationAPI = TranslationAPIFacade::getInstance();
         return sprintf(
             $translationAPI->__('Place the current object\'s data under expression `%s`, making it accessible to fields and directives through helper function `getPropertyFromSelf`', 'component-model'),
-            QueryHelpers::getExpressionQuery(Variables::NAME_SELF)
+            QueryHelpers::getExpressionQuery(Expressions::NAME_SELF)
         );
     }
 
@@ -60,7 +60,7 @@ class SetSelfAsVarDirectiveResolver extends AbstractGlobalDirectiveResolver
                 'dbItems' => &$dbItems[(string)$id],
                 'previousDBItems' => &$previousDBItems[$dbKey][(string)$id],
             ];
-            $this->addExpressionForResultItem($id, Variables::NAME_SELF, $value, $messages);
+            $this->addExpressionForResultItem($id, Expressions::NAME_SELF, $value, $messages);
         }
     }
 }

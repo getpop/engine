@@ -3,7 +3,7 @@ namespace PoP\Engine\FieldValueResolvers;
 
 use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\Engine\Dataloading\Variables;
+use PoP\Engine\Dataloading\Expressions;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorOrHelperFieldValueResolver;
@@ -31,7 +31,7 @@ class CoreOperatorOrHelperFieldValueResolver extends AbstractOperatorOrHelperFie
         $descriptions = [
             'getSelfProp' => sprintf(
                 $translationAPI->__('Get a property from the current object, as stored under expression `%s`', 'pop-component-model'),
-                QueryHelpers::getExpressionQuery(Variables::NAME_SELF)
+                QueryHelpers::getExpressionQuery(Expressions::NAME_SELF)
             ),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);

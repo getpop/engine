@@ -5,7 +5,7 @@ use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\GeneralUtils;
 use PoP\ComponentModel\DataloaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\Engine\Dataloading\Variables;
+use PoP\Engine\Dataloading\Expressions;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\PipelinePositions;
@@ -55,7 +55,7 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
                 SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
                 SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
                     $translationAPI->__('Parameters to inject to the function. The value of the affected field can be provided under special expression `%s`', 'component-model'),
-                    QueryHelpers::getExpressionQuery(Variables::NAME_VALUE)
+                    QueryHelpers::getExpressionQuery(Expressions::NAME_VALUE)
                 ),
             ],
             [
