@@ -46,18 +46,18 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
         $translationAPI = TranslationAPIFacade::getInstance();
         return [
             [
-                SchemaDefinition::ARGNAME_NAME => 'addVariables',
+                SchemaDefinition::ARGNAME_NAME => 'addExpressions',
                 SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
                 SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
-                    $translationAPI->__('Variables to inject to the nested directive. The value of the affected field can be provided under special variable `%s`', 'component-model'),
+                    $translationAPI->__('Expressions to inject to the nested directive. The value of the affected field can be provided under special expression `%s`', 'component-model'),
                     QueryHelpers::getVariableQuery(Variables::NAME_VALUE)
                 ),
             ],
             [
-                SchemaDefinition::ARGNAME_NAME => 'appendVariables',
+                SchemaDefinition::ARGNAME_NAME => 'appendExpressions',
                 SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
                 SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
-                    $translationAPI->__('Append a value to an array variable, to inject to the nested directive. The value of the affected field can be provided under special variable `%s`', 'component-model'),
+                    $translationAPI->__('Append a value to an expression which must be an array, to inject to the nested directive. If the array is had not been set, it is initialized as an empty array. The value of the affected field can be provided under special expression `%s`', 'component-model'),
                     QueryHelpers::getVariableQuery(Variables::NAME_VALUE)
                 ),
             ],
@@ -332,9 +332,9 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
     protected function addVariableValuesForResultItemInContext(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, $id, string $field, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         // Enable the query to provide variables to pass down
-        $addVariables = $this->directiveArgsForSchema['addVariables'] ?? [];
-        $appendVariables = $this->directiveArgsForSchema['appendVariables'] ?? [];
-        if ($addVariables || $appendVariables) {
+        $addExpressions = $this->directiveArgsForSchema['addExpressions'] ?? [];
+        $appendExpressions = $this->directiveArgsForSchema['appendExpressions'] ?? [];
+        if ($addExpressions || $appendExpressions) {
             // The variables may need `$value`, so add it
             $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
             $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);
@@ -349,14 +349,14 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
             $options = [
                 AbstractFieldResolver::OPTION_VALIDATE_SCHEMA_ON_RESULT_ITEM => true,
             ];
-            foreach ($addVariables as $key => $value) {
+            foreach ($addExpressions as $key => $value) {
                 // Evaluate the $value, since it may be a function
                 if ($fieldQueryInterpreter->isFieldArgumentValueAField($value)) {
                     $value = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
                 }
                 $this->addExpressionForResultItem($id, $key, $value, $messages);
             }
-            foreach ($appendVariables as $key => $value) {
+            foreach ($appendExpressions as $key => $value) {
                 $existingValue = $this->getExpressionForResultItem($id, $key, $messages) ?? [];
                 // Evaluate the $value, since it may be a function
                 if ($fieldQueryInterpreter->isFieldArgumentValueAField($value)) {
