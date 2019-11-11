@@ -50,7 +50,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
                 SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
                     $translationAPI->__('Expressions to inject to the nested directive. The value of the affected field can be provided under special expression `%s`', 'component-model'),
-                    QueryHelpers::getVariableQuery(Variables::NAME_VALUE)
+                    QueryHelpers::getExpressionQuery(Variables::NAME_VALUE)
                 ),
             ],
             [
@@ -58,7 +58,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
                 SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
                     $translationAPI->__('Append a value to an expression which must be an array, to inject to the nested directive. If the array is had not been set, it is initialized as an empty array. The value of the affected field can be provided under special expression `%s`', 'component-model'),
-                    QueryHelpers::getVariableQuery(Variables::NAME_VALUE)
+                    QueryHelpers::getExpressionQuery(Variables::NAME_VALUE)
                 ),
             ],
         ];

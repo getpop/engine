@@ -54,8 +54,8 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
                 SchemaDefinition::ARGNAME_NAME => 'addParams',
                 SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
                 SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
-                    $translationAPI->__('Parameters to inject to the function. The value of the affected field can be provided under special variable `%s`', 'component-model'),
-                    QueryHelpers::getVariableQuery(Variables::NAME_VALUE)
+                    $translationAPI->__('Parameters to inject to the function. The value of the affected field can be provided under special expression `%s`', 'component-model'),
+                    QueryHelpers::getExpressionQuery(Variables::NAME_VALUE)
                 ),
             ],
             [

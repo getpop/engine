@@ -29,8 +29,8 @@ class SetSelfAsVarDirectiveResolver extends AbstractGlobalDirectiveResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return sprintf(
-            $translationAPI->__('Place the current object\'s data under variable `%s`, making it accessible to fields and directives through helper function `getPropertyFromSelf`', 'component-model'),
-            QueryHelpers::getVariableQuery(Variables::NAME_SELF)
+            $translationAPI->__('Place the current object\'s data under expression `%s`, making it accessible to fields and directives through helper function `getPropertyFromSelf`', 'component-model'),
+            QueryHelpers::getExpressionQuery(Variables::NAME_SELF)
         );
     }
 

@@ -30,8 +30,8 @@ class CoreOperatorOrHelperFieldValueResolver extends AbstractOperatorOrHelperFie
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
             'getSelfProp' => sprintf(
-                $translationAPI->__('Get a property from the current object, as stored under variable `%s`', 'pop-component-model'),
-                QueryHelpers::getVariableQuery(Variables::NAME_SELF)
+                $translationAPI->__('Get a property from the current object, as stored under expression `%s`', 'pop-component-model'),
+                QueryHelpers::getExpressionQuery(Variables::NAME_SELF)
             ),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
