@@ -3,7 +3,7 @@ namespace PoP\Engine\Config;
 
 use PoP\Root\Component\PHPServiceConfigurationTrait;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
-use PoP\Engine\DirectiveResolvers\SetSelfAsVarDirectiveResolver;
+use PoP\Engine\DirectiveResolvers\SetSelfAsExpressionDirectiveResolver;
 
 class ServiceConfiguration
 {
@@ -35,7 +35,7 @@ class ServiceConfiguration
         ContainerBuilderUtils::injectValuesIntoService(
             'dataloading_engine',
             'addMandatoryRootDirectiveClass',
-            SetSelfAsVarDirectiveResolver::class
+            SetSelfAsExpressionDirectiveResolver::class
         );
     }
 }

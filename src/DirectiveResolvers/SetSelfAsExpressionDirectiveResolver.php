@@ -9,9 +9,9 @@ use PoP\ComponentModel\FieldResolvers\PipelinePositions;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 
-class SetSelfAsVarDirectiveResolver extends AbstractGlobalDirectiveResolver
+class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolver
 {
-    const DIRECTIVE_NAME = 'setSelfAsVar';
+    const DIRECTIVE_NAME = 'setSelfAsExpression';
     public static function getDirectiveName(): string {
         return self::DIRECTIVE_NAME;
     }
@@ -33,6 +33,14 @@ class SetSelfAsVarDirectiveResolver extends AbstractGlobalDirectiveResolver
             $translationAPI->__('Place the current object\'s data under expression `%s`, making it accessible to fields and directives through helper function `getPropertyFromSelf`', 'component-model'),
             QueryHelpers::getExpressionQuery(Expressions::NAME_SELF)
         );
+    }
+
+    public function getSchemaDirectiveExpressions(FieldResolverInterface $fieldResolver): array
+    {
+        $translationAPI = TranslationAPIFacade::getInstance();
+        return [
+            Expressions::NAME_SELF => $translationAPI->__('Object containing all properties for the current object, fetched either in the current or a previous iteration. These properties can be accessed through helper function `getSelfProp`', 'component-model'),
+        ];
     }
 
     /**

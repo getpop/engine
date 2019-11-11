@@ -2,6 +2,7 @@
 namespace PoP\Engine\DirectiveResolvers;
 
 use PoP\ComponentModel\GeneralUtils;
+use PoP\Engine\Dataloading\Expressions;
 use PoP\ComponentModel\DataloaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
@@ -38,6 +39,15 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
         );
     }
 
+    public function getSchemaDirectiveExpressions(FieldResolverInterface $fieldResolver): array
+    {
+        $translationAPI = TranslationAPIFacade::getInstance();
+        return [
+            Expressions::NAME_KEY => $translationAPI->__('Key of the array element from the current iteration', 'component-model'),
+            Expressions::NAME_VALUE => $translationAPI->__('Value of the array element from the current iteration', 'component-model'),
+        ];
+    }
+
     /**
      * Iterate on all items from the array
      *
@@ -57,7 +67,8 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
                 ];
                 $arrayItems = [];
                 foreach ($array as $key => $value) {
-                    $this->addExpressionForResultItem($id, 'value', $value, $messages);
+                    $this->addExpressionForResultItem($id, Expressions::NAME_KEY, $key, $messages);
+                    $this->addExpressionForResultItem($id, Expressions::NAME_VALUE, $value, $messages);
                     $expressions = $this->getExpressionsForResultItem($id, $variables, $messages);
                     $resolvedValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $if, $variables, $expressions, $options);
                     // Merge the dbWarnings, if any

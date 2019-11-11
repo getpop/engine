@@ -66,6 +66,18 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
         ];
     }
 
+    public function getSchemaDirectiveExpressions(FieldResolverInterface $fieldResolver): array
+    {
+        $translationAPI = TranslationAPIFacade::getInstance();
+        return [
+            Expressions::NAME_VALUE => sprintf(
+                $translationAPI->__('Value of the array element from the current iteration, available for params \'%s\' and \'%s\'', 'component-model'),
+                'addExpressions',
+                'appendExpressions'
+            ),
+        ];
+    }
+
     /**
      * Execute directive <transformProperty> to each of the elements on the affected field, which must be an array
      * This is achieved by executing the following logic:
@@ -195,7 +207,6 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                     }
                     $arrayItemIdsProperties[(string)$id]['conditional'] = [];
 
-                    // Place the reserved variables, such as `$value`, into the `$variables` context
                     $this->addExpressionsForResultItem($dataloader, $fieldResolver, $id, $field, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
                 }
             }
@@ -337,7 +348,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
         $addExpressions = $this->directiveArgsForSchema['addExpressions'] ?? [];
         $appendExpressions = $this->directiveArgsForSchema['appendExpressions'] ?? [];
         if ($addExpressions || $appendExpressions) {
-            // The variables may need `$value`, so add it
+            // The expressions may need `$value`, so add it
             $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
             $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);
             $isValueInDBItems = array_key_exists($fieldOutputKey, $dbItems[(string)$id] ?? []);
@@ -345,7 +356,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
             $value = $isValueInDBItems ?
                 $dbItems[(string)$id][$fieldOutputKey] :
                 $previousDBItems[$dbKey][(string)$id][$fieldOutputKey];
-            $this->addExpressionForResultItem($id, 'value', $value, $messages);
+            $this->addExpressionForResultItem($id, Expressions::NAME_VALUE, $value, $messages);
             $expressions = $this->getExpressionsForResultItem($id, $variables, $messages);
 
             $options = [

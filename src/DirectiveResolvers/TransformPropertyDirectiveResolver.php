@@ -68,6 +68,14 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
         ];
     }
 
+    public function getSchemaDirectiveExpressions(FieldResolverInterface $fieldResolver): array
+    {
+        $translationAPI = TranslationAPIFacade::getInstance();
+        return [
+            Expressions::NAME_VALUE => $translationAPI->__('Element being transformed', 'component-model'),
+        ];
+    }
+
     public function resolveDirective(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         $this->regenerateAndExecuteFunction($dataloader, $fieldResolver, $resultIDItems, $idsDataFields, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
@@ -132,7 +140,7 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
                     continue;
                 }
 
-                // Place all the reserved variables into the `$variables` context: $value
+                // Place all the reserved expressions into the `$expressions` context: $value
                 $this->addExpressionsForResultItem($dataloader, $fieldResolver, $id, $field, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
 
                 // Generate the fieldArgs from combining the query with the values in the context, through $variables
@@ -251,6 +259,6 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
         $value = $isValueInDBItems ?
             $dbItems[(string)$id][$fieldOutputKey] :
             $previousDBItems[$dbKey][(string)$id][$fieldOutputKey];
-        $this->addExpressionForResultItem($id, 'value', $value, $messages);
+        $this->addExpressionForResultItem($id, Expressions::NAME_VALUE, $value, $messages);
     }
 }

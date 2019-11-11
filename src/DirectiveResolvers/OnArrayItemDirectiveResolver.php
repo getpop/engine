@@ -25,7 +25,6 @@ class OnArrayItemDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayI
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return array_merge(
-            parent::getSchemaDirectiveArgs($fieldResolver),
             [
                 [
                     SchemaDefinition::ARGNAME_NAME => 'path',
@@ -33,7 +32,8 @@ class OnArrayItemDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayI
                     SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Path to the element in the array', 'component-model'),
                     SchemaDefinition::ARGNAME_MANDATORY => true,
                 ],
-            ]
+            ],
+            parent::getSchemaDirectiveArgs($fieldResolver)
         );
     }
 
