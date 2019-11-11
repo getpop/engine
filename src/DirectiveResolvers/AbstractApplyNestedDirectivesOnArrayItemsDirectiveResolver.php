@@ -171,7 +171,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
 
                 // The value is an array. Unpack all the elements into their own property
                 $array = $value;
-                if ($arrayItems = $this->getArrayItems($array, $id, $field, $dataloader, $fieldResolver, $resultIDItems, $dbItems, $dbErrors, $dbWarnings, $previousDBItems, $variables, $messages)) {
+                if ($arrayItems = $this->getArrayItems($array, $id, $field, $dataloader, $fieldResolver, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings)) {
                     $execute = true;
                     foreach ($arrayItems as $key => &$value) {
                         // Add into the $idsDataFields object for the array items
@@ -245,7 +245,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                     // If there are errors, it will return null. Don't add the errors again
                     $arrayItemDBErrors = $arrayItemDBWarnings = [];
                     $array = $value;
-                    $arrayItems = $this->getArrayItems($array, $id, $field, $dataloader, $fieldResolver, $resultIDItems, $dbItems, $arrayItemDBErrors, $arrayItemDBWarnings, $previousDBItems, $variables, $messages);
+                    $arrayItems = $this->getArrayItems($array, $id, $field, $dataloader, $fieldResolver, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $arrayItemDBErrors, $arrayItemDBWarnings);
                     // The value is an array. Unpack all the elements into their own property
                     foreach ($arrayItems as $key => &$value) {
                         $arrayItemAlias = $this->createPropertyForArrayItem($fieldAlias ? $fieldAlias : QuerySyntax::SYMBOL_FIELDALIAS_PREFIX.$fieldName, $key);
@@ -287,7 +287,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
      * @param array $value
      * @return void
      */
-    abstract protected function getArrayItems(array &$array, $id, string $field, DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$dbItems, array &$dbErrors, array &$dbWarnings, array &$previousDBItems, array &$variables, array &$messages): ?array;
+    abstract protected function getArrayItems(array &$array, $id, string $field, DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array;
 
     /**
      * Create a property for storing the array item in the current object

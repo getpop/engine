@@ -43,7 +43,7 @@ class OnArrayItemDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayI
      * @param array $array
      * @return void
      */
-    protected function getArrayItems(array &$array, $id, string $field, DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$dbItems, array &$dbErrors, array &$dbWarnings, array &$previousDBItems, array &$variables, array &$messages): ?array
+    protected function getArrayItems(array &$array, $id, string $field, DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array
     {
         $path = $this->directiveArgsForSchema['path'];
 
