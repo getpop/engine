@@ -51,7 +51,6 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
             // We must add each item in the array as expression `%value%`, over which the if function can be evaluated
             $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
             if ($fieldQueryInterpreter->isFieldArgumentValueAField($if)) {
-                $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);
                 $options = [
                     AbstractFieldResolver::OPTION_VALIDATE_SCHEMA_ON_RESULT_ITEM => true,
                 ];
