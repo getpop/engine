@@ -66,6 +66,7 @@ class CoreOperatorOrHelperFieldValueResolver extends AbstractOperatorOrHelperFie
         switch ($fieldName) {
             case 'getSelfProp':
                 // Retrieve the property from either 'dbItems' (i.e. it was loaded during the current iteration) or 'previousDBItems' (loaded during a previous iteration)
+                // var_dump('fieldArgs', $fieldArgs);
                 $self = $fieldArgs['self'];
                 $property = $fieldArgs['property'];
                 return array_key_exists($property, $self['dbItems']) ? $self['dbItems'][$property] : $self['previousDBItems'][$property];
