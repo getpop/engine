@@ -207,14 +207,14 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 $resultIDItems,
                 $arrayItemIdsProperties, // Here we pass the properties to the array elements!
                 $dbItems,
+                $previousDBItems,
+                $variables,
+                $messages,
                 $dbErrors,
                 $dbWarnings,
                 $schemaErrors,
                 $schemaWarnings,
-                $schemaDeprecations,
-                $previousDBItems,
-                $variables,
-                $messages
+                $schemaDeprecations
             );
 
             // 3. Compose the array from the results for each array item
