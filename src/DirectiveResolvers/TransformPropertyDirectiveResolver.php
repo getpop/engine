@@ -134,14 +134,14 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
                 $this->addVariableValuesForResultItemInContext($dataloader, $fieldResolver, $id, $field, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
 
                 // Generate the fieldArgs from combining the query with the values in the context, through $variables
-                $resultItemVariables = $this->getVariablesForResultItem($id, $variables, $messages);
+                $expressions = $this->getVariablesForResultItem($id, $variables, $messages);
                 list(
                     $schemaValidField,
                     $schemaFieldName,
                     $schemaFieldArgs,
                     $schemaDBErrors,
                     $schemaDBWarnings
-                ) = $fieldQueryInterpreter->extractFieldArgumentsForSchema($fieldResolver, $function, $resultItemVariables);
+                ) = $fieldQueryInterpreter->extractFieldArgumentsForSchema($fieldResolver, $function, $variables);
 
                 // Place the errors not under schema but under DB, since they may change on a resultItem by resultItem basis
                 if ($schemaDBWarnings) {
@@ -187,7 +187,7 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
                 $options = [
                     AbstractFieldResolver::OPTION_VALIDATE_SCHEMA_ON_RESULT_ITEM => true,
                 ];
-                $functionValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $function, $resultItemVariables, $options);
+                $functionValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $function, $variables, $expressions, $options);
 
                 // If there was an error (eg: a missing mandatory argument), then the function will be of type Error
                 if (GeneralUtils::isError($functionValue)) {

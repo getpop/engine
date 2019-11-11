@@ -344,7 +344,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 $dbItems[(string)$id][$fieldOutputKey] :
                 $previousDBItems[$dbKey][(string)$id][$fieldOutputKey];
             $this->addVariableValueForResultItem($id, 'value', $value, $messages);
-            $resultItemVariables = $this->getVariablesForResultItem($id, $variables, $messages);
+            $expressions = $this->getVariablesForResultItem($id, $variables, $messages);
 
             $options = [
                 AbstractFieldResolver::OPTION_VALIDATE_SCHEMA_ON_RESULT_ITEM => true,
@@ -352,7 +352,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
             foreach ($addVariables as $key => $value) {
                 // Evaluate the $value, since it may be a function
                 if ($fieldQueryInterpreter->isFieldArgumentValueAField($value)) {
-                    $value = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $resultItemVariables, $options);
+                    $value = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
                 }
                 $this->addVariableValueForResultItem($id, $key, $value, $messages);
             }
@@ -360,7 +360,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 $existingValue = $this->getVariableValueForResultItem($id, $key, $messages) ?? [];
                 // Evaluate the $value, since it may be a function
                 if ($fieldQueryInterpreter->isFieldArgumentValueAField($value)) {
-                    $existingValue[] = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $resultItemVariables, $options);
+                    $existingValue[] = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
                 }
                 $this->addVariableValueForResultItem($id, $key, $existingValue, $messages);
             }
