@@ -47,7 +47,7 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
         if ($if = $this->directiveArgsForSchema['if']) {
             // If it is a field, execute the function against all the values in the array
             // Those that satisfy the condition stay, the others are filtered out
-            // We must add each item in the array as variable `value`, over which the if function can be evaluated
+            // We must add each item in the array as expression `%value%`, over which the if function can be evaluated
             $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
             if ($fieldQueryInterpreter->isFieldArgumentValueAField($if)) {
                 $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);
