@@ -16,7 +16,7 @@ trait FilterIDsSatisfyingConditionDirectiveResolverTrait
                 $resultItemValidDirective,
                 $resultItemDirectiveName,
                 $resultItemDirectiveArgs
-            ) = $this->dissectAndValidateDirectiveForResultItem($fieldResolver, $resultItem, $dbErrors, $dbWarnings, $resultItemVariables);
+            ) = $this->dissectAndValidateDirectiveForResultItem($fieldResolver, $resultItem, $resultItemVariables, $dbErrors, $dbWarnings);
             // Check that the directive is valid. If it is not, $dbErrors will have the error already added
             if (is_null($resultItemValidDirective)) {
                 continue;
