@@ -4,7 +4,7 @@ use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 
 trait FilterIDsSatisfyingConditionDirectiveResolverTrait
 {
-    protected function getIdsSatisfyingCondition(FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbErrors, array &$dbWarnings, array &$variables, array &$messages)
+    protected function getIdsSatisfyingCondition(FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings)
     {
         // Check the condition field. If it is satisfied, then skip those fields
         $idsSatisfyingCondition = [];

@@ -18,7 +18,7 @@ class SkipDirectiveResolver extends AbstractGlobalDirectiveResolver
     public function resolveDirective(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         // Check the condition field. If it is satisfied, then skip those fields
-        $skipDataFieldsForIds = $this->getIdsSatisfyingCondition($fieldResolver, $resultIDItems, $idsDataFields, $dbErrors, $dbWarnings, $variables, $messages);
+        $skipDataFieldsForIds = $this->getIdsSatisfyingCondition($fieldResolver, $resultIDItems, $idsDataFields, $variables, $messages, $dbErrors, $dbWarnings);
         foreach ($skipDataFieldsForIds as $id) {
             $idsDataFields[$id]['direct'] = [];
             $idsDataFields[$id]['conditional'] = [];
