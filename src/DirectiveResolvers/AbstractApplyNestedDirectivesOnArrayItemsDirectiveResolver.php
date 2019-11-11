@@ -352,15 +352,41 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
             foreach ($addExpressions as $key => $value) {
                 // Evaluate the $value, since it may be a function
                 if ($fieldQueryInterpreter->isFieldArgumentValueAField($value)) {
-                    $value = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
+                    $resolvedValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
+                    if (GeneralUtils::isError($resolvedValue)) {
+                        // Show the error message, and return nothing
+                        $error = $resolvedValue;
+                        $dbErrors[(string)$id][$this->directive][] = sprintf(
+                            $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
+                            $value,
+                            $id,
+                            $error->getErrorMessage(),
+                            $key
+                        );
+                        continue;
+                    }
+                    $value = $resolvedValue;
                 }
-                $this->addExpressionForResultItem($id, $key, $value, $messages);
+                $this->addExpressionForResultItem($id, $key, $resolvedValue, $messages);
             }
             foreach ($appendExpressions as $key => $value) {
                 $existingValue = $this->getExpressionForResultItem($id, $key, $messages) ?? [];
                 // Evaluate the $value, since it may be a function
                 if ($fieldQueryInterpreter->isFieldArgumentValueAField($value)) {
-                    $existingValue[] = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
+                    $resolvedValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
+                    if (GeneralUtils::isError($resolvedValue)) {
+                        // Show the error message, and return nothing
+                        $error = $resolvedValue;
+                        $dbErrors[(string)$id][$this->directive][] = sprintf(
+                            $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
+                            $value,
+                            $id,
+                            $error->getErrorMessage(),
+                            $key
+                        );
+                        continue;
+                    }
+                    $existingValue[] = $resolvedValue;
                 }
                 $this->addExpressionForResultItem($id, $key, $existingValue, $messages);
             }

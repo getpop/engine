@@ -1,6 +1,7 @@
 <?php
 namespace PoP\Engine\DirectiveResolvers;
 
+use PoP\ComponentModel\GeneralUtils;
 use PoP\ComponentModel\DataloaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
@@ -58,8 +59,22 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
                 foreach ($array as $key => $value) {
                     $this->addExpressionForResultItem($id, 'value', $value, $messages);
                     $expressions = $this->getExpressionsForResultItem($id, $variables, $messages);
-                    if ($ifValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $if, $variables, $expressions, $options)) {
-                        $arrayItems[$key] = $value;
+                    $resolvedValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $if, $variables, $expressions, $options);
+                    if (GeneralUtils::isError($resolvedValue)) {
+                        // Show the error message, and return nothing
+                        $error = $resolvedValue;
+                        $dbErrors[(string)$id][$this->directive][] = sprintf(
+                            $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
+                            $value,
+                            $id,
+                            $error->getErrorMessage(),
+                            $key
+                        );
+                        continue;
+                    }
+                    // Evaluate it
+                    if ($resolvedValue) {
+                        $arrayItems[$key] = $resolvedValue;
                     }
                 }
                 return $arrayItems;
