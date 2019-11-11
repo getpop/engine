@@ -5,6 +5,7 @@ use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\GeneralUtils;
 use PoP\ComponentModel\DataloaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
+use PoP\Engine\Dataloading\Variables;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\PipelinePositions;
@@ -14,7 +15,6 @@ use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 
 class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
 {
-    public const VARIABLE_VALUE = 'value';
     public const DIRECTIVE_NAME = 'transformProperty';
     public static function getDirectiveName(): string {
         return self::DIRECTIVE_NAME;
@@ -55,7 +55,7 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
                 SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
                 SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
                     $translationAPI->__('Parameters to inject to the function. The value of the affected field can be provided under special variable `%s`', 'component-model'),
-                    QueryHelpers::getVariableQuery(self::VARIABLE_VALUE)
+                    QueryHelpers::getVariableQuery(Variables::NAME_VALUE)
                 ),
             ],
             [

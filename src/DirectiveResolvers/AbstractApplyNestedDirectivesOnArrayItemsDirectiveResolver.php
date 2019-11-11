@@ -6,6 +6,7 @@ use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\GeneralUtils;
 use PoP\ComponentModel\DataloaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
+use PoP\Engine\Dataloading\Variables;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\PipelinePositions;
@@ -15,8 +16,6 @@ use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 
 abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extends AbstractGlobalDirectiveResolver
 {
-    public const VARIABLE_VALUE = 'value';
-
     /**
      * Use a value that can't be part of a fieldName, that's legible, and that conveys the meaning of sublevel. The value "." is adequate
      */
@@ -51,7 +50,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
                 SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
                     $translationAPI->__('Variables to inject to the nested directive. The value of the affected field can be provided under special variable `%s`', 'component-model'),
-                    QueryHelpers::getVariableQuery(self::VARIABLE_VALUE)
+                    QueryHelpers::getVariableQuery(Variables::NAME_VALUE)
                 ),
             ],
             [
@@ -59,7 +58,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
                 SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
                     $translationAPI->__('Append a value to an array variable, to inject to the nested directive. The value of the affected field can be provided under special variable `%s`', 'component-model'),
-                    QueryHelpers::getVariableQuery(self::VARIABLE_VALUE)
+                    QueryHelpers::getVariableQuery(Variables::NAME_VALUE)
                 ),
             ],
         ];

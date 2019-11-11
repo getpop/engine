@@ -3,9 +3,9 @@ namespace PoP\Engine\FieldValueResolvers;
 
 use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
+use PoP\Engine\Dataloading\Variables;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
-use PoP\Engine\DirectiveResolvers\SetSelfAsVarDirectiveResolver;
 use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorOrHelperFieldValueResolver;
 
 class CoreOperatorOrHelperFieldValueResolver extends AbstractOperatorOrHelperFieldValueResolver
@@ -31,7 +31,7 @@ class CoreOperatorOrHelperFieldValueResolver extends AbstractOperatorOrHelperFie
         $descriptions = [
             'getSelfProp' => sprintf(
                 $translationAPI->__('Get a property from the current object, as stored under variable `%s`', 'pop-component-model'),
-                QueryHelpers::getVariableQuery(SetSelfAsVarDirectiveResolver::VARIABLE_SELF)
+                QueryHelpers::getVariableQuery(Variables::NAME_SELF)
             ),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);

@@ -3,13 +3,13 @@ namespace PoP\Engine\DirectiveResolvers;
 
 use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\DataloaderInterface;
+use PoP\Engine\Dataloading\Variables;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\PipelinePositions;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 
 class SetSelfAsVarDirectiveResolver extends AbstractGlobalDirectiveResolver
 {
-    const VARIABLE_SELF = 'self';
     const DIRECTIVE_NAME = 'setSelfAsVar';
     public static function getDirectiveName(): string {
         return self::DIRECTIVE_NAME;
@@ -30,7 +30,7 @@ class SetSelfAsVarDirectiveResolver extends AbstractGlobalDirectiveResolver
         $translationAPI = TranslationAPIFacade::getInstance();
         return sprintf(
             $translationAPI->__('Place the current object\'s data under variable `%s`, making it accessible to fields and directives through helper function `getPropertyFromSelf`', 'component-model'),
-            QueryHelpers::getVariableQuery(self::VARIABLE_SELF)
+            QueryHelpers::getVariableQuery(Variables::NAME_SELF)
         );
     }
 
@@ -60,7 +60,7 @@ class SetSelfAsVarDirectiveResolver extends AbstractGlobalDirectiveResolver
                 'dbItems' => &$dbItems[(string)$id],
                 'previousDBItems' => &$previousDBItems[$dbKey][(string)$id],
             ];
-            $this->addVariableValueForResultItem($id, self::VARIABLE_SELF, $value, $messages);
+            $this->addVariableValueForResultItem($id, Variables::NAME_SELF, $value, $messages);
         }
     }
 }
