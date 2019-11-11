@@ -7,6 +7,7 @@ use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\AbstractFieldResolver;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\Facades\Schema\FeedbackMessageStoreFacade;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 
 class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver
@@ -59,6 +60,14 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
                     $this->addExpressionForResultItem($id, 'value', $value, $messages);
                     $expressions = $this->getExpressionsForResultItem($id, $variables, $messages);
                     $resolvedValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $if, $variables, $expressions, $options);
+                    // Merge the dbWarnings, if any
+                    $feedbackMessageStore = FeedbackMessageStoreFacade::getInstance();
+                    if ($resultItemDBWarnings = $feedbackMessageStore->retrieveAndClearResultItemDBWarnings($id)) {
+                        $dbWarnings[$id] = array_merge(
+                            $dbWarnings[$id] ?? [],
+                            $resultItemDBWarnings
+                        );
+                    }
                     if (GeneralUtils::isError($resolvedValue)) {
                         // Show the error message, and return nothing
                         $error = $resolvedValue;

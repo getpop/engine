@@ -4,14 +4,15 @@ namespace PoP\Engine\DirectiveResolvers;
 use PoP\FieldQuery\QuerySyntax;
 use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\GeneralUtils;
+use PoP\Engine\Dataloading\Expressions;
 use PoP\ComponentModel\DataloaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\Engine\Dataloading\Expressions;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\PipelinePositions;
 use PoP\ComponentModel\FieldResolvers\AbstractFieldResolver;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\Facades\Schema\FeedbackMessageStoreFacade;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 
@@ -354,6 +355,14 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 // Evaluate the $value, since it may be a function
                 if ($fieldQueryInterpreter->isFieldArgumentValueAField($value)) {
                     $resolvedValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
+                    // Merge the dbWarnings, if any
+                    $feedbackMessageStore = FeedbackMessageStoreFacade::getInstance();
+                    if ($resultItemDBWarnings = $feedbackMessageStore->retrieveAndClearResultItemDBWarnings($id)) {
+                        $dbWarnings[$id] = array_merge(
+                            $dbWarnings[$id] ?? [],
+                            $resultItemDBWarnings
+                        );
+                    }
                     if (GeneralUtils::isError($resolvedValue)) {
                         // Show the error message, and return nothing
                         $error = $resolvedValue;
@@ -375,6 +384,14 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 // Evaluate the $value, since it may be a function
                 if ($fieldQueryInterpreter->isFieldArgumentValueAField($value)) {
                     $resolvedValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
+                    // Merge the dbWarnings, if any
+                    $feedbackMessageStore = FeedbackMessageStoreFacade::getInstance();
+                    if ($resultItemDBWarnings = $feedbackMessageStore->retrieveAndClearResultItemDBWarnings($id)) {
+                        $dbWarnings[$id] = array_merge(
+                            $dbWarnings[$id] ?? [],
+                            $resultItemDBWarnings
+                        );
+                    }
                     if (GeneralUtils::isError($resolvedValue)) {
                         // Show the error message, and return nothing
                         $error = $resolvedValue;

@@ -3,14 +3,15 @@ namespace PoP\Engine\DirectiveResolvers;
 
 use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\GeneralUtils;
+use PoP\Engine\Dataloading\Expressions;
 use PoP\ComponentModel\DataloaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
-use PoP\Engine\Dataloading\Expressions;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\PipelinePositions;
 use PoP\ComponentModel\FieldResolvers\AbstractFieldResolver;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\Facades\Schema\FeedbackMessageStoreFacade;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 
@@ -189,6 +190,14 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
                     AbstractFieldResolver::OPTION_VALIDATE_SCHEMA_ON_RESULT_ITEM => true,
                 ];
                 $functionValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $validFunction, $variables, $expressions, $options);
+                // Merge the dbWarnings, if any
+                $feedbackMessageStore = FeedbackMessageStoreFacade::getInstance();
+                if ($resultItemDBWarnings = $feedbackMessageStore->retrieveAndClearResultItemDBWarnings($id)) {
+                    $dbWarnings[$id] = array_merge(
+                        $dbWarnings[$id] ?? [],
+                        $resultItemDBWarnings
+                    );
+                }
 
                 // If there was an error (eg: a missing mandatory argument), then the function will be of type Error
                 if (GeneralUtils::isError($functionValue)) {
