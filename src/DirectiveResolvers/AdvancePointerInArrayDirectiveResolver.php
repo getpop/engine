@@ -8,9 +8,9 @@ use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 
-class OnArrayItemDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver
+class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver
 {
-    public const DIRECTIVE_NAME = 'onArrayItem';
+    public const DIRECTIVE_NAME = 'advancePointerInArray';
     public static function getDirectiveName(): string {
         return self::DIRECTIVE_NAME;
     }
