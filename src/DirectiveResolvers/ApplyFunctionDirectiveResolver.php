@@ -15,9 +15,9 @@ use PoP\ComponentModel\Facades\Schema\FeedbackMessageStoreFacade;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 
-class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
+class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
 {
-    public const DIRECTIVE_NAME = 'transformProperty';
+    public const DIRECTIVE_NAME = 'applyFunction';
     public static function getDirectiveName(): string {
         return self::DIRECTIVE_NAME;
     }
@@ -53,10 +53,10 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
                 SchemaDefinition::ARGNAME_MANDATORY => true,
             ],
             [
-                SchemaDefinition::ARGNAME_NAME => 'addParams',
+                SchemaDefinition::ARGNAME_NAME => 'addArguments',
                 SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
                 SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
-                    $translationAPI->__('Parameters to inject to the function. The value of the affected field can be provided under special expression `%s`', 'component-model'),
+                    $translationAPI->__('Arguments to inject to the function. The value of the affected field can be provided under special expression `%s`', 'component-model'),
                     QueryHelpers::getExpressionQuery(Expressions::NAME_VALUE)
                 ),
             ],
@@ -98,18 +98,18 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
     protected function regenerateAndExecuteFunction(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         $function = $this->directiveArgsForSchema['function'];
-        $addParams = $this->directiveArgsForSchema['addParams'] ?? [];
+        $addArguments = $this->directiveArgsForSchema['addArguments'] ?? [];
         $target = $this->directiveArgsForSchema['target'];
 
         $translationAPI = TranslationAPIFacade::getInstance();
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
 
-        // Maybe re-generate the function: Inject the provided `$addParams` to the fieldArgs already declared in the query
-        if ($addParams) {
+        // Maybe re-generate the function: Inject the provided `$addArguments` to the fieldArgs already declared in the query
+        if ($addArguments) {
             $functionName = $fieldQueryInterpreter->getFieldName($function);
             $functionArgElems = array_merge(
                 $fieldQueryInterpreter->extractFieldArguments($fieldResolver, $function),
-                $addParams
+                $addArguments
             );
             $function = $fieldQueryInterpreter->getField($functionName, $functionArgElems);
         }
@@ -177,14 +177,14 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
                     }
                     if ($fieldOutputKey != $field) {
                         $dbErrors[(string)$id][$this->directive][] = sprintf(
-                            $translationAPI->__('Transformation of field \'%s\' (with output key \'%s\') on object with ID \'%s\' can\'t be executed due to previous errors', 'component-model'),
+                            $translationAPI->__('Applying function on field \'%s\' (with output key \'%s\') on object with ID \'%s\' can\'t be executed due to previous errors', 'component-model'),
                             $field,
                             $fieldOutputKey,
                             $id
                         );
                     } else {
                         $dbErrors[(string)$id][$this->directive][] = sprintf(
-                            $translationAPI->__('Transformation of field \'%s\' on object with ID \'%s\' can\'t be executed due to previous errors', 'component-model'),
+                            $translationAPI->__('Applying function on field \'%s\' on object with ID \'%s\' can\'t be executed due to previous errors', 'component-model'),
                             $fieldOutputKey,
                             $id
                         );
@@ -211,7 +211,7 @@ class TransformPropertyDirectiveResolver extends AbstractGlobalDirectiveResolver
                 if (GeneralUtils::isError($functionValue)) {
                     $error = $functionValue;
                     $dbErrors[(string)$id][$this->directive][] = sprintf(
-                        $translationAPI->__('Transformation of property \'%s\' on object with ID \'%s\' failed due to error: %s', 'component-model'),
+                        $translationAPI->__('Applying function on \'%s\' on object with ID \'%s\' failed due to error: %s', 'component-model'),
                         $fieldOutputKey,
                         $id,
                         $error->getErrorMessage()
