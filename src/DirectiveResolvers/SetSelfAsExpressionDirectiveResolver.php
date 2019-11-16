@@ -17,7 +17,7 @@ class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolv
     }
 
     /**
-     * This directive must go after ResolveValueAndMerge
+     * This directive must go at the very beginning
      *
      * @return void
      */
