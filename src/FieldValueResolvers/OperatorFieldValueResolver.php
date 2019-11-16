@@ -29,6 +29,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'concat',
             'echo',
             'divide',
+            'time',
             'arrayRandom',
             'arrayJoin',
             'arrayItem',
@@ -58,6 +59,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'concat' => SchemaDefinition::TYPE_STRING,
             'echo' => SchemaDefinition::TYPE_MIXED,
             'divide' => SchemaDefinition::TYPE_FLOAT,
+            'time' => SchemaDefinition::TYPE_INT,
             'arrayRandom' => SchemaDefinition::TYPE_MIXED,
             'arrayJoin' => SchemaDefinition::TYPE_STRING,
             'arrayItem' => SchemaDefinition::TYPE_MIXED,
@@ -89,6 +91,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'concat' => $translationAPI->__('Concatenate two or more strings', 'component-model'),
             'echo' => $translationAPI->__('Repeat back the input, whatever it is', 'component-model'),
             'divide' => $translationAPI->__('Divide a number by another number', 'component-model'),
+            'time' => $translationAPI->__('Return the time now (https://php.net/manual/en/function.time.php)', 'component-model'),
             'arrayRandom' => $translationAPI->__('Randomly select one element from the provided ones', 'component-model'),
             'arrayJoin' => $translationAPI->__('Join all the strings in an array, using a provided separator', 'component-model'),
             'arrayItem' => $translationAPI->__('Access the element on the given position in the array', 'component-model'),
@@ -505,6 +508,8 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 return $fieldArgs['value'];
             case 'divide':
                 return (float)$fieldArgs['number']/(float)$fieldArgs['by'];
+            case 'time':
+                return time();
             case 'arrayRandom':
                 return $fieldArgs['array'][array_rand($fieldArgs['array'])];
             case 'arrayJoin':
