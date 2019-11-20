@@ -104,8 +104,9 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
     {
         $translationAPI = TranslationAPIFacade::getInstance();
 
-        // If there is no nested directive pipeline, then nothing to do
-        if (!$this->nestedDirectivePipeline) {
+        // If there is no nested directives to execute, then nothing to do
+        $directiveResolverInstances = $this->nestedDirectivePipelineData['instances'];
+        if (!$directiveResolverInstances) {
             $schemaWarnings[$this->directive][] = $translationAPI->__('No nested directives were provided, so nothing to do for this directive', 'component-model');
             return;
         }
@@ -213,12 +214,22 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
         }
 
         if ($execute) {
+            // Build the directive pipeline
+            $nestedDirectivePipeline = $fieldResolver->getDirectivePipeline($directiveResolverInstances);
+
+            // Fill the idsDataFields for each directive in the pipeline
+            // $pipelineResultIDItems = [];
+            $pipelineArrayItemIdsProperties = [];
+            for ($i=0; $i<count($directiveResolverInstances); $i++) {
+                // $pipelineResultIDItems[] = $resultIDItems;
+                $pipelineArrayItemIdsProperties[] = $arrayItemIdsProperties;
+            }
             // 2. Execute the nested directive pipeline on all arrayItems
-            $this->nestedDirectivePipeline->resolveDirectivePipeline(
+            $nestedDirectivePipeline->resolveDirectivePipeline(
                 $dataloader,
                 $fieldResolver,
-                $resultIDItems,
-                $arrayItemIdsProperties, // Here we pass the properties to the array elements!
+                $pipelineArrayItemIdsProperties, // Here we pass the properties to the array elements!
+                $resultIDItems,//$pipelineResultIDItems,
                 $dbItems,
                 $previousDBItems,
                 $variables,
