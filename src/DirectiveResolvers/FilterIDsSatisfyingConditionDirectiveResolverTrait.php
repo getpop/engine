@@ -28,4 +28,28 @@ trait FilterIDsSatisfyingConditionDirectiveResolverTrait
         }
         return $idsSatisfyingCondition;
     }
+
+    protected function removeDataFieldsForIDs(array &$idsDataFields, array &$idsToRemove, array &$succeedingPipelineIDsDataFields)
+    {
+        // Calculate the $idsDataFields that must be removed from all the upcoming stages of the pipeline
+        $idsDataFieldsToRemove = array_filter(
+            $idsDataFields,
+            function($id) use($idsToRemove) {
+                return in_array($id, $idsToRemove);
+            },
+            ARRAY_FILTER_USE_KEY
+        );
+        // For each combination of ID and field, remove them from the upcoming pipeline stages
+        foreach ($idsDataFieldsToRemove as $id => $dataFields) {
+            foreach ($succeedingPipelineIDsDataFields as &$pipelineStageIDsDataFields) {
+                $pipelineStageIDsDataFields[(string)$id]['direct'] = array_diff(
+                    $pipelineStageIDsDataFields[(string)$id]['direct'],
+                    $dataFields['direct']
+                );
+                foreach ($dataFields['direct'] as $removeField) {
+                    unset($pipelineStageIDsDataFields[(string)$id]['conditional'][$removeField]);
+                }
+            }
+        }
+    }
 }

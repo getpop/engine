@@ -16,14 +16,11 @@ class SkipDirectiveResolver extends AbstractGlobalDirectiveResolver
         return self::DIRECTIVE_NAME;
     }
 
-    public function resolveDirective(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    public function resolveDirective(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         // Check the condition field. If it is satisfied, then skip those fields
-        $skipDataFieldsForIds = $this->getIdsSatisfyingCondition($fieldResolver, $resultIDItems, $idsDataFields, $variables, $messages, $dbErrors, $dbWarnings);
-        foreach ($skipDataFieldsForIds as $id) {
-            $idsDataFields[$id]['direct'] = [];
-            $idsDataFields[$id]['conditional'] = [];
-        }
+        $idsToRemove = $this->getIdsSatisfyingCondition($fieldResolver, $resultIDItems, $idsDataFields, $variables, $messages, $dbErrors, $dbWarnings);
+        $this->removeDataFieldsForIDs($idsDataFields, $idsToRemove, $succeedingPipelineIDsDataFields);
     }
     public function getSchemaDirectiveDescription(FieldResolverInterface $fieldResolver): ?string
     {
