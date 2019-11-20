@@ -216,12 +216,9 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
         if ($execute) {
             // Build the directive pipeline
             $nestedDirectivePipeline = $fieldResolver->getDirectivePipeline($directiveResolverInstances);
-
             // Fill the idsDataFields for each directive in the pipeline
-            // $pipelineResultIDItems = [];
             $pipelineArrayItemIdsProperties = [];
             for ($i=0; $i<count($directiveResolverInstances); $i++) {
-                // $pipelineResultIDItems[] = $resultIDItems;
                 $pipelineArrayItemIdsProperties[] = $arrayItemIdsProperties;
             }
             // 2. Execute the nested directive pipeline on all arrayItems
@@ -229,7 +226,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 $dataloader,
                 $fieldResolver,
                 $pipelineArrayItemIdsProperties, // Here we pass the properties to the array elements!
-                $resultIDItems,//$pipelineResultIDItems,
+                $resultIDItems,
                 $dbItems,
                 $previousDBItems,
                 $variables,
