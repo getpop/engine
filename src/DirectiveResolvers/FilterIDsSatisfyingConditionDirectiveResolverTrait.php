@@ -1,9 +1,13 @@
 <?php
 namespace PoP\Engine\DirectiveResolvers;
+
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\DirectiveResolvers\RemoveIDsDataFieldsDirectiveResolverTrait;
 
 trait FilterIDsSatisfyingConditionDirectiveResolverTrait
 {
+    use RemoveIDsDataFieldsDirectiveResolverTrait;
+
     protected function getIdsSatisfyingCondition(FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings)
     {
         // Check the condition field. If it is satisfied, then skip those fields
@@ -39,17 +43,6 @@ trait FilterIDsSatisfyingConditionDirectiveResolverTrait
             },
             ARRAY_FILTER_USE_KEY
         );
-        // For each combination of ID and field, remove them from the upcoming pipeline stages
-        foreach ($idsDataFieldsToRemove as $id => $dataFields) {
-            foreach ($succeedingPipelineIDsDataFields as &$pipelineStageIDsDataFields) {
-                $pipelineStageIDsDataFields[(string)$id]['direct'] = array_diff(
-                    $pipelineStageIDsDataFields[(string)$id]['direct'],
-                    $dataFields['direct']
-                );
-                foreach ($dataFields['direct'] as $removeField) {
-                    unset($pipelineStageIDsDataFields[(string)$id]['conditional'][$removeField]);
-                }
-            }
-        }
+        $this->removeIDsDataFields($idsDataFieldsToRemove, $succeedingPipelineIDsDataFields);
     }
 }
