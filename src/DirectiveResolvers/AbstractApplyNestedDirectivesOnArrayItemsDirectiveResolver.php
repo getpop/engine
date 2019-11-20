@@ -105,8 +105,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
         $translationAPI = TranslationAPIFacade::getInstance();
 
         // If there is no nested directives to execute, then nothing to do
-        $directiveResolverInstances = $this->nestedDirectivePipelineData['instances'];
-        if (!$directiveResolverInstances) {
+        if (!$this->nestedDirectivePipelineData) {
             $schemaWarnings[$this->directive][] = $translationAPI->__('No nested directives were provided, so nothing to do for this directive', 'component-model');
             return;
         }
@@ -215,6 +214,12 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
 
         if ($execute) {
             // Build the directive pipeline
+            $directiveResolverInstances = array_map(
+                function($pipelineStageData) {
+                    return $pipelineStageData['instance'];
+                },
+                $this->nestedDirectivePipelineData
+            );
             $nestedDirectivePipeline = $fieldResolver->getDirectivePipeline($directiveResolverInstances);
             // Fill the idsDataFields for each directive in the pipeline
             $pipelineArrayItemIdsProperties = [];
