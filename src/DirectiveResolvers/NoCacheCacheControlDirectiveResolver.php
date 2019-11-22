@@ -1,8 +1,6 @@
 <?php
 namespace PoP\Engine\DirectiveResolvers;
 
-use PoP\ComponentModel\DataloaderInterface;
-use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\CacheControl\DirectiveResolvers\AbstractCacheControlDirectiveResolver;
 
 class NoCacheCacheControlDirectiveResolver extends AbstractCacheControlDirectiveResolver
@@ -10,6 +8,8 @@ class NoCacheCacheControlDirectiveResolver extends AbstractCacheControlDirective
     public static function getFieldNamesToApplyTo(): array
     {
         return [
+            'var',
+            'context',
             'time',
         ];
     }

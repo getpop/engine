@@ -5,8 +5,9 @@ use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Component\YAMLServicesTrait;
 use PoP\Engine\Config\ServiceConfiguration;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
-use PoP\Engine\DirectiveResolvers\NoCacheCacheControlDirectiveResolver;
 use PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups;
+use PoP\Engine\DirectiveResolvers\NoCacheCacheControlDirectiveResolver;
+use PoP\Engine\DirectiveResolvers\OneYearCacheControlDirectiveResolver;
 
 /**
  * Initialize component
@@ -41,6 +42,22 @@ class Component extends AbstractComponent
 
         // Initialize directive resolvers, and then re-attach using the right priorities
         ContainerBuilderUtils::attachDirectiveResolversFromNamespace(__NAMESPACE__.'\\DirectiveResolvers');
-        NoCacheCacheControlDirectiveResolver::attach(AttachableExtensionGroups::FIELDDIRECTIVERESOLVERS, 20);
+        self::setDirectiveResolverPriorities();
+    }
+
+    /**
+     * Sets the right priority for the directive resolvers
+     *
+     * @return void
+     */
+    protected static function setDirectiveResolverPriorities()
+    {
+        $classes = [
+            NoCacheCacheControlDirectiveResolver::class,
+            OneYearCacheControlDirectiveResolver::class,
+        ];
+        foreach ($classes as $class) {
+            $class::attach(AttachableExtensionGroups::FIELDDIRECTIVERESOLVERS, 20);
+        }
     }
 }
