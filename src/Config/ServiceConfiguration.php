@@ -35,12 +35,12 @@ class ServiceConfiguration
         // Inject the mandatory root directives
         ContainerBuilderUtils::injectValuesIntoService(
             'dataloading_engine',
-            'addMandatoryRootDirectiveClass',
+            'addMandatoryDirectiveClass',
             SetSelfAsExpressionDirectiveResolver::class
         );
         ContainerBuilderUtils::injectValuesIntoService(
             'dataloading_engine',
-            'addMandatoryRootDirectives',
+            'addMandatoryDirectives',
             [
                 AbstractCacheControlDirectiveResolver::getDirectiveName(),
             ]
