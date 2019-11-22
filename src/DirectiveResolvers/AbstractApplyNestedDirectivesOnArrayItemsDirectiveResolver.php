@@ -23,16 +23,6 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
      */
     public const PROPERTY_SEPARATOR = '.';
 
-    /**
-     * By default, this directive goes after ResolveValueAndMerge
-     *
-     * @return void
-     */
-    public function getPipelinePosition(): string
-    {
-        return PipelinePositions::BACK;
-    }
-
     public function getSchemaDirectiveArgs(FieldResolverInterface $fieldResolver): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();

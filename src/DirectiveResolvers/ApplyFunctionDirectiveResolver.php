@@ -22,16 +22,6 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
         return self::DIRECTIVE_NAME;
     }
 
-    /**
-     * By default, this directive goes after ResolveValueAndMerge
-     *
-     * @return void
-     */
-    public function getPipelinePosition(): string
-    {
-        return PipelinePositions::BACK;
-    }
-
     public function getSchemaDirectiveArgs(FieldResolverInterface $fieldResolver): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();

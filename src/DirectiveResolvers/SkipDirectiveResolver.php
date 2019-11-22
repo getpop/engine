@@ -1,9 +1,10 @@
 <?php
 namespace PoP\Engine\DirectiveResolvers;
 
-use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\DataloaderInterface;
+use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
+use PoP\ComponentModel\FieldResolvers\PipelinePositions;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 
@@ -14,6 +15,16 @@ class SkipDirectiveResolver extends AbstractGlobalDirectiveResolver
     const DIRECTIVE_NAME = 'skip';
     public static function getDirectiveName(): string {
         return self::DIRECTIVE_NAME;
+    }
+
+    /**
+     * Place it after the validation and before it's added to $dbItems in the resolveAndMerge directive
+     *
+     * @return void
+     */
+    public function getPipelinePosition(): string
+    {
+        return PipelinePositions::MIDDLE;
     }
 
     public function resolveDirective(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)

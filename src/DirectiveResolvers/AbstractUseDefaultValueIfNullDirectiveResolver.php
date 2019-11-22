@@ -13,16 +13,6 @@ abstract class AbstractUseDefaultValueIfNullDirectiveResolver extends AbstractSc
 {
     protected abstract function getDefaultValue();
 
-    /**
-     * This directive must be executed after ResolveAndMerge, and modify values directly on the returned DB items
-     *
-     * @return void
-     */
-    public function getPipelinePosition(): string
-    {
-        return PipelinePositions::BACK;
-    }
-
     public function resolveDirective(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         // Replace all the NULL results with the default value
