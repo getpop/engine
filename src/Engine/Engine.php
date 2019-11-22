@@ -1,10 +1,11 @@
 <?php
 namespace PoP\Engine\Engine;
 
+use PoP\CacheControl\Environment;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\LooseContracts\Facades\LooseContractManagerFacade;
-use PoP\ComponentModel\Utils;
+use PoP\CacheControl\Facades\CacheControlManagerFacade;
 use PoP\ComponentModel\Settings\SettingsManagerFactory;
+use PoP\LooseContracts\Facades\LooseContractManagerFacade;
 use PoP\ComponentModel\Facades\DataStructure\DataStructureManagerFacade;
 
 class Engine extends \PoP\ComponentModel\Engine\Engine implements EngineInterface
@@ -59,6 +60,15 @@ class Engine extends \PoP\ComponentModel\Engine\Engine implements EngineInterfac
         // 2. Get the data, and ask the formatter to output it
         $dataStructureManager = DataStructureManagerFacade::getInstance();
         $formatter = $dataStructureManager->getDataStructureFormatter();
-        $formatter->outputResponse($this->getOutputData());
+
+        // If CacheControl is enabled, add it to the headers
+        $headers = [];
+        if (!Environment::disableCacheControl()) {
+            $cacheControlManager = CacheControlManagerFacade::getInstance();
+            if ($cacheControlHeader = $cacheControlManager->getCacheControlHeader()) {
+                $headers[] = $cacheControlHeader;
+            }
+        }
+        $formatter->outputResponse($this->getOutputData(), $headers);
     }
 }
