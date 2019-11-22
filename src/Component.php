@@ -5,6 +5,8 @@ use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Component\YAMLServicesTrait;
 use PoP\Engine\Config\ServiceConfiguration;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
+use PoP\Engine\DirectiveResolvers\NoCacheCacheControlDirectiveResolver;
+use PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups;
 
 /**
  * Initialize component
@@ -36,6 +38,9 @@ class Component extends AbstractComponent
         // Initialize classes
         ContainerBuilderUtils::instantiateNamespaceServices(__NAMESPACE__.'\\Hooks');
         ContainerBuilderUtils::attachFieldValueResolversFromNamespace(__NAMESPACE__.'\\FieldValueResolvers');
+
+        // Initialize directive resolvers, and then re-attach using the right priorities
         ContainerBuilderUtils::attachDirectiveResolversFromNamespace(__NAMESPACE__.'\\DirectiveResolvers');
+        NoCacheCacheControlDirectiveResolver::attach(AttachableExtensionGroups::FIELDDIRECTIVERESOLVERS, 20);
     }
 }
