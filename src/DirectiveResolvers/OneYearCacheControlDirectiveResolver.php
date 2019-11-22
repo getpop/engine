@@ -34,7 +34,7 @@ class OneYearCacheControlDirectiveResolver extends AbstractCacheControlDirective
         ];
     }
 
-    public function getMaxAge(): int
+    public function getMaxAge(): ?int
     {
         // One year = 315360000 seconds
         return 315360000;

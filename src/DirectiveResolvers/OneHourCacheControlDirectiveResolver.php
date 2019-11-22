@@ -8,7 +8,7 @@ use PoP\CacheControl\DirectiveResolvers\AbstractCacheControlDirectiveResolver;
  */
 class OneHourCacheControlDirectiveResolver extends AbstractCacheControlDirectiveResolver
 {
-    public function getMaxAge(): int
+    public function getMaxAge(): ?int
     {
         // Cache for 1 hour (3600 seconds)
         return 3600;

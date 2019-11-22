@@ -14,7 +14,7 @@ class NoCacheCacheControlDirectiveResolver extends AbstractCacheControlDirective
         ];
     }
 
-    public function getMaxAge(): int
+    public function getMaxAge(): ?int
     {
         // Do not cache
         return 0;

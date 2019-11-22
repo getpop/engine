@@ -419,6 +419,9 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 };
                 return null;
             case 'arrayItem':
+                // if(is_string($fieldArgs['array'])) {
+                //     debug_print_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);die;
+                // }
                 if (count($fieldArgs['array']) < $fieldArgs['position']) {
                     return sprintf(
                         $translationAPI->__('The array contains no element at position \'%s\'', 'component-model'),
