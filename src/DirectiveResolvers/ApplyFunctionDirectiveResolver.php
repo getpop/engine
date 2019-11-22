@@ -32,16 +32,6 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
         return PipelinePositions::BACK;
     }
 
-    /**
-     * Most likely, this directive can be executed several times
-     *
-     * @return boolean
-     */
-    public function canExecuteMultipleTimesInField(): bool
-    {
-        return true;
-    }
-
     public function getSchemaDirectiveArgs(FieldResolverInterface $fieldResolver): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();

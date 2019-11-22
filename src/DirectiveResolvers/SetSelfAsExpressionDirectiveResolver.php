@@ -26,6 +26,16 @@ class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolv
         return PipelinePositions::FRONT;
     }
 
+    /**
+     * Setting it more than once makes no sense
+     *
+     * @return boolean
+     */
+    public function canExecuteMultipleTimesInField(): bool
+    {
+        return false;
+    }
+
     public function getSchemaDirectiveDescription(FieldResolverInterface $fieldResolver): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
