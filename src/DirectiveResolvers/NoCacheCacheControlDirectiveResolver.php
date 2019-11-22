@@ -14,7 +14,7 @@ class NoCacheCacheControlDirectiveResolver extends AbstractCacheControlDirective
         ];
     }
 
-    public function getMaxAge(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations): int
+    public function getMaxAge(): int
     {
         // Do not cache
         return 0;
