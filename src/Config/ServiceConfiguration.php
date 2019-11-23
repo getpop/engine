@@ -4,7 +4,7 @@ namespace PoP\Engine\Config;
 use PoP\Root\Component\PHPServiceConfigurationTrait;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
 use PoP\Engine\DirectiveResolvers\SetSelfAsExpressionDirectiveResolver;
-use PoP\CacheControl\DirectiveResolvers\AbstractCacheControlDirectiveResolver;
+use PoP\CacheControl\DirectiveResolvers\CacheControlDirectiveResolver;
 use PoP\CacheControl\Component as CacheControlComponent;
 
 class ServiceConfiguration
@@ -44,7 +44,7 @@ class ServiceConfiguration
                 'dataloading_engine',
                 'addMandatoryDirectives',
                 [
-                    AbstractCacheControlDirectiveResolver::getDirectiveName(),
+                    CacheControlDirectiveResolver::getDirectiveName(),
                 ]
             );
         }

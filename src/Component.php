@@ -39,25 +39,6 @@ class Component extends AbstractComponent
         // Initialize classes
         ContainerBuilderUtils::instantiateNamespaceServices(__NAMESPACE__.'\\Hooks');
         ContainerBuilderUtils::attachFieldValueResolversFromNamespace(__NAMESPACE__.'\\FieldValueResolvers');
-
-        // Initialize directive resolvers, and then re-attach using the right priorities
         ContainerBuilderUtils::attachDirectiveResolversFromNamespace(__NAMESPACE__.'\\DirectiveResolvers');
-        self::setDirectiveResolverPriorities();
-    }
-
-    /**
-     * Sets the right priority for the directive resolvers
-     *
-     * @return void
-     */
-    protected static function setDirectiveResolverPriorities()
-    {
-        $classes = [
-            NoCacheCacheControlDirectiveResolver::class,
-            OneYearCacheControlDirectiveResolver::class,
-        ];
-        foreach ($classes as $class) {
-            $class::attach(AttachableExtensionGroups::FIELDDIRECTIVERESOLVERS, 20);
-        }
     }
 }
