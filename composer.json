@@ -28,6 +28,7 @@
         "getpop/modulerouting": "dev-master",
         "getpop/component-model": "dev-master",
         "getpop/cache-control": "dev-master",
+        "getpop/guzzle-helpers": "^1.0@dev",
         "psr/cache": "^1.0"
     },
     "require-dev": {
