@@ -1,6 +1,7 @@
 <?php
 namespace PoP\Engine\FieldValueResolvers;
 
+use PoP\ComponentModel\ErrorUtils;
 use PoP\ComponentModel\Engine_Vars;
 use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\ComponentModel\Schema\SchemaDefinition;
@@ -10,9 +11,12 @@ use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorOrHelperFieldValueResolver;
 use PoP\FieldQuery\FieldQueryUtils;
+use PoP\Engine\Misc\OperatorHelpers;
+use Exception;
 
 class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResolver
 {
+    public const ERRORCODE_PATHNOTREACHABLE = 'path-not-reachable';
     public const HOOK_SAFEVARS = __CLASS__.':safeVars';
     public static function getFieldNamesToResolve(): array
     {
@@ -41,6 +45,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayDiff',
             'arrayAddItem',
             'arrayAsQueryStr',
+            'extract',
         ];
     }
 
@@ -71,6 +76,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayDiff' => SchemaDefinition::TYPE_ARRAY,
             'arrayAddItem' => SchemaDefinition::TYPE_ARRAY,
             'arrayAsQueryStr' => SchemaDefinition::TYPE_STRING,
+            'extract' => SchemaDefinition::TYPE_MIXED,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($fieldResolver, $fieldName);
     }
@@ -103,6 +109,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayDiff' => $translationAPI->__('Return an array containing all the elements from the first array which are not present on any of the other arrays', 'component-model'),
             'arrayAddItem' => $translationAPI->__('Adds an element to the array', 'component-model'),
             'arrayAsQueryStr' => $translationAPI->__('Represent an array as a string', 'component-model'),
+            'extract' => $translationAPI->__('Given an object, it retrieves the data under a certain path', 'pop-component-model'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
     }
@@ -397,9 +404,43 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                 ];
+            case 'extract':
+                return [
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'object',
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_OBJECT,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The object to retrieve the data from', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                    [
+                        SchemaDefinition::ARGNAME_NAME => 'path',
+                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The path to retrieve data from the object. Paths are separated with \'.\' for each sublevel', 'pop-component-model'),
+                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                    ],
+                ];
         }
 
         return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
+    }
+
+    protected function getDataFromPathError(string $fieldName, string $errorMessage)
+    {
+        return ErrorUtils::getError(
+            $fieldName,
+            self::ERRORCODE_PATHNOTREACHABLE,
+            $errorMessage
+        );
+    }
+
+    protected function getDataFromPath(string $fieldName, array $data, string $path)
+    {
+        try {
+            $dataPointer = OperatorHelpers::getPointerToArrayItemUnderPath($data, $path);
+        } catch (Exception $e) {
+            return $this->getDataFromPathError($fieldName, $e->getMessage());
+        }
+        return $dataPointer;
     }
 
     public function resolveSchemaValidationErrorDescription(FieldResolverInterface $fieldResolver, string $fieldName, array $fieldArgs = []): ?string
@@ -561,6 +602,8 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             case 'arrayAsQueryStr':
                 $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
                 return $fieldQueryInterpreter->getArrayAsStringForQuery($fieldArgs['array']);
+            case 'extract':
+                return $this->getDataFromPath($fieldName, $fieldArgs['object'], $fieldArgs['path']);
         }
 
         return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
