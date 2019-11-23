@@ -1,5 +1,5 @@
 <?php
-namespace PoP\Engine\FieldValueResolvers;
+namespace PoP\Engine\FieldValueResolvers\Guzzle;
 
 use PoP\GuzzleHelpers\GuzzleHelpers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
@@ -8,13 +8,10 @@ use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorOrHelperFieldValueResolver;
 use PoP\Engine\Environment;
 
-class GuzzleOperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResolver
+class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResolver
 {
     public static function getFieldNamesToResolve(): array
     {
-        if (Environment::disableGuzzleOperators()) {
-            return [];
-        }
         return [
             'getJSON',
         ];
