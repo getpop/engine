@@ -9,6 +9,7 @@ use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorOrHelperFieldValueResolver;
+use PoP\FieldQuery\FieldQueryUtils;
 
 class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResolver
 {
@@ -407,44 +408,50 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             return $error;
         }
 
-        $translationAPI = TranslationAPIFacade::getInstance();
-        switch ($fieldName) {
-            case 'var':
-                $safeVars = $this->getSafeVars();
-                if (!isset($safeVars[$fieldArgs['name']])) {
-                    return sprintf(
-                        $translationAPI->__('Var \'%s\' does not exist in `$vars`', 'component-model'),
-                        $fieldArgs['name']
-                    );
-                };
-                return null;
-            case 'arrayItem':
-                if (count($fieldArgs['array']) < $fieldArgs['position']) {
-                    return sprintf(
-                        $translationAPI->__('The array contains no element at position \'%s\'', 'component-model'),
-                        $fieldArgs['position']
-                    );
-                };
-                return null;
-            case 'arrayDiff':
-                if (count($fieldArgs['arrays']) < 2) {
-                    return sprintf(
-                        $translationAPI->__('The array must contain at least 2 elements: \'%s\'', 'component-model'),
-                        json_encode($fieldArgs['arrays'])
-                    );
-                };
-                // Check that all items are arrays
-                // This doesn't work before resolving the args! So doing arrayDiff([echo($langs),[en]]) fails
-                // $allArrays = array_reduce($fieldArgs['arrays'], function($carry, $item) {
-                //     return $carry && is_array($item);
-                // }, true);
-                // if (!$allArrays) {
-                //     return sprintf(
-                //         $translationAPI->__('The array must contain only arrays as elements: \'%s\'', 'component-model'),
-                //         json_encode($fieldArgs['arrays'])
-                //     );
-                // }
-                return null;
+        // Important: The validations below can only be done if no fieldArg contains a field!
+        // That is because this is a schema error, so we still don't have the $resultItem against which to resolve the field
+        // For instance, this doesn't work: /?query=arrayItem(posts(),3)
+        // In that case, the validation will be done inside ->resolveValue(), and will be treated as a $dbError, not a $schemaError
+        if (!FieldQueryUtils::isAnyFieldArgumentValueAField($fieldArgs)) {
+            $translationAPI = TranslationAPIFacade::getInstance();
+            switch ($fieldName) {
+                case 'var':
+                    $safeVars = $this->getSafeVars();
+                    if (!isset($safeVars[$fieldArgs['name']])) {
+                        return sprintf(
+                            $translationAPI->__('Var \'%s\' does not exist in `$vars`', 'component-model'),
+                            $fieldArgs['name']
+                        );
+                    };
+                    return null;
+                case 'arrayItem':
+                    if (count($fieldArgs['array']) < $fieldArgs['position']) {
+                        return sprintf(
+                            $translationAPI->__('The array contains no element at position \'%s\'', 'component-model'),
+                            $fieldArgs['position']
+                        );
+                    };
+                    return null;
+                case 'arrayDiff':
+                    if (count($fieldArgs['arrays']) < 2) {
+                        return sprintf(
+                            $translationAPI->__('The array must contain at least 2 elements: \'%s\'', 'component-model'),
+                            json_encode($fieldArgs['arrays'])
+                        );
+                    };
+                    // Check that all items are arrays
+                    // This doesn't work before resolving the args! So doing arrayDiff([echo($langs),[en]]) fails
+                    // $allArrays = array_reduce($fieldArgs['arrays'], function($carry, $item) {
+                    //     return $carry && is_array($item);
+                    // }, true);
+                    // if (!$allArrays) {
+                    //     return sprintf(
+                    //         $translationAPI->__('The array must contain only arrays as elements: \'%s\'', 'component-model'),
+                    //         json_encode($fieldArgs['arrays'])
+                    //     );
+                    // }
+                    return null;
+            }
         }
 
         return null;
