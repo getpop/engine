@@ -6,11 +6,15 @@ use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorOrHelperFieldValueResolver;
+use PoP\Engine\Environment;
 
 class GuzzleOperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResolver
 {
     public static function getFieldNamesToResolve(): array
     {
+        if (Environment::disableGuzzleOperators()) {
+            return [];
+        }
         return [
             'getJSON',
         ];
