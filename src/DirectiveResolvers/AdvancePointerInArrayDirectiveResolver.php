@@ -2,7 +2,7 @@
 namespace PoP\Engine\DirectiveResolvers;
 
 use Exception;
-use PoP\API\Misc\OperatorHelpers;
+use PoP\Engine\Misc\OperatorHelpers;
 use PoP\ComponentModel\DataloaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
