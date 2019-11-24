@@ -17,6 +17,16 @@ class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolv
     }
 
     /**
+     * Do not allow dynamic fields
+     *
+     * @return bool
+     */
+    protected function disableDynamicFieldsFromDirectiveArgs(): bool
+    {
+        return true;
+    }
+
+    /**
      * This directive must go at the very beginning
      *
      * @return void
