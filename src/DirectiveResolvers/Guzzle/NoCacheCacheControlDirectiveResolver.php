@@ -9,6 +9,7 @@ class NoCacheCacheControlDirectiveResolver extends AbstractCacheControlDirective
     {
         return [
             'getJSON',
+            'getAsyncJSON',
         ];
     }
 
