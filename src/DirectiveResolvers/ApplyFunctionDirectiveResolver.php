@@ -199,10 +199,10 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
                 // Merge the dbWarnings, if any
                 $feedbackMessageStore = FeedbackMessageStoreFacade::getInstance();
                 if ($resultItemDBWarnings = $feedbackMessageStore->retrieveAndClearResultItemDBWarnings($id)) {
-                    $dbWarnings[$id] = array_unique(array_merge(
+                    $dbWarnings[$id] = array_merge(
                         $dbWarnings[$id] ?? [],
                         $resultItemDBWarnings
-                    ));
+                    );
                 }
 
                 // If there was an error (eg: a missing mandatory argument), then the function will be of type Error
