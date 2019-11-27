@@ -480,6 +480,10 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                             json_encode($fieldArgs['arrays'])
                         );
                     };
+                case 'divide':
+                    if ($fieldArgs['by'] === (float)0) {
+                        return $translationAPI->__('Cannot divide by 0', 'component-model');
+                    }
                     // Check that all items are arrays
                     // This doesn't work before resolving the args! So doing arrayDiff([echo($langs),[en]]) fails
                     // $allArrays = array_reduce($fieldArgs['arrays'], function($carry, $item) {
