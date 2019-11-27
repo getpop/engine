@@ -14,6 +14,7 @@ use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FeedbackMessageStoreFacade;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
+use PoP\ComponentModel\Feedback\Tokens;
 
 abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extends AbstractGlobalDirectiveResolver
 {
@@ -86,8 +87,8 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
         // If there is no nested directives to execute, then nothing to do
         if (!$this->nestedDirectivePipelineData) {
             $schemaWarnings[] = [
-                'path' => [$this->directive],
-                'message' => $translationAPI->__('No nested directives were provided, so nothing to do for this directive', 'component-model'),
+                Tokens::PATH => [$this->directive],
+                Tokens::MESSAGE => $translationAPI->__('No nested directives were provided, so nothing to do for this directive', 'component-model'),
             ];
             return;
         }
@@ -114,8 +115,8 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 if (!$isValueInDBItems && !array_key_exists($fieldOutputKey, $previousDBItems[$dbKey][(string)$id] ?? [])) {
                     if ($fieldOutputKey != $field) {
                         $dbErrors[(string)$id][] = [
-                            'path' => [$this->directive],
-                            'message' => sprintf(
+                            Tokens::PATH => [$this->directive],
+                            Tokens::MESSAGE => sprintf(
                                 $translationAPI->__('Field \'%s\' (under property \'%s\') hadn\'t been set for object with ID \'%s\', so it can\'t be transformed', 'component-model'),
                                 $field,
                                 $fieldOutputKey,
@@ -124,8 +125,8 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                         ];
                     } else {
                         $dbErrors[(string)$id][] = [
-                            'path' => [$this->directive],
-                            'message' => sprintf(
+                            Tokens::PATH => [$this->directive],
+                            Tokens::MESSAGE => sprintf(
                                 $translationAPI->__('Field \'%s\' hadn\'t been set for object with ID \'%s\', so it can\'t be transformed', 'component-model'),
                                 $fieldOutputKey,
                                 $id
@@ -148,8 +149,8 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 if (!is_array($value)) {
                     if ($fieldOutputKey != $field) {
                         $dbErrors[(string)$id][] = [
-                            'path' => [$this->directive],
-                            'message' => sprintf(
+                            Tokens::PATH => [$this->directive],
+                            Tokens::MESSAGE => sprintf(
                                 $translationAPI->__('The value for field \'%s\' (under property \'%s\') is not an array, so execution of this directive can\'t continue', 'component-model'),
                                 $field,
                                 $fieldOutputKey,
@@ -158,8 +159,8 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                         ];
                     } else {
                         $dbErrors[(string)$id][] = [
-                            'path' => [$this->directive],
-                            'message' => sprintf(
+                            Tokens::PATH => [$this->directive],
+                            Tokens::MESSAGE => sprintf(
                                 $translationAPI->__('The value for field \'%s\' is not an array, so execution of this directive can\'t continue', 'component-model'),
                                 $fieldOutputKey,
                                 $id
@@ -285,8 +286,8 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                         if (GeneralUtils::isError($arrayItemValue)) {
                             $error = $arrayItemValue;
                             $dbErrors[(string)$id][] = [
-                                'path' => [$this->directive],
-                                'message' => sprintf(
+                                Tokens::PATH => [$this->directive],
+                                Tokens::MESSAGE => sprintf(
                                     $translationAPI->__('Transformation of element with key \'%s\' on array from property \'%s\' on object with ID \'%s\' failed due to error: %s', 'component-model'),
                                     $key,
                                     $fieldOutputKey,
@@ -388,8 +389,8 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                         // Show the error message, and return nothing
                         $error = $resolvedValue;
                         $dbErrors[(string)$id][] = [
-                            'path' => [$this->directive],
-                            'message' => sprintf(
+                            Tokens::PATH => [$this->directive],
+                            Tokens::MESSAGE => sprintf(
                                 $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
                                 $value,
                                 $id,
@@ -420,8 +421,8 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                         // Show the error message, and return nothing
                         $error = $resolvedValue;
                         $dbErrors[(string)$id][] = [
-                            'path' => [$this->directive],
-                            'message' => sprintf(
+                            Tokens::PATH => [$this->directive],
+                            Tokens::MESSAGE => sprintf(
                                 $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
                                 $value,
                                 $id,

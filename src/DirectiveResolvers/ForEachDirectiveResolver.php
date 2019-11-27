@@ -10,6 +10,7 @@ use PoP\ComponentModel\FieldResolvers\AbstractFieldResolver;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FeedbackMessageStoreFacade;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
+use PoP\ComponentModel\Feedback\Tokens;
 
 class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver
 {
@@ -83,8 +84,8 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
                         // Show the error message, and return nothing
                         $error = $resolvedValue;
                         $dbErrors[(string)$id][] = [
-                            'path' => [$this->directive],
-                            'message' => sprintf(
+                            Tokens::PATH => [$this->directive],
+                            Tokens::MESSAGE => sprintf(
                                 $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
                                 $value,
                                 $id,

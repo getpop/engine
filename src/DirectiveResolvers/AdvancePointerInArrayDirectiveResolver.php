@@ -7,6 +7,7 @@ use PoP\ComponentModel\DataloaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\Feedback\Tokens;
 
 class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver
 {
@@ -64,8 +65,8 @@ class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectiv
             // Add an error and return null
             if (!is_null($dbErrors)) {
                 $dbErrors[(string)$id][] = [
-                    'path' => [$this->directive],
-                    'message' => $e->getMessage(),
+                    Tokens::PATH => [$this->directive],
+                    Tokens::MESSAGE => $e->getMessage(),
                 ];
             }
             return null;
