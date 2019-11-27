@@ -83,7 +83,7 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
                         // Show the error message, and return nothing
                         $error = $resolvedValue;
                         $dbErrors[(string)$id][] = [
-                            'path' => $this->directive,
+                            'path' => [$this->directive],
                             'message' => sprintf(
                                 $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
                                 $value,

@@ -104,7 +104,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
                 if (!$isValueInDBItems && !array_key_exists($fieldOutputKey, $previousDBItems[$dbKey][(string)$id] ?? [])) {
                     if ($fieldOutputKey != $field) {
                         $dbErrors[(string)$id][] = [
-                            'path' => $this->directive,
+                            'path' => [$this->directive],
                             'message' => sprintf(
                                 $translationAPI->__('Field \'%s\' (under property \'%s\') hadn\'t been set for object with ID \'%s\', so it can\'t be transformed', 'component-model'),
                                 $field,
@@ -114,7 +114,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
                         ];
                     } else {
                         $dbErrors[(string)$id][] = [
-                            'path' => $this->directive,
+                            'path' => [$this->directive],
                             'message' => sprintf(
                                 $translationAPI->__('Field \'%s\' hadn\'t been set for object with ID \'%s\', so it can\'t be transformed', 'component-model'),
                                 $fieldOutputKey,
@@ -142,7 +142,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
                 if ($schemaDBWarnings) {
                     foreach ($schemaDBWarnings as $warningMessage) {
                         $dbWarnings[(string)$id][] = [
-                            'path' => $this->directive,
+                            'path' => [$this->directive],
                             'message' => sprintf(
                                 $translationAPI->__('Warning validating function \'%s\' on object with ID \'%s\' and field under property \'%s\': %s)', 'component-model'),
                                 $function,
@@ -156,7 +156,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
                 if ($schemaDBErrors) {
                     foreach ($schemaDBErrors as $errorMessage) {
                         $dbErrors[(string)$id][] = [
-                            'path' => $this->directive,
+                            'path' => [$this->directive],
                             'message' => sprintf(
                                 $translationAPI->__('Error validating function \'%s\' on object with ID \'%s\' and field under property \'%s\': %s)', 'component-model'),
                                 $function,
@@ -168,7 +168,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
                     }
                     if ($fieldOutputKey != $field) {
                         $dbErrors[(string)$id][] = [
-                            'path' => $this->directive,
+                            'path' => [$this->directive],
                             'message' => sprintf(
                                 $translationAPI->__('Applying function on field \'%s\' (under property \'%s\') on object with ID \'%s\' can\'t be executed due to previous errors', 'component-model'),
                                 $field,
@@ -178,7 +178,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
                         ];
                     } else {
                         $dbErrors[(string)$id][] = [
-                            'path' => $this->directive,
+                            'path' => [$this->directive],
                             'message' => sprintf(
                                 $translationAPI->__('Applying function on field \'%s\' on object with ID \'%s\' can\'t be executed due to previous errors', 'component-model'),
                                 $fieldOutputKey,
@@ -208,7 +208,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
                 if (GeneralUtils::isError($functionValue)) {
                     $error = $functionValue;
                     $dbErrors[(string)$id][] = [
-                        'path' => $this->directive,
+                        'path' => [$this->directive],
                         'message' => sprintf(
                             $translationAPI->__('Applying function on \'%s\' on object with ID \'%s\' failed due to error: %s', 'component-model'),
                             $fieldOutputKey,
