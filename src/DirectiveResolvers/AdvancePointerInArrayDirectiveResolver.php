@@ -63,7 +63,10 @@ class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectiv
         } catch (Exception $e) {
             // Add an error and return null
             if (!is_null($dbErrors)) {
-                $dbErrors[(string)$id][$this->directive][] = $e->getMessage();
+                $dbErrors[(string)$id][] = [
+                    'path' => $this->directive,
+                    'message' => $e->getMessage(),
+                ];
             }
             return null;
         }

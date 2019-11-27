@@ -103,18 +103,24 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
                 $isValueInDBItems = array_key_exists($fieldOutputKey, $dbItems[(string)$id] ?? []);
                 if (!$isValueInDBItems && !array_key_exists($fieldOutputKey, $previousDBItems[$dbKey][(string)$id] ?? [])) {
                     if ($fieldOutputKey != $field) {
-                        $dbErrors[(string)$id][$this->directive][] = sprintf(
-                            $translationAPI->__('Field \'%s\' (under property \'%s\') hadn\'t been set for object with ID \'%s\', so it can\'t be transformed', 'component-model'),
-                            $field,
-                            $fieldOutputKey,
-                            $id
-                        );
+                        $dbErrors[(string)$id][] = [
+                            'path' => $this->directive,
+                            'message' => sprintf(
+                                $translationAPI->__('Field \'%s\' (under property \'%s\') hadn\'t been set for object with ID \'%s\', so it can\'t be transformed', 'component-model'),
+                                $field,
+                                $fieldOutputKey,
+                                $id
+                            ),
+                        ];
                     } else {
-                        $dbErrors[(string)$id][$this->directive][] = sprintf(
-                            $translationAPI->__('Field \'%s\' hadn\'t been set for object with ID \'%s\', so it can\'t be transformed', 'component-model'),
-                            $fieldOutputKey,
-                            $id
-                        );
+                        $dbErrors[(string)$id][] = [
+                            'path' => $this->directive,
+                            'message' => sprintf(
+                                $translationAPI->__('Field \'%s\' hadn\'t been set for object with ID \'%s\', so it can\'t be transformed', 'component-model'),
+                                $fieldOutputKey,
+                                $id
+                            ),
+                        ];
                     }
                     continue;
                 }
@@ -135,38 +141,50 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
                 // Place the errors not under schema but under DB, since they may change on a resultItem by resultItem basis
                 if ($schemaDBWarnings) {
                     foreach ($schemaDBWarnings as $warningMessage) {
-                        $dbWarnings[(string)$id][$this->directive][] = sprintf(
-                            $translationAPI->__('Warning validating function \'%s\' on object with ID \'%s\' and field under property \'%s\': %s)', 'component-model'),
-                            $function,
-                            $id,
-                            $fieldOutputKey,
-                            $warningMessage
-                        );
+                        $dbWarnings[(string)$id][] = [
+                            'path' => $this->directive,
+                            'message' => sprintf(
+                                $translationAPI->__('Warning validating function \'%s\' on object with ID \'%s\' and field under property \'%s\': %s)', 'component-model'),
+                                $function,
+                                $id,
+                                $fieldOutputKey,
+                                $warningMessage
+                            ),
+                        ];
                     }
                 }
                 if ($schemaDBErrors) {
                     foreach ($schemaDBErrors as $errorMessage) {
-                        $dbErrors[(string)$id][$this->directive][] = sprintf(
-                            $translationAPI->__('Error validating function \'%s\' on object with ID \'%s\' and field under property \'%s\': %s)', 'component-model'),
-                            $function,
-                            $id,
-                            $fieldOutputKey,
-                            $errorMessage
-                        );
+                        $dbErrors[(string)$id][] = [
+                            'path' => $this->directive,
+                            'message' => sprintf(
+                                $translationAPI->__('Error validating function \'%s\' on object with ID \'%s\' and field under property \'%s\': %s)', 'component-model'),
+                                $function,
+                                $id,
+                                $fieldOutputKey,
+                                $errorMessage
+                            ),
+                        ];
                     }
                     if ($fieldOutputKey != $field) {
-                        $dbErrors[(string)$id][$this->directive][] = sprintf(
-                            $translationAPI->__('Applying function on field \'%s\' (under property \'%s\') on object with ID \'%s\' can\'t be executed due to previous errors', 'component-model'),
-                            $field,
-                            $fieldOutputKey,
-                            $id
-                        );
+                        $dbErrors[(string)$id][] = [
+                            'path' => $this->directive,
+                            'message' => sprintf(
+                                $translationAPI->__('Applying function on field \'%s\' (under property \'%s\') on object with ID \'%s\' can\'t be executed due to previous errors', 'component-model'),
+                                $field,
+                                $fieldOutputKey,
+                                $id
+                            ),
+                        ];
                     } else {
-                        $dbErrors[(string)$id][$this->directive][] = sprintf(
-                            $translationAPI->__('Applying function on field \'%s\' on object with ID \'%s\' can\'t be executed due to previous errors', 'component-model'),
-                            $fieldOutputKey,
-                            $id
-                        );
+                        $dbErrors[(string)$id][] = [
+                            'path' => $this->directive,
+                            'message' => sprintf(
+                                $translationAPI->__('Applying function on field \'%s\' on object with ID \'%s\' can\'t be executed due to previous errors', 'component-model'),
+                                $fieldOutputKey,
+                                $id
+                            ),
+                        ];
                     }
                     continue;
                 }
@@ -180,21 +198,24 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
                 // Merge the dbWarnings, if any
                 $feedbackMessageStore = FeedbackMessageStoreFacade::getInstance();
                 if ($resultItemDBWarnings = $feedbackMessageStore->retrieveAndClearResultItemDBWarnings($id)) {
-                    $dbWarnings[$id] = array_merge(
+                    $dbWarnings[$id] = array_unique(array_merge(
                         $dbWarnings[$id] ?? [],
                         $resultItemDBWarnings
-                    );
+                    ));
                 }
 
                 // If there was an error (eg: a missing mandatory argument), then the function will be of type Error
                 if (GeneralUtils::isError($functionValue)) {
                     $error = $functionValue;
-                    $dbErrors[(string)$id][$this->directive][] = sprintf(
-                        $translationAPI->__('Applying function on \'%s\' on object with ID \'%s\' failed due to error: %s', 'component-model'),
-                        $fieldOutputKey,
-                        $id,
-                        $error->getErrorMessage()
-                    );
+                    $dbErrors[(string)$id][] = [
+                        'path' => $this->directive,
+                        'message' => sprintf(
+                            $translationAPI->__('Applying function on \'%s\' on object with ID \'%s\' failed due to error: %s', 'component-model'),
+                            $fieldOutputKey,
+                            $id,
+                            $error->getErrorMessage()
+                        ),
+                    ];
                     continue;
                 }
 

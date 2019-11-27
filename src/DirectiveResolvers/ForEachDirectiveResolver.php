@@ -74,21 +74,24 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
                     // Merge the dbWarnings, if any
                     $feedbackMessageStore = FeedbackMessageStoreFacade::getInstance();
                     if ($resultItemDBWarnings = $feedbackMessageStore->retrieveAndClearResultItemDBWarnings($id)) {
-                        $dbWarnings[$id] = array_merge(
+                        $dbWarnings[$id] = array_unique(array_merge(
                             $dbWarnings[$id] ?? [],
                             $resultItemDBWarnings
-                        );
+                        ));
                     }
                     if (GeneralUtils::isError($resolvedValue)) {
                         // Show the error message, and return nothing
                         $error = $resolvedValue;
-                        $dbErrors[(string)$id][$this->directive][] = sprintf(
-                            $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
-                            $value,
-                            $id,
-                            $error->getErrorMessage(),
-                            $key
-                        );
+                        $dbErrors[(string)$id][] = [
+                            'path' => $this->directive,
+                            'message' => sprintf(
+                                $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
+                                $value,
+                                $id,
+                                $error->getErrorMessage(),
+                                $key
+                            ),
+                        ];
                         continue;
                     }
                     // Evaluate it

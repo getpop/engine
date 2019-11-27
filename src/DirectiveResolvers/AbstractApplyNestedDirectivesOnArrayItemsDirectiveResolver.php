@@ -85,7 +85,10 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
 
         // If there is no nested directives to execute, then nothing to do
         if (!$this->nestedDirectivePipelineData) {
-            $schemaWarnings[$this->directive][] = $translationAPI->__('No nested directives were provided, so nothing to do for this directive', 'component-model');
+            $schemaWarnings[] = [
+                'path' => $this->directive,
+                'message' => $translationAPI->__('No nested directives were provided, so nothing to do for this directive', 'component-model'),
+            ];
             return;
         }
 
@@ -110,18 +113,24 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 $isValueInDBItems = array_key_exists($fieldOutputKey, $dbItems[(string)$id] ?? []);
                 if (!$isValueInDBItems && !array_key_exists($fieldOutputKey, $previousDBItems[$dbKey][(string)$id] ?? [])) {
                     if ($fieldOutputKey != $field) {
-                        $dbErrors[(string)$id][$this->directive][] = sprintf(
-                            $translationAPI->__('Field \'%s\' (under property \'%s\') hadn\'t been set for object with ID \'%s\', so it can\'t be transformed', 'component-model'),
-                            $field,
-                            $fieldOutputKey,
-                            $id
-                        );
+                        $dbErrors[(string)$id][] = [
+                            'path' => $this->directive,
+                            'message' => sprintf(
+                                $translationAPI->__('Field \'%s\' (under property \'%s\') hadn\'t been set for object with ID \'%s\', so it can\'t be transformed', 'component-model'),
+                                $field,
+                                $fieldOutputKey,
+                                $id
+                            ),
+                        ];
                     } else {
-                        $dbErrors[(string)$id][$this->directive][] = sprintf(
-                            $translationAPI->__('Field \'%s\' hadn\'t been set for object with ID \'%s\', so it can\'t be transformed', 'component-model'),
-                            $fieldOutputKey,
-                            $id
-                        );
+                        $dbErrors[(string)$id][] = [
+                            'path' => $this->directive,
+                            'message' => sprintf(
+                                $translationAPI->__('Field \'%s\' hadn\'t been set for object with ID \'%s\', so it can\'t be transformed', 'component-model'),
+                                $fieldOutputKey,
+                                $id
+                            ),
+                        ];
                     }
                     continue;
                 }
@@ -138,18 +147,24 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 // Validate that the value is an array
                 if (!is_array($value)) {
                     if ($fieldOutputKey != $field) {
-                        $dbErrors[(string)$id][$this->directive][] = sprintf(
-                            $translationAPI->__('The value for field \'%s\' (under property \'%s\') is not an array, so execution of this directive can\'t continue', 'component-model'),
-                            $field,
-                            $fieldOutputKey,
-                            $id
-                        );
+                        $dbErrors[(string)$id][] = [
+                            'path' => $this->directive,
+                            'message' => sprintf(
+                                $translationAPI->__('The value for field \'%s\' (under property \'%s\') is not an array, so execution of this directive can\'t continue', 'component-model'),
+                                $field,
+                                $fieldOutputKey,
+                                $id
+                            ),
+                        ];
                     } else {
-                        $dbErrors[(string)$id][$this->directive][] = sprintf(
-                            $translationAPI->__('The value for field \'%s\' is not an array, so execution of this directive can\'t continue', 'component-model'),
-                            $fieldOutputKey,
-                            $id
-                        );
+                        $dbErrors[(string)$id][] = [
+                            'path' => $this->directive,
+                            'message' => sprintf(
+                                $translationAPI->__('The value for field \'%s\' is not an array, so execution of this directive can\'t continue', 'component-model'),
+                                $fieldOutputKey,
+                                $id
+                            ),
+                        ];
                     }
                     continue;
                 }
@@ -269,13 +284,16 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                         // Validate it's not an error
                         if (GeneralUtils::isError($arrayItemValue)) {
                             $error = $arrayItemValue;
-                            $dbErrors[(string)$id][$this->directive][] = sprintf(
-                                $translationAPI->__('Transformation of element with key \'%s\' on array from property \'%s\' on object with ID \'%s\' failed due to error: %s', 'component-model'),
-                                $key,
-                                $fieldOutputKey,
-                                $id,
-                                $error->getErrorMessage()
-                            );
+                            $dbErrors[(string)$id][] = [
+                                'path' => $this->directive,
+                                'message' => sprintf(
+                                    $translationAPI->__('Transformation of element with key \'%s\' on array from property \'%s\' on object with ID \'%s\' failed due to error: %s', 'component-model'),
+                                    $key,
+                                    $fieldOutputKey,
+                                    $id,
+                                    $error->getErrorMessage()
+                                ),
+                            ];
                             continue;
                         }
                         // Place the result for the array in the original property
@@ -361,21 +379,24 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                     // Merge the dbWarnings, if any
                     $feedbackMessageStore = FeedbackMessageStoreFacade::getInstance();
                     if ($resultItemDBWarnings = $feedbackMessageStore->retrieveAndClearResultItemDBWarnings($id)) {
-                        $dbWarnings[$id] = array_merge(
+                        $dbWarnings[$id] = array_unique(array_merge(
                             $dbWarnings[$id] ?? [],
                             $resultItemDBWarnings
-                        );
+                        ));
                     }
                     if (GeneralUtils::isError($resolvedValue)) {
                         // Show the error message, and return nothing
                         $error = $resolvedValue;
-                        $dbErrors[(string)$id][$this->directive][] = sprintf(
-                            $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
-                            $value,
-                            $id,
-                            $error->getErrorMessage(),
-                            $key
-                        );
+                        $dbErrors[(string)$id][] = [
+                            'path' => $this->directive,
+                            'message' => sprintf(
+                                $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
+                                $value,
+                                $id,
+                                $error->getErrorMessage(),
+                                $key
+                            ),
+                        ];
                         continue;
                     }
                     $value = $resolvedValue;
@@ -390,21 +411,24 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                     // Merge the dbWarnings, if any
                     $feedbackMessageStore = FeedbackMessageStoreFacade::getInstance();
                     if ($resultItemDBWarnings = $feedbackMessageStore->retrieveAndClearResultItemDBWarnings($id)) {
-                        $dbWarnings[$id] = array_merge(
+                        $dbWarnings[$id] = array_unique(array_merge(
                             $dbWarnings[$id] ?? [],
                             $resultItemDBWarnings
-                        );
+                        ));
                     }
                     if (GeneralUtils::isError($resolvedValue)) {
                         // Show the error message, and return nothing
                         $error = $resolvedValue;
-                        $dbErrors[(string)$id][$this->directive][] = sprintf(
-                            $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
-                            $value,
-                            $id,
-                            $error->getErrorMessage(),
-                            $key
-                        );
+                        $dbErrors[(string)$id][] = [
+                            'path' => $this->directive,
+                            'message' => sprintf(
+                                $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
+                                $value,
+                                $id,
+                                $error->getErrorMessage(),
+                                $key
+                            ),
+                        ];
                         continue;
                     }
                     $existingValue[] = $resolvedValue;
