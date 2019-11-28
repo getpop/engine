@@ -1,8 +1,9 @@
 <?php
 namespace PoP\Engine\FieldValueResolvers;
 
-use PoP\ComponentModel\ErrorUtils;
+use PoP\Engine\Misc\Extract;
 use PoP\ComponentModel\Engine_Vars;
+use PoP\FieldQuery\FieldQueryUtils;
 use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
@@ -10,13 +11,9 @@ use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorOrHelperFieldValueResolver;
-use PoP\FieldQuery\FieldQueryUtils;
-use PoP\Engine\Misc\OperatorHelpers;
-use Exception;
 
 class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResolver
 {
-    public const ERRORCODE_PATHNOTREACHABLE = 'path-not-reachable';
     public const HOOK_SAFEVARS = __CLASS__.':safeVars';
     public static function getFieldNamesToResolve(): array
     {
@@ -424,25 +421,6 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
         return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
     }
 
-    protected function getDataFromPathError(string $fieldName, string $errorMessage)
-    {
-        return ErrorUtils::getError(
-            $fieldName,
-            self::ERRORCODE_PATHNOTREACHABLE,
-            $errorMessage
-        );
-    }
-
-    protected function getDataFromPath(string $fieldName, array $data, string $path)
-    {
-        try {
-            $dataPointer = OperatorHelpers::getPointerToArrayItemUnderPath($data, $path);
-        } catch (Exception $e) {
-            return $this->getDataFromPathError($fieldName, $e->getMessage());
-        }
-        return $dataPointer;
-    }
-
     public function resolveSchemaValidationErrorDescription(FieldResolverInterface $fieldResolver, string $fieldName, array $fieldArgs = []): ?string
     {
         if ($error = parent::resolveSchemaValidationErrorDescription($fieldResolver, $fieldName, $fieldArgs)) {
@@ -607,7 +585,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
                 return $fieldQueryInterpreter->getArrayAsStringForQuery($fieldArgs['array']);
             case 'extract':
-                return $this->getDataFromPath($fieldName, $fieldArgs['object'], $fieldArgs['path']);
+                return Extract::getDataFromPath($fieldName, $fieldArgs['object'], $fieldArgs['path']);
         }
 
         return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
