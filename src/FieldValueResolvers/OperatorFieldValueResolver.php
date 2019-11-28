@@ -491,7 +491,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
         return $this->safeVars;
     }
 
-    public function resolveValue(FieldResolverInterface $fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [])
+    public function resolveValue(FieldResolverInterface $fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
     {
         switch ($fieldName) {
             case 'if':
@@ -588,6 +588,6 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 return Extract::getDataFromPath($fieldName, $fieldArgs['object'], $fieldArgs['path']);
         }
 
-        return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
+        return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
     }
 }

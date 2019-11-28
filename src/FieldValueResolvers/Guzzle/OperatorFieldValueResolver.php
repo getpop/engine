@@ -65,7 +65,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
         return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
     }
 
-    public function resolveValue(FieldResolverInterface $fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [])
+    public function resolveValue(FieldResolverInterface $fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
     {
         switch ($fieldName) {
             case 'getJSON':
@@ -73,6 +73,6 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             case 'getAsyncJSON':
                 return GuzzleHelpers::requestAsyncJSON($fieldArgs['urls'], [], 'GET');
         }
-        return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs);
+        return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
     }
 }
