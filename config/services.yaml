@@ -28,8 +28,8 @@ services:
     PoP\Engine\ModuleFilters\:
         resource: '../src/ModuleFilters/*'
 
-    PoP\Engine\FieldValueResolvers\:
-        resource: '../src/FieldValueResolvers/*'
+    PoP\Engine\FieldResolvers\:
+        resource: '../src/FieldResolvers/*'
         public: true
 
     PoP\Engine\RouteModuleProcessors\:
