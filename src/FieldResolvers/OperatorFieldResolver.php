@@ -1,5 +1,5 @@
 <?php
-namespace PoP\Engine\FieldValueResolvers;
+namespace PoP\Engine\FieldResolvers;
 
 use PoP\Engine\Misc\Extract;
 use PoP\ComponentModel\Engine_Vars;
@@ -10,9 +10,9 @@ use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
-use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorOrHelperFieldValueResolver;
+use PoP\ComponentModel\FieldResolvers\AbstractOperatorOrHelperFieldResolver;
 
-class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResolver
+class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
 {
     public const HOOK_SAFEVARS = __CLASS__.':safeVars';
     public static function getFieldNamesToResolve(): array

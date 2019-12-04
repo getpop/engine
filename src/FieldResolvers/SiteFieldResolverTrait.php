@@ -1,8 +1,8 @@
 <?php
-namespace PoP\Engine\FieldValueResolvers;
+namespace PoP\Engine\FieldResolvers;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 
-trait SiteFieldValueResolverTrait
+trait SiteFieldResolverTrait
 {
     public function resolveCanProcessResultItem(TypeResolverInterface $typeResolver, $resultItem, string $fieldName, array $fieldArgs = []): bool
     {

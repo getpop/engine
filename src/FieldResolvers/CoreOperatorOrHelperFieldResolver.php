@@ -1,14 +1,14 @@
 <?php
-namespace PoP\Engine\FieldValueResolvers;
+namespace PoP\Engine\FieldResolvers;
 
 use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Engine\Dataloading\Expressions;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
-use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorOrHelperFieldValueResolver;
+use PoP\ComponentModel\FieldResolvers\AbstractOperatorOrHelperFieldResolver;
 
-class CoreOperatorOrHelperFieldValueResolver extends AbstractOperatorOrHelperFieldValueResolver
+class CoreOperatorOrHelperFieldResolver extends AbstractOperatorOrHelperFieldResolver
 {
     public static function getFieldNamesToResolve(): array
     {
