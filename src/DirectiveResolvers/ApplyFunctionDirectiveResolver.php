@@ -8,8 +8,8 @@ use PoP\ComponentModel\DataloaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\FieldResolvers\AbstractFieldResolver;
-use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FeedbackMessageStoreFacade;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
@@ -22,7 +22,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
         return self::DIRECTIVE_NAME;
     }
 
-    public function getSchemaDirectiveArgs(FieldResolverInterface $fieldResolver): array
+    public function getSchemaDirectiveArgs(TypeResolverInterface $typeResolver): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return [
@@ -48,7 +48,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
         ];
     }
 
-    public function getSchemaDirectiveExpressions(FieldResolverInterface $fieldResolver): array
+    public function getSchemaDirectiveExpressions(TypeResolverInterface $typeResolver): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return [
@@ -56,15 +56,15 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
         ];
     }
 
-    public function resolveDirective(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    public function resolveDirective(DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
-        $this->regenerateAndExecuteFunction($dataloader, $fieldResolver, $resultIDItems, $idsDataFields, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+        $this->regenerateAndExecuteFunction($dataloader, $typeResolver, $resultIDItems, $idsDataFields, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
     }
 
     /**
      * Execute a function on the affected field
      *
-     * @param FieldResolverInterface $fieldResolver
+     * @param TypeResolverInterface $typeResolver
      * @param array $resultIDItems
      * @param array $idsDataFields
      * @param array $dbItems
@@ -75,7 +75,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
      * @param array $schemaDeprecations
      * @return void
      */
-    protected function regenerateAndExecuteFunction(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$idsDataFields, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    protected function regenerateAndExecuteFunction(DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$idsDataFields, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         $function = $this->directiveArgsForSchema['function'];
         $addArguments = $this->directiveArgsForSchema['addArguments'] ?? [];
@@ -88,7 +88,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
         if ($addArguments) {
             $functionName = $fieldQueryInterpreter->getFieldName($function);
             $functionArgElems = array_merge(
-                $fieldQueryInterpreter->extractFieldArguments($fieldResolver, $function),
+                $fieldQueryInterpreter->extractFieldArguments($typeResolver, $function),
                 $addArguments
             );
             $function = $fieldQueryInterpreter->getField($functionName, $functionArgElems);
@@ -127,7 +127,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
                 }
 
                 // Place all the reserved expressions into the `$expressions` context: $value
-                $this->addExpressionsForResultItem($dataloader, $fieldResolver, $id, $field, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+                $this->addExpressionsForResultItem($dataloader, $typeResolver, $id, $field, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
 
                 // Generate the fieldArgs from combining the query with the values in the context, through $variables
                 $expressions = $this->getExpressionsForResultItem($id, $variables, $messages);
@@ -137,7 +137,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
                     $schemaFieldArgs,
                     $schemaDBErrors,
                     $schemaDBWarnings
-                ) = $fieldQueryInterpreter->extractFieldArgumentsForSchema($fieldResolver, $function, $variables);
+                ) = $fieldQueryInterpreter->extractFieldArgumentsForSchema($typeResolver, $function, $variables);
 
                 // Place the errors not under schema but under DB, since they may change on a resultItem by resultItem basis
                 if ($schemaDBWarnings) {
@@ -193,9 +193,9 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
                 // Execute the function
                 // Because the function was dynamically created, we must indicate to validate the schema when doing ->resolveValue
                 $options = [
-                    AbstractFieldResolver::OPTION_VALIDATE_SCHEMA_ON_RESULT_ITEM => true,
+                    AbstractTypeResolver::OPTION_VALIDATE_SCHEMA_ON_RESULT_ITEM => true,
                 ];
-                $functionValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $validFunction, $variables, $expressions, $options);
+                $functionValue = $typeResolver->resolveValue($resultIDItems[(string)$id], $validFunction, $variables, $expressions, $options);
                 // Merge the dbWarnings, if any
                 $feedbackMessageStore = FeedbackMessageStoreFacade::getInstance();
                 if ($resultItemDBWarnings = $feedbackMessageStore->retrieveAndClearResultItemDBWarnings($id)) {
@@ -236,7 +236,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
      * Place all the reserved variables into the `$variables` context
      *
      * @param DataloaderInterface $dataloader
-     * @param FieldResolverInterface $fieldResolver
+     * @param TypeResolverInterface $typeResolver
      * @param [type] $id
      * @param string $field
      * @param array $resultIDItems
@@ -251,7 +251,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
      * @param array $messages
      * @return void
      */
-    protected function addExpressionsForResultItem(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, $id, string $field, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    protected function addExpressionsForResultItem(DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, $id, string $field, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);

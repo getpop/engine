@@ -6,7 +6,7 @@ use PoP\GuzzleHelpers\GuzzleHelpers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorOrHelperFieldValueResolver;
 
 class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResolver
@@ -19,26 +19,26 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
         ];
     }
 
-    public function getSchemaFieldType(FieldResolverInterface $fieldResolver, string $fieldName): ?string
+    public function getSchemaFieldType(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         $types = [
             'getJSON' => SchemaDefinition::TYPE_OBJECT,
             'getAsyncJSON' => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_OBJECT),
         ];
-        return $types[$fieldName] ?? parent::getSchemaFieldType($fieldResolver, $fieldName);
+        return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
 
-    public function getSchemaFieldDescription(FieldResolverInterface $fieldResolver, string $fieldName): ?string
+    public function getSchemaFieldDescription(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
             'getJSON' => $translationAPI->__('Retrieve data from URL and decode it as a JSON object', 'pop-component-model'),
             'getAsyncJSON' => $translationAPI->__('Retrieve data from multiple URL asynchronously, and decode each of them as a JSON object', 'pop-component-model'),
         ];
-        return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
+        return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
 
-    public function getSchemaFieldArgs(FieldResolverInterface $fieldResolver, string $fieldName): array
+    public function getSchemaFieldArgs(TypeResolverInterface $typeResolver, string $fieldName): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
@@ -62,10 +62,10 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 ];
         }
 
-        return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
+        return parent::getSchemaFieldArgs($typeResolver, $fieldName);
     }
 
-    public function resolveValue(FieldResolverInterface $fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
+    public function resolveValue(TypeResolverInterface $typeResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
     {
         switch ($fieldName) {
             case 'getJSON':
@@ -73,6 +73,6 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             case 'getAsyncJSON':
                 return GuzzleHelpers::requestAsyncJSON($fieldArgs['urls'], [], 'GET');
         }
-        return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
+        return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
     }
 }

@@ -9,8 +9,8 @@ use PoP\ComponentModel\DataloaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\FieldResolvers\AbstractFieldResolver;
-use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FeedbackMessageStoreFacade;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
@@ -23,7 +23,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
      */
     public const PROPERTY_SEPARATOR = '.';
 
-    public function getSchemaDirectiveArgs(FieldResolverInterface $fieldResolver): array
+    public function getSchemaDirectiveArgs(TypeResolverInterface $typeResolver): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return [
@@ -46,7 +46,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
         ];
     }
 
-    public function getSchemaDirectiveExpressions(FieldResolverInterface $fieldResolver): array
+    public function getSchemaDirectiveExpressions(TypeResolverInterface $typeResolver): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return [
@@ -66,7 +66,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
      * 3. Pack into the array, once again, and remove all temporary properties
      *
      * @param DataloaderInterface $dataloader
-     * @param FieldResolverInterface $fieldResolver
+     * @param TypeResolverInterface $typeResolver
      * @param array $resultIDItems
      * @param array $idsDataFields
      * @param array $dbItems
@@ -80,7 +80,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
      * @param array $messages
      * @return void
      */
-    public function resolveDirective(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    public function resolveDirective(DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         $translationAPI = TranslationAPIFacade::getInstance();
 
@@ -180,7 +180,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
 
                 // The value is an array. Unpack all the elements into their own property
                 $array = $value;
-                if ($arrayItems = $this->getArrayItems($array, $id, $field, $dataloader, $fieldResolver, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings)) {
+                if ($arrayItems = $this->getArrayItems($array, $id, $field, $dataloader, $typeResolver, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings)) {
                     $execute = true;
                     foreach ($arrayItems as $key => &$value) {
                         // Add into the $idsDataFields object for the array items
@@ -202,7 +202,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                     }
                     $arrayItemIdsProperties[(string)$id]['conditional'] = [];
 
-                    $this->addExpressionsForResultItem($dataloader, $fieldResolver, $id, $field, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+                    $this->addExpressionsForResultItem($dataloader, $typeResolver, $id, $field, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
                 }
             }
         }
@@ -215,7 +215,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 },
                 $this->nestedDirectivePipelineData
             );
-            $nestedDirectivePipeline = $fieldResolver->getDirectivePipeline($directiveResolverInstances);
+            $nestedDirectivePipeline = $typeResolver->getDirectivePipeline($directiveResolverInstances);
             // Fill the idsDataFields for each directive in the pipeline
             $pipelineArrayItemIdsProperties = [];
             for ($i=0; $i<count($directiveResolverInstances); $i++) {
@@ -224,7 +224,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
             // 2. Execute the nested directive pipeline on all arrayItems
             $nestedDirectivePipeline->resolveDirectivePipeline(
                 $dataloader,
-                $fieldResolver,
+                $typeResolver,
                 $pipelineArrayItemIdsProperties, // Here we pass the properties to the array elements!
                 $resultIDItems,
                 $dbItems,
@@ -266,7 +266,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                     // If there are errors, it will return null. Don't add the errors again
                     $arrayItemDBErrors = $arrayItemDBWarnings = [];
                     $array = $value;
-                    $arrayItems = $this->getArrayItems($array, $id, $field, $dataloader, $fieldResolver, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $arrayItemDBErrors, $arrayItemDBWarnings);
+                    $arrayItems = $this->getArrayItems($array, $id, $field, $dataloader, $typeResolver, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $arrayItemDBErrors, $arrayItemDBWarnings);
                     // The value is an array. Unpack all the elements into their own property
                     foreach ($arrayItems as $key => &$value) {
                         $arrayItemAlias = $this->createPropertyForArrayItem($fieldAlias ? $fieldAlias : QuerySyntax::SYMBOL_FIELDALIAS_PREFIX.$fieldName, $key);
@@ -311,7 +311,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
      * @param array $value
      * @return void
      */
-    abstract protected function getArrayItems(array &$array, $id, string $field, DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array;
+    abstract protected function getArrayItems(array &$array, $id, string $field, DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array;
 
     /**
      * Create a property for storing the array item in the current object
@@ -338,7 +338,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
      * Add the $key in addition to the $value
      *
      * @param DataloaderInterface $dataloader
-     * @param FieldResolverInterface $fieldResolver
+     * @param TypeResolverInterface $typeResolver
      * @param [type] $id
      * @param string $field
      * @param array $resultIDItems
@@ -353,7 +353,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
      * @param array $messages
      * @return void
      */
-    protected function addExpressionsForResultItem(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, $id, string $field, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    protected function addExpressionsForResultItem(DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, $id, string $field, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         // Enable the query to provide variables to pass down
         $addExpressions = $this->directiveArgsForSchema['addExpressions'] ?? [];
@@ -371,12 +371,12 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
             $expressions = $this->getExpressionsForResultItem($id, $variables, $messages);
 
             $options = [
-                AbstractFieldResolver::OPTION_VALIDATE_SCHEMA_ON_RESULT_ITEM => true,
+                AbstractTypeResolver::OPTION_VALIDATE_SCHEMA_ON_RESULT_ITEM => true,
             ];
             foreach ($addExpressions as $key => $value) {
                 // Evaluate the $value, since it may be a function
                 if ($fieldQueryInterpreter->isFieldArgumentValueAField($value)) {
-                    $resolvedValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
+                    $resolvedValue = $typeResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
                     // Merge the dbWarnings, if any
                     $feedbackMessageStore = FeedbackMessageStoreFacade::getInstance();
                     if ($resultItemDBWarnings = $feedbackMessageStore->retrieveAndClearResultItemDBWarnings($id)) {
@@ -408,7 +408,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 $existingValue = $this->getExpressionForResultItem($id, $key, $messages) ?? [];
                 // Evaluate the $value, since it may be a function
                 if ($fieldQueryInterpreter->isFieldArgumentValueAField($value)) {
-                    $resolvedValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
+                    $resolvedValue = $typeResolver->resolveValue($resultIDItems[(string)$id], $value, $variables, $expressions, $options);
                     // Merge the dbWarnings, if any
                     $feedbackMessageStore = FeedbackMessageStoreFacade::getInstance();
                     if ($resultItemDBWarnings = $feedbackMessageStore->retrieveAndClearResultItemDBWarnings($id)) {

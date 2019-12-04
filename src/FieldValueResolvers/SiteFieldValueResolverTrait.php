@@ -1,10 +1,10 @@
 <?php
 namespace PoP\Engine\FieldValueResolvers;
-use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 
 trait SiteFieldValueResolverTrait
 {
-    public function resolveCanProcessResultItem(FieldResolverInterface $fieldResolver, $resultItem, string $fieldName, array $fieldArgs = []): bool
+    public function resolveCanProcessResultItem(TypeResolverInterface $typeResolver, $resultItem, string $fieldName, array $fieldArgs = []): bool
     {
         $cmsengineapi = \PoP\Engine\FunctionAPIFactory::getInstance();
         $site = $resultItem;
@@ -13,6 +13,6 @@ trait SiteFieldValueResolverTrait
         if ($site->getHost() != $cmsengineapi->getHost()) {
             return false;
         }
-        return parent::resolveCanProcessResultItem($fieldResolver, $resultItem, $fieldName, $fieldArgs);
+        return parent::resolveCanProcessResultItem($typeResolver, $resultItem, $fieldName, $fieldArgs);
     }
 }

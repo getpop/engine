@@ -5,8 +5,8 @@ use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\DataloaderInterface;
 use PoP\Engine\Dataloading\Expressions;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\FieldResolvers\PipelinePositions;
-use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\TypeResolvers\PipelinePositions;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 
 class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolver
@@ -46,7 +46,7 @@ class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolv
         return false;
     }
 
-    public function getSchemaDirectiveDescription(FieldResolverInterface $fieldResolver): ?string
+    public function getSchemaDirectiveDescription(TypeResolverInterface $typeResolver): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return sprintf(
@@ -55,7 +55,7 @@ class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolv
         );
     }
 
-    public function getSchemaDirectiveExpressions(FieldResolverInterface $fieldResolver): array
+    public function getSchemaDirectiveExpressions(TypeResolverInterface $typeResolver): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return [
@@ -66,7 +66,7 @@ class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolv
     /**
      * Copy the data under the relational object into the current object
      *
-     * @param FieldResolverInterface $fieldResolver
+     * @param TypeResolverInterface $typeResolver
      * @param array $resultIDItems
      * @param array $idsDataFields
      * @param array $dbItems
@@ -77,7 +77,7 @@ class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolv
      * @param array $schemaDeprecations
      * @return void
      */
-    public function resolveDirective(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    public function resolveDirective(DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         // The name of the variable is always set to "self", accessed as $self
         $dbKey = $dataloader->getDatabaseKey();

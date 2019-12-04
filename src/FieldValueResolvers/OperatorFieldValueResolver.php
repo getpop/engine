@@ -8,7 +8,7 @@ use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorOrHelperFieldValueResolver;
 
@@ -46,7 +46,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
         ];
     }
 
-    public function getSchemaFieldType(FieldResolverInterface $fieldResolver, string $fieldName): ?string
+    public function getSchemaFieldType(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         $types = [
             'if' => SchemaDefinition::TYPE_MIXED,
@@ -75,10 +75,10 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayAsQueryStr' => SchemaDefinition::TYPE_STRING,
             'extract' => SchemaDefinition::TYPE_MIXED,
         ];
-        return $types[$fieldName] ?? parent::getSchemaFieldType($fieldResolver, $fieldName);
+        return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
 
-    public function getSchemaFieldDescription(FieldResolverInterface $fieldResolver, string $fieldName): ?string
+    public function getSchemaFieldDescription(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
@@ -108,10 +108,10 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
             'arrayAsQueryStr' => $translationAPI->__('Represent an array as a string', 'component-model'),
             'extract' => $translationAPI->__('Given an object, it retrieves the data under a certain path', 'pop-component-model'),
         ];
-        return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
+        return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
 
-    public function getSchemaFieldArgs(FieldResolverInterface $fieldResolver, string $fieldName): array
+    public function getSchemaFieldArgs(TypeResolverInterface $typeResolver, string $fieldName): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
@@ -418,12 +418,12 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 ];
         }
 
-        return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
+        return parent::getSchemaFieldArgs($typeResolver, $fieldName);
     }
 
-    public function resolveSchemaValidationErrorDescription(FieldResolverInterface $fieldResolver, string $fieldName, array $fieldArgs = []): ?string
+    public function resolveSchemaValidationErrorDescription(TypeResolverInterface $typeResolver, string $fieldName, array $fieldArgs = []): ?string
     {
-        if ($error = parent::resolveSchemaValidationErrorDescription($fieldResolver, $fieldName, $fieldArgs)) {
+        if ($error = parent::resolveSchemaValidationErrorDescription($typeResolver, $fieldName, $fieldArgs)) {
             return $error;
         }
 
@@ -491,7 +491,7 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
         return $this->safeVars;
     }
 
-    public function resolveValue(FieldResolverInterface $fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
+    public function resolveValue(TypeResolverInterface $typeResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
     {
         switch ($fieldName) {
             case 'if':
@@ -588,6 +588,6 @@ class OperatorFieldValueResolver extends AbstractOperatorOrHelperFieldValueResol
                 return Extract::getDataFromPath($fieldName, $fieldArgs['object'], $fieldArgs['path']);
         }
 
-        return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
+        return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
     }
 }

@@ -6,8 +6,8 @@ use PoP\Engine\Dataloading\Expressions;
 use PoP\ComponentModel\DataloaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\FieldResolvers\AbstractFieldResolver;
-use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FeedbackMessageStoreFacade;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\Feedback\Tokens;
@@ -19,17 +19,17 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
         return self::DIRECTIVE_NAME;
     }
 
-    public function getSchemaDirectiveDescription(FieldResolverInterface $fieldResolver): ?string
+    public function getSchemaDirectiveDescription(TypeResolverInterface $typeResolver): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return $translationAPI->__('Iterate all affected array items and execute the nested directives on them', 'component-model');
     }
 
-    public function getSchemaDirectiveArgs(FieldResolverInterface $fieldResolver): array
+    public function getSchemaDirectiveArgs(TypeResolverInterface $typeResolver): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return array_merge(
-            parent::getSchemaDirectiveArgs($fieldResolver),
+            parent::getSchemaDirectiveArgs($typeResolver),
             [
                 [
                     SchemaDefinition::ARGNAME_NAME => 'if',
@@ -40,7 +40,7 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
         );
     }
 
-    public function getSchemaDirectiveExpressions(FieldResolverInterface $fieldResolver): array
+    public function getSchemaDirectiveExpressions(TypeResolverInterface $typeResolver): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return [
@@ -55,7 +55,7 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
      * @param array $value
      * @return void
      */
-    protected function getArrayItems(array &$array, $id, string $field, DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array
+    protected function getArrayItems(array &$array, $id, string $field, DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array
     {
         if ($if = $this->directiveArgsForSchema['if']) {
             // If it is a field, execute the function against all the values in the array
@@ -64,14 +64,14 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
             $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
             if ($fieldQueryInterpreter->isFieldArgumentValueAField($if)) {
                 $options = [
-                    AbstractFieldResolver::OPTION_VALIDATE_SCHEMA_ON_RESULT_ITEM => true,
+                    AbstractTypeResolver::OPTION_VALIDATE_SCHEMA_ON_RESULT_ITEM => true,
                 ];
                 $arrayItems = [];
                 foreach ($array as $key => $value) {
                     $this->addExpressionForResultItem($id, Expressions::NAME_KEY, $key, $messages);
                     $this->addExpressionForResultItem($id, Expressions::NAME_VALUE, $value, $messages);
                     $expressions = $this->getExpressionsForResultItem($id, $variables, $messages);
-                    $resolvedValue = $fieldResolver->resolveValue($resultIDItems[(string)$id], $if, $variables, $expressions, $options);
+                    $resolvedValue = $typeResolver->resolveValue($resultIDItems[(string)$id], $if, $variables, $expressions, $options);
                     // Merge the dbWarnings, if any
                     $feedbackMessageStore = FeedbackMessageStoreFacade::getInstance();
                     if ($resultItemDBWarnings = $feedbackMessageStore->retrieveAndClearResultItemDBWarnings($id)) {

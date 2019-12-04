@@ -6,7 +6,7 @@ use PoP\Engine\Misc\OperatorHelpers;
 use PoP\ComponentModel\DataloaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Feedback\Tokens;
 
 class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver
@@ -26,13 +26,13 @@ class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectiv
         return true;
     }
 
-    public function getSchemaDirectiveDescription(FieldResolverInterface $fieldResolver): ?string
+    public function getSchemaDirectiveDescription(TypeResolverInterface $typeResolver): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return $translationAPI->__('Apply all nested directives on the element found under the \'path\' parameter in the affected array object', 'component-model');
     }
 
-    public function getSchemaDirectiveArgs(FieldResolverInterface $fieldResolver): array
+    public function getSchemaDirectiveArgs(TypeResolverInterface $typeResolver): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return array_merge(
@@ -44,7 +44,7 @@ class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectiv
                     SchemaDefinition::ARGNAME_MANDATORY => true,
                 ],
             ],
-            parent::getSchemaDirectiveArgs($fieldResolver)
+            parent::getSchemaDirectiveArgs($typeResolver)
         );
     }
 
@@ -54,7 +54,7 @@ class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectiv
      * @param array $array
      * @return void
      */
-    protected function getArrayItems(array &$array, $id, string $field, DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array
+    protected function getArrayItems(array &$array, $id, string $field, DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array
     {
         $path = $this->directiveArgsForSchema['path'];
 

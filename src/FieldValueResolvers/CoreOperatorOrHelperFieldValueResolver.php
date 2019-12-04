@@ -5,7 +5,7 @@ use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Engine\Dataloading\Expressions;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\FieldValueResolvers\AbstractOperatorOrHelperFieldValueResolver;
 
 class CoreOperatorOrHelperFieldValueResolver extends AbstractOperatorOrHelperFieldValueResolver
@@ -17,15 +17,15 @@ class CoreOperatorOrHelperFieldValueResolver extends AbstractOperatorOrHelperFie
         ];
     }
 
-    public function getSchemaFieldType(FieldResolverInterface $fieldResolver, string $fieldName): ?string
+    public function getSchemaFieldType(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         $types = [
             'getSelfProp' => SchemaDefinition::TYPE_MIXED,
         ];
-        return $types[$fieldName] ?? parent::getSchemaFieldType($fieldResolver, $fieldName);
+        return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
 
-    public function getSchemaFieldDescription(FieldResolverInterface $fieldResolver, string $fieldName): ?string
+    public function getSchemaFieldDescription(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
@@ -34,10 +34,10 @@ class CoreOperatorOrHelperFieldValueResolver extends AbstractOperatorOrHelperFie
                 QueryHelpers::getExpressionQuery(Expressions::NAME_SELF)
             ),
         ];
-        return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($fieldResolver, $fieldName);
+        return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
 
-    public function getSchemaFieldArgs(FieldResolverInterface $fieldResolver, string $fieldName): array
+    public function getSchemaFieldArgs(TypeResolverInterface $typeResolver, string $fieldName): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
@@ -58,10 +58,10 @@ class CoreOperatorOrHelperFieldValueResolver extends AbstractOperatorOrHelperFie
                 ];
         }
 
-        return parent::getSchemaFieldArgs($fieldResolver, $fieldName);
+        return parent::getSchemaFieldArgs($typeResolver, $fieldName);
     }
 
-    public function resolveValue(FieldResolverInterface $fieldResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
+    public function resolveValue(TypeResolverInterface $typeResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
     {
         switch ($fieldName) {
             case 'getSelfProp':
@@ -70,6 +70,6 @@ class CoreOperatorOrHelperFieldValueResolver extends AbstractOperatorOrHelperFie
                 $property = $fieldArgs['property'];
                 return array_key_exists($property, $self['dbItems']) ? $self['dbItems'][$property] : $self['previousDBItems'][$property];
         }
-        return parent::resolveValue($fieldResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
+        return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
     }
 }

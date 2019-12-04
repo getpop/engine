@@ -3,7 +3,7 @@ namespace PoP\Engine\DirectiveResolvers;
 
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\ComponentModel\FieldResolvers\FieldResolverInterface;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\DirectiveResolvers\AbstractSchemaDirectiveResolver;
 use PoP\ComponentModel\DataloaderInterface;
@@ -12,7 +12,7 @@ abstract class AbstractUseDefaultValueIfNullDirectiveResolver extends AbstractSc
 {
     protected abstract function getDefaultValue();
 
-    public function resolveDirective(DataloaderInterface $dataloader, FieldResolverInterface $fieldResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    public function resolveDirective(DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         // Replace all the NULL results with the default value
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
@@ -25,7 +25,7 @@ abstract class AbstractUseDefaultValueIfNullDirectiveResolver extends AbstractSc
                 $resultItemValidDirective,
                 $resultItemDirectiveName,
                 $resultItemDirectiveArgs
-            ) = $this->dissectAndValidateDirectiveForResultItem($fieldResolver, $resultItem, $variables, $expressions, $dbErrors, $dbWarnings);
+            ) = $this->dissectAndValidateDirectiveForResultItem($typeResolver, $resultItem, $variables, $expressions, $dbErrors, $dbWarnings);
             // Check that the directive is valid. If it is not, $dbErrors will have the error already added
             if (is_null($resultItemValidDirective)) {
                 continue;
@@ -45,12 +45,12 @@ abstract class AbstractUseDefaultValueIfNullDirectiveResolver extends AbstractSc
             }
         }
     }
-    public function getSchemaDirectiveDescription(FieldResolverInterface $fieldResolver): ?string
+    public function getSchemaDirectiveDescription(TypeResolverInterface $typeResolver): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return $translationAPI->__('If the value of the field is `NULL`, replace it with either the value provided under arg \'value\', or with a default value configured in the directive resolver', 'api');
     }
-    public function getSchemaDirectiveArgs(FieldResolverInterface $fieldResolver): array
+    public function getSchemaDirectiveArgs(TypeResolverInterface $typeResolver): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return [
