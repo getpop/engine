@@ -3,7 +3,7 @@ namespace PoP\Engine\DirectiveResolvers;
 
 use Exception;
 use PoP\Engine\Misc\OperatorHelpers;
-use PoP\ComponentModel\DataloaderInterface;
+use PoP\ComponentModel\TypeDataResolvers\TypeDataResolverInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
@@ -54,7 +54,7 @@ class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectiv
      * @param array $array
      * @return void
      */
-    protected function getArrayItems(array &$array, $id, string $field, DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array
+    protected function getArrayItems(array &$array, $id, string $field, TypeDataResolverInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array
     {
         $path = $this->directiveArgsForSchema['path'];
 

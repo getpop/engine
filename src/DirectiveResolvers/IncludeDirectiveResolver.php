@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\DirectiveResolvers;
 
-use PoP\ComponentModel\DataloaderInterface;
+use PoP\ComponentModel\TypeDataResolvers\TypeDataResolverInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\PipelinePositions;
@@ -27,7 +27,7 @@ class IncludeDirectiveResolver extends AbstractGlobalDirectiveResolver
         return PipelinePositions::MIDDLE;
     }
 
-    public function resolveDirective(DataloaderInterface $dataloader, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    public function resolveDirective(TypeDataResolverInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         // Check the condition field. If it is satisfied, then keep those fields, otherwise remove them from the $idsDataFields in the upcoming stages of the pipeline
         $includeDataFieldsForIds = $this->getIdsSatisfyingCondition($typeResolver, $resultIDItems, $idsDataFields, $variables, $messages, $dbErrors, $dbWarnings);
