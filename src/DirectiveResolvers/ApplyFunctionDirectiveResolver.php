@@ -93,7 +93,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
             );
             $function = $fieldQueryInterpreter->getField($functionName, $functionArgElems);
         }
-        $dbKey = $typeDataResolver->getDatabaseKey();
+        $dbKey = $typeResolver->getTypeName();
 
         // Get the value from the object
         foreach ($idsDataFields as $id => $dataFields) {
@@ -256,7 +256,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);
         $isValueInDBItems = array_key_exists($fieldOutputKey, $dbItems[(string)$id] ?? []);
-        $dbKey = $typeDataResolver->getDatabaseKey();
+        $dbKey = $typeResolver->getTypeName();
         $value = $isValueInDBItems ?
             $dbItems[(string)$id][$fieldOutputKey] :
             $previousDBItems[$dbKey][(string)$id][$fieldOutputKey];

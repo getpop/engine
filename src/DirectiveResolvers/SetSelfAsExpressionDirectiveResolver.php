@@ -6,7 +6,6 @@ use PoP\Engine\Dataloading\Expressions;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\PipelinePositions;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
-use PoP\ComponentModel\TypeResolvers\ConvertibleTypeHelpers;
 use PoP\ComponentModel\TypeDataResolvers\TypeDataResolverInterface;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 
@@ -81,7 +80,7 @@ class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolv
     public function resolveDirective(TypeDataResolverInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$convertibleDBKeyIDs, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         // The name of the variable is always set to "self", accessed as $self
-        $dbKey = $typeDataResolver->getDatabaseKey();
+        $dbKey = $typeResolver->getTypeName();
         foreach (array_keys($idsDataFields) as $id) {
             // Make an array of references, pointing to the position of the current object in arrays $dbItems and $previousDBItems;
             // It is extremeley important to make it by reference, so that when the 2 variables are updated later on during the current iteration,
