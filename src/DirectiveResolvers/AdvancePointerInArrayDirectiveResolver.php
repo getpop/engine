@@ -54,7 +54,7 @@ class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectiv
      * @param array $array
      * @return void
      */
-    protected function getArrayItems(array &$array, $id, string $field, TypeDataLoaderInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array
+    protected function getArrayItems(array &$array, $id, string $field, TypeDataLoaderInterface $typeDataLoader, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array
     {
         $path = $this->directiveArgsForSchema['path'];
 

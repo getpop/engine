@@ -65,7 +65,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
      * 2. Execute <transformProperty> on each property
      * 3. Pack into the array, once again, and remove all temporary properties
      *
-     * @param TypeDataLoaderInterface $typeDataResolver
+     * @param TypeDataLoaderInterface $typeDataLoader
      * @param TypeResolverInterface $typeResolver
      * @param array $resultIDItems
      * @param array $idsDataFields
@@ -80,7 +80,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
      * @param array $messages
      * @return void
      */
-    public function resolveDirective(TypeDataLoaderInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$convertibleDBKeyIDs, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    public function resolveDirective(TypeDataLoaderInterface $typeDataLoader, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$convertibleDBKeyIDs, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         $translationAPI = TranslationAPIFacade::getInstance();
 
@@ -180,7 +180,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
 
                 // The value is an array. Unpack all the elements into their own property
                 $array = $value;
-                if ($arrayItems = $this->getArrayItems($array, $id, $field, $typeDataResolver, $typeResolver, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings)) {
+                if ($arrayItems = $this->getArrayItems($array, $id, $field, $typeDataLoader, $typeResolver, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings)) {
                     $execute = true;
                     foreach ($arrayItems as $key => &$value) {
                         // Add into the $idsDataFields object for the array items
@@ -202,7 +202,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                     }
                     $arrayItemIdsProperties[(string)$id]['conditional'] = [];
 
-                    $this->addExpressionsForResultItem($typeDataResolver, $typeResolver, $id, $field, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
+                    $this->addExpressionsForResultItem($typeDataLoader, $typeResolver, $id, $field, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
                 }
             }
         }
@@ -223,7 +223,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
             }
             // 2. Execute the nested directive pipeline on all arrayItems
             $nestedDirectivePipeline->resolveDirectivePipeline(
-                $typeDataResolver,
+                $typeDataLoader,
                 $typeResolver,
                 $pipelineArrayItemIdsProperties, // Here we pass the properties to the array elements!
                 $resultIDItems,
@@ -267,7 +267,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                     // If there are errors, it will return null. Don't add the errors again
                     $arrayItemDBErrors = $arrayItemDBWarnings = [];
                     $array = $value;
-                    $arrayItems = $this->getArrayItems($array, $id, $field, $typeDataResolver, $typeResolver, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $arrayItemDBErrors, $arrayItemDBWarnings);
+                    $arrayItems = $this->getArrayItems($array, $id, $field, $typeDataLoader, $typeResolver, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $arrayItemDBErrors, $arrayItemDBWarnings);
                     // The value is an array. Unpack all the elements into their own property
                     foreach ($arrayItems as $key => &$value) {
                         $arrayItemAlias = $this->createPropertyForArrayItem($fieldAlias ? $fieldAlias : QuerySyntax::SYMBOL_FIELDALIAS_PREFIX.$fieldName, $key);
@@ -312,7 +312,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
      * @param array $value
      * @return void
      */
-    abstract protected function getArrayItems(array &$array, $id, string $field, TypeDataLoaderInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array;
+    abstract protected function getArrayItems(array &$array, $id, string $field, TypeDataLoaderInterface $typeDataLoader, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array;
 
     /**
      * Create a property for storing the array item in the current object
@@ -338,7 +338,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
     /**
      * Add the $key in addition to the $value
      *
-     * @param TypeDataLoaderInterface $typeDataResolver
+     * @param TypeDataLoaderInterface $typeDataLoader
      * @param TypeResolverInterface $typeResolver
      * @param [type] $id
      * @param string $field
@@ -354,7 +354,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
      * @param array $messages
      * @return void
      */
-    protected function addExpressionsForResultItem(TypeDataLoaderInterface $typeDataResolver, TypeResolverInterface $typeResolver, $id, string $field, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    protected function addExpressionsForResultItem(TypeDataLoaderInterface $typeDataLoader, TypeResolverInterface $typeResolver, $id, string $field, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         // Enable the query to provide variables to pass down
         $addExpressions = $this->directiveArgsForSchema['addExpressions'] ?? [];
