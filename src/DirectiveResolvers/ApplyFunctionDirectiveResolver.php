@@ -4,7 +4,7 @@ namespace PoP\Engine\DirectiveResolvers;
 use PoP\FieldQuery\QueryHelpers;
 use PoP\ComponentModel\GeneralUtils;
 use PoP\Engine\Dataloading\Expressions;
-use PoP\ComponentModel\TypeDataResolvers\TypeDataResolverInterface;
+use PoP\ComponentModel\TypeDataLoaders\TypeDataLoaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
@@ -56,7 +56,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
         ];
     }
 
-    public function resolveDirective(TypeDataResolverInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$convertibleDBKeyIDs, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    public function resolveDirective(TypeDataLoaderInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$convertibleDBKeyIDs, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         $this->regenerateAndExecuteFunction($typeDataResolver, $typeResolver, $resultIDItems, $idsDataFields, $dbItems, $previousDBItems, $variables, $messages, $dbErrors, $dbWarnings, $schemaErrors, $schemaWarnings, $schemaDeprecations);
     }
@@ -75,7 +75,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
      * @param array $schemaDeprecations
      * @return void
      */
-    protected function regenerateAndExecuteFunction(TypeDataResolverInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$idsDataFields, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    protected function regenerateAndExecuteFunction(TypeDataLoaderInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$idsDataFields, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         $function = $this->directiveArgsForSchema['function'];
         $addArguments = $this->directiveArgsForSchema['addArguments'] ?? [];
@@ -235,7 +235,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
     /**
      * Place all the reserved variables into the `$variables` context
      *
-     * @param TypeDataResolverInterface $typeDataResolver
+     * @param TypeDataLoaderInterface $typeDataResolver
      * @param TypeResolverInterface $typeResolver
      * @param [type] $id
      * @param string $field
@@ -251,7 +251,7 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
      * @param array $messages
      * @return void
      */
-    protected function addExpressionsForResultItem(TypeDataResolverInterface $typeDataResolver, TypeResolverInterface $typeResolver, $id, string $field, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
+    protected function addExpressionsForResultItem(TypeDataLoaderInterface $typeDataResolver, TypeResolverInterface $typeResolver, $id, string $field, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);

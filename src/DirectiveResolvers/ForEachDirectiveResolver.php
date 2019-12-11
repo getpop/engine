@@ -3,7 +3,7 @@ namespace PoP\Engine\DirectiveResolvers;
 
 use PoP\ComponentModel\GeneralUtils;
 use PoP\Engine\Dataloading\Expressions;
-use PoP\ComponentModel\TypeDataResolvers\TypeDataResolverInterface;
+use PoP\ComponentModel\TypeDataLoaders\TypeDataLoaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
@@ -55,7 +55,7 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
      * @param array $value
      * @return void
      */
-    protected function getArrayItems(array &$array, $id, string $field, TypeDataResolverInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array
+    protected function getArrayItems(array &$array, $id, string $field, TypeDataLoaderInterface $typeDataResolver, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings): ?array
     {
         if ($if = $this->directiveArgsForSchema['if']) {
             // If it is a field, execute the function against all the values in the array
