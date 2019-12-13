@@ -37,7 +37,7 @@ class DBItemListDataStructureFormatter extends AbstractJSONDataStructureFormatte
             $ret = array();
 
             // If there are no "databases" entry, then there are no results, so return an empty array
-            if ($databases = $data['databases']) {
+            if ($databases = $data['dbData']) {
                 // First pass: merge all content about the same DB object
                 // Eg: notifications can appear under "database" and "userstatedatabase", showing different fields on each
                 $merged_databases = array();
