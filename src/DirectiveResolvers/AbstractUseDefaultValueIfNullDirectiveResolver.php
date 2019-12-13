@@ -56,7 +56,8 @@ abstract class AbstractUseDefaultValueIfNullDirectiveResolver extends AbstractSc
             [
                 SchemaDefinition::ARGNAME_NAME => 'value',
                 SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('If the value of the field is `NULL`, replace it with the value from this argument. If this value is not provided, the default value configured in the directive resolver will be used', 'api'),
+                SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('If the value of the field is `NULL`, replace it with the value from this argument', 'api'),
+                SchemaDefinition::ARGNAME_DEFAULT_VALUE => $this->getDefaultValue(),
             ],
         ];
     }

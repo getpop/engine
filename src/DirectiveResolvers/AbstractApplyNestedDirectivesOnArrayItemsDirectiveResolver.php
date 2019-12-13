@@ -38,7 +38,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 SchemaDefinition::ARGNAME_NAME => 'appendExpressions',
                 SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
                 SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
-                    $translationAPI->__('Append a value to an expression which must be an array, to inject to the nested directive. If the array is had not been set, it is initialized as an empty array. The value of the affected field can be provided under special expression `%s`', 'component-model'),
+                    $translationAPI->__('Append a value to an expression which must be an array, to inject to the nested directive. If the array has not been set, it is initialized as an empty array. The value of the affected field can be provided under special expression `%s`', 'component-model'),
                     QueryHelpers::getExpressionQuery(Expressions::NAME_VALUE)
                 ),
             ],

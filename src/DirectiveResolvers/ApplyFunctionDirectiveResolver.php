@@ -42,7 +42,8 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
             [
                 SchemaDefinition::ARGNAME_NAME => 'target',
                 SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Property from the current object where to store the results of the function. If not provided, it uses the same as the affected field. If the result must not be stored, pass an empty value', 'component-model'),
+                SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Property from the current object where to store the results of the function. If the result must not be stored, pass an empty value', 'component-model'),
+                SchemaDefinition::ARGNAME_DEFAULT_VALUE => $translationAPI->__('Same property as the affected field', 'component-model'),
             ],
         ];
     }
