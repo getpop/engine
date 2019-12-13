@@ -67,11 +67,11 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
             'arrayJoin' => SchemaDefinition::TYPE_STRING,
             'arrayItem' => SchemaDefinition::TYPE_MIXED,
             'arraySearch' => SchemaDefinition::TYPE_MIXED,
-            'arrayFill' => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
-            'arrayValues' => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
-            'arrayUnique' => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
-            'arrayDiff' => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
-            'arrayAddItem' => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+            'arrayFill' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
+            'arrayValues' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
+            'arrayUnique' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
+            'arrayDiff' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
+            'arrayAddItem' => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
             'arrayAsQueryStr' => SchemaDefinition::TYPE_STRING,
             'extract' => SchemaDefinition::TYPE_MIXED,
         ];
@@ -151,7 +151,7 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'values',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_BOOL),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_BOOL),
                         SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
                             $translationAPI->__('The array of values on which to execute the `%s` operation', 'component-model'),
                             strtoupper($fieldName)
@@ -215,7 +215,7 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
                     ],
                     [
                         SchemaDefinition::ARGNAME_NAME => 'values',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_STRING),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_STRING),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The values to replace the placeholders with inside the string', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -225,7 +225,7 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'values',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_STRING),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_STRING),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Strings to concatenate', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -261,7 +261,7 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array of elements from which to randomly select one', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ]
@@ -271,7 +271,7 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_STRING),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_STRING),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array of strings to be joined all together', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -286,7 +286,7 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array containing the element to retrieve', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -302,7 +302,7 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array containing the element to search', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -318,13 +318,13 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'target',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array to be added elements coming from the source array', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
                     [
                         SchemaDefinition::ARGNAME_NAME => 'source',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array whose elements will be added to the target array', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -336,7 +336,7 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
                     ],
                     [
                         SchemaDefinition::ARGNAME_NAME => 'properties',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_STRING),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_STRING),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Properties to copy from the source to the target array. If empty, all properties in the source array will be copied', 'component-model'),
                     ],
                 ];
@@ -345,7 +345,7 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array from which to retrieve the values', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -355,7 +355,7 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array to operate on', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -365,7 +365,7 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'arrays',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array containing all the arrays. It must have at least 2 elements', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -375,7 +375,7 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array to add an item on', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
@@ -396,7 +396,7 @@ class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
                 return [
                     [
                         SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::combineTypes(SchemaDefinition::TYPE_ARRAY, SchemaDefinition::TYPE_MIXED),
+                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
                         SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array to represented as a string', 'component-model'),
                         SchemaDefinition::ARGNAME_MANDATORY => true,
                     ],
