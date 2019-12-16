@@ -96,7 +96,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
          */
         $arrayItemIdsProperties = [];
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
-        $dbKey = $typeResolver->getTypeName();
+        $dbKey = $typeResolver->getTypeOutputName();
         /**
          * Execute nested directive only if the validations do not fail
          */
@@ -360,7 +360,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
             $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
             $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);
             $isValueInDBItems = array_key_exists($fieldOutputKey, $dbItems[(string)$id] ?? []);
-            $dbKey = $typeResolver->getTypeName();
+            $dbKey = $typeResolver->getTypeOutputName();
             $value = $isValueInDBItems ?
                 $dbItems[(string)$id][$fieldOutputKey] :
                 $previousDBItems[$dbKey][(string)$id][$fieldOutputKey];
