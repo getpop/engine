@@ -1,15 +1,14 @@
 <?php
 namespace PoP\Engine\FieldResolvers\Guzzle;
 
-use PoP\Engine\Environment;
 use PoP\GuzzleHelpers\GuzzleHelpers;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
-use PoP\ComponentModel\FieldResolvers\AbstractOperatorOrHelperFieldResolver;
+use PoP\ComponentModel\FieldResolvers\AbstractGlobalFieldResolver;
 
-class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
+class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
 {
     public static function getFieldNamesToResolve(): array
     {

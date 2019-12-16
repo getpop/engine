@@ -6,9 +6,9 @@ use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Engine\Dataloading\Expressions;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
-use PoP\ComponentModel\FieldResolvers\AbstractOperatorOrHelperFieldResolver;
+use PoP\ComponentModel\FieldResolvers\AbstractGlobalFieldResolver;
 
-class CoreOperatorOrHelperFieldResolver extends AbstractOperatorOrHelperFieldResolver
+class FunctionGlobalFieldResolver extends AbstractGlobalFieldResolver
 {
     public static function getFieldNamesToResolve(): array
     {

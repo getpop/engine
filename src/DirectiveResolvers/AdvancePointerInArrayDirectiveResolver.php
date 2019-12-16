@@ -3,7 +3,6 @@ namespace PoP\Engine\DirectiveResolvers;
 
 use Exception;
 use PoP\Engine\Misc\OperatorHelpers;
-use PoP\ComponentModel\TypeDataLoaders\TypeDataLoaderInterface;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;

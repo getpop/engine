@@ -10,9 +10,9 @@ use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
-use PoP\ComponentModel\FieldResolvers\AbstractOperatorOrHelperFieldResolver;
+use PoP\ComponentModel\FieldResolvers\AbstractGlobalFieldResolver;
 
-class OperatorFieldResolver extends AbstractOperatorOrHelperFieldResolver
+class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
 {
     public const HOOK_SAFEVARS = __CLASS__.':safeVars';
     public static function getFieldNamesToResolve(): array
