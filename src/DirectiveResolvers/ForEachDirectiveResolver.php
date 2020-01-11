@@ -22,7 +22,7 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
     public function getSchemaDirectiveDescription(TypeResolverInterface $typeResolver): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
-        return $translationAPI->__('Iterate all affected array items and execute the nested directives on them', 'component-model');
+        return $translationAPI->__('Iterate all affected array items and execute the composed directives on them', 'component-model');
     }
 
     public function getSchemaDirectiveArgs(TypeResolverInterface $typeResolver): array

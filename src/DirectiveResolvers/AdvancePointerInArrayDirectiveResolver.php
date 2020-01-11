@@ -28,7 +28,7 @@ class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectiv
     public function getSchemaDirectiveDescription(TypeResolverInterface $typeResolver): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
-        return $translationAPI->__('Apply all nested directives on the element found under the \'path\' parameter in the affected array object', 'component-model');
+        return $translationAPI->__('Apply all composed directives on the element found under the \'path\' parameter in the affected array object', 'component-model');
     }
 
     public function getSchemaDirectiveArgs(TypeResolverInterface $typeResolver): array

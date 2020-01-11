@@ -30,7 +30,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 SchemaDefinition::ARGNAME_NAME => 'addExpressions',
                 SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
                 SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
-                    $translationAPI->__('Expressions to inject to the nested directive. The value of the affected field can be provided under special expression `%s`', 'component-model'),
+                    $translationAPI->__('Expressions to inject to the composed directive. The value of the affected field can be provided under special expression `%s`', 'component-model'),
                     QueryHelpers::getExpressionQuery(Expressions::NAME_VALUE)
                 ),
             ],
@@ -38,7 +38,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 SchemaDefinition::ARGNAME_NAME => 'appendExpressions',
                 SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
                 SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
-                    $translationAPI->__('Append a value to an expression which must be an array, to inject to the nested directive. If the array has not been set, it is initialized as an empty array. The value of the affected field can be provided under special expression `%s`', 'component-model'),
+                    $translationAPI->__('Append a value to an expression which must be an array, to inject to the composed directive. If the array has not been set, it is initialized as an empty array. The value of the affected field can be provided under special expression `%s`', 'component-model'),
                     QueryHelpers::getExpressionQuery(Expressions::NAME_VALUE)
                 ),
             ],
@@ -82,11 +82,11 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
     {
         $translationAPI = TranslationAPIFacade::getInstance();
 
-        // If there is no nested directives to execute, then nothing to do
+        // If there are no composed directives to execute, then nothing to do
         if (!$this->nestedDirectivePipelineData) {
             $schemaWarnings[] = [
                 Tokens::PATH => [$this->directive],
-                Tokens::MESSAGE => $translationAPI->__('No nested directives were provided, so nothing to do for this directive', 'component-model'),
+                Tokens::MESSAGE => $translationAPI->__('No composed directives were provided, so nothing to do for this directive', 'component-model'),
             ];
             return;
         }
@@ -98,7 +98,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         $dbKey = $typeResolver->getTypeOutputName();
         /**
-         * Execute nested directive only if the validations do not fail
+         * Execute composed directive only if the validations do not fail
          */
         $execute = false;
 
@@ -219,7 +219,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
             for ($i=0; $i<count($directiveResolverInstances); $i++) {
                 $pipelineArrayItemIdsProperties[] = $arrayItemIdsProperties;
             }
-            // 2. Execute the nested directive pipeline on all arrayItems
+            // 2. Execute the composed directive pipeline on all arrayItems
             $nestedDirectivePipeline->resolveDirectivePipeline(
                 $typeResolver,
                 $pipelineArrayItemIdsProperties, // Here we pass the properties to the array elements!
