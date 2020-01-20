@@ -263,9 +263,9 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                     $fieldDirectives = $fieldParts[4];
 
                     // If there are errors, it will return null. Don't add the errors again
-                    $arrayItemDBErrors = $arrayItemDBWarnings = [];
+                    $arrayItemDBErrors = $arrayItemDBWarnings = $arrayItemDBDeprecations = [];
                     $array = $value;
-                    $arrayItems = $this->getArrayItems($array, $id, $field, $typeResolver, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $arrayItemDBErrors, $arrayItemDBWarnings);
+                    $arrayItems = $this->getArrayItems($array, $id, $field, $typeResolver, $resultIDItems, $dbItems, $previousDBItems, $variables, $messages, $arrayItemDBErrors, $arrayItemDBWarnings, $arrayItemDBDeprecations);
                     // The value is an array. Unpack all the elements into their own property
                     foreach ($arrayItems as $key => &$value) {
                         $arrayItemAlias = $this->createPropertyForArrayItem($fieldAlias ? $fieldAlias : QuerySyntax::SYMBOL_FIELDALIAS_PREFIX.$fieldName, $key);
