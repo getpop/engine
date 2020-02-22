@@ -23,5 +23,5 @@ abstract class AbstractHookSet
      *
      * @return void
      */
-    protected abstract function init();
+    abstract protected function init();
 }
