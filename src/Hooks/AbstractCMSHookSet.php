@@ -12,8 +12,13 @@ abstract class AbstractCMSHookSet extends AbstractHookSet
     {
         $this->hooksAPI->addAction(
             'popcms:init',
-            [$this, 'cmsInit']
+            [$this, 'cmsInit'],
+            $this->getPriority()
         );
+    }
+    protected function getPriority(): int
+    {
+        return 10;
     }
     abstract public function cmsInit(): void;
 }
