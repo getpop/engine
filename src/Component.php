@@ -5,9 +5,6 @@ use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Component\YAMLServicesTrait;
 use PoP\Engine\Config\ServiceConfiguration;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
-use PoP\ComponentModel\AttachableExtensions\AttachableExtensionGroups;
-use PoP\Engine\DirectiveResolvers\NoCacheCacheControlDirectiveResolver;
-use PoP\Engine\DirectiveResolvers\OneYearCacheControlDirectiveResolver;
 
 /**
  * Initialize component
