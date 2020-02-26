@@ -9,6 +9,11 @@ use PoP\ComponentModel\DirectiveResolvers\AbstractSchemaDirectiveResolver;
 
 abstract class AbstractUseDefaultValueIfNullDirectiveResolver extends AbstractSchemaDirectiveResolver
 {
+    const DIRECTIVE_NAME = 'default';
+    public static function getDirectiveName(): string {
+        return self::DIRECTIVE_NAME;
+    }
+
     protected abstract function getDefaultValue();
 
     public function resolveDirective(TypeResolverInterface $typeResolver, array &$idsDataFields, array &$succeedingPipelineIDsDataFields, array &$resultIDItems, array &$unionDBKeyIDs, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$dbDeprecations, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
