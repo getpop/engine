@@ -1,7 +1,7 @@
 <?php
 namespace PoP\Engine\Hooks;
 
-abstract class AbstractCMSHookSet extends AbstractHookSet
+abstract class AbstractCMSBootHookSet extends AbstractHookSet
 {
     /**
      * Initialize the hooks when the CMS initializes
@@ -11,8 +11,8 @@ abstract class AbstractCMSHookSet extends AbstractHookSet
     protected function init()
     {
         $this->hooksAPI->addAction(
-            'popcms:init',
-            [$this, 'cmsInit'],
+            'popcms:boot',
+            [$this, 'cmsBoot'],
             $this->getPriority()
         );
     }
@@ -20,5 +20,5 @@ abstract class AbstractCMSHookSet extends AbstractHookSet
     {
         return 10;
     }
-    abstract public function cmsInit(): void;
+    abstract public function cmsBoot(): void;
 }
