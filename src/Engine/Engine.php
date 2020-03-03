@@ -64,8 +64,8 @@ class Engine extends \PoP\ComponentModel\Engine\Engine implements EngineInterfac
         // If CacheControl is enabled, add it to the headers
         $headers = [];
         if (CacheControlComponent::isEnabled()) {
-            $cacheControlManager = CacheControlEngineFacade::getInstance();
-            if ($cacheControlHeader = $cacheControlManager->getCacheControlHeader()) {
+            $cacheControlEngine = CacheControlEngineFacade::getInstance();
+            if ($cacheControlHeader = $cacheControlEngine->getCacheControlHeader()) {
                 $headers[] = $cacheControlHeader;
             }
         }
