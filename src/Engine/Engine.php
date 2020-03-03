@@ -3,7 +3,7 @@ namespace PoP\Engine\Engine;
 
 use PoP\CacheControl\Component as CacheControlComponent;
 use PoP\Translation\Facades\TranslationAPIFacade;
-use PoP\CacheControl\Facades\CacheControlManagerFacade;
+use PoP\CacheControl\Facades\CacheControlEngineFacade;
 use PoP\ComponentModel\Settings\SettingsManagerFactory;
 use PoP\LooseContracts\Facades\LooseContractManagerFacade;
 use PoP\ComponentModel\Facades\DataStructure\DataStructureManagerFacade;
@@ -64,7 +64,7 @@ class Engine extends \PoP\ComponentModel\Engine\Engine implements EngineInterfac
         // If CacheControl is enabled, add it to the headers
         $headers = [];
         if (CacheControlComponent::isEnabled()) {
-            $cacheControlManager = CacheControlManagerFacade::getInstance();
+            $cacheControlManager = CacheControlEngineFacade::getInstance();
             if ($cacheControlHeader = $cacheControlManager->getCacheControlHeader()) {
                 $headers[] = $cacheControlHeader;
             }
