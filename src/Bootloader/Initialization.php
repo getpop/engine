@@ -9,14 +9,14 @@ class Initialization
     public static function init()
     {
         // Boot all the components
-        ComponentManager::prematureBoot();
+        ComponentManager::beforeBoot();
 
         $hooksAPI = HooksAPIFacade::getInstance();
         $hooksAPI->addAction(
             'popcms:boot',
             function() {
                 // Boot all the components
-                ComponentManager::timelyBoot();
+                ComponentManager::boot();
             },
             5
         );
@@ -25,7 +25,7 @@ class Initialization
             'popcms:boot',
             function() {
                 // Boot all the components
-                ComponentManager::lateBoot();
+                ComponentManager::afterBoot();
             },
             15
         );
