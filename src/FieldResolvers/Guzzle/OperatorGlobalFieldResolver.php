@@ -39,29 +39,36 @@ class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
 
     public function getSchemaFieldArgs(TypeResolverInterface $typeResolver, string $fieldName): array
     {
+        $schemaFieldArgs = parent::getSchemaFieldArgs($typeResolver, $fieldName);
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
             case 'getJSON':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'url',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_URL,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The URL to request', 'pop-component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'url',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_URL,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The URL to request', 'pop-component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
             case 'getAsyncJSON':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'urls',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_URL),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The URLs to request, with format `key:value`, where the value is the URL, and the key, if provided, is the name where to store the JSON data in the result (if not provided, it is accessed under the corresponding numeric index)', 'pop-component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'urls',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_URL),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The URLs to request, with format `key:value`, where the value is the URL, and the key, if provided, is the name where to store the JSON data in the result (if not provided, it is accessed under the corresponding numeric index)', 'pop-component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
         }
 
-        return parent::getSchemaFieldArgs($typeResolver, $fieldName);
+        return $schemaFieldArgs;
     }
 
     public function resolveValue(TypeResolverInterface $typeResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])

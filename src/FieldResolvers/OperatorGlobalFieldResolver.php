@@ -113,312 +113,380 @@ class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
 
     public function getSchemaFieldArgs(TypeResolverInterface $typeResolver, string $fieldName): array
     {
+        $schemaFieldArgs = parent::getSchemaFieldArgs($typeResolver, $fieldName);
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
             case 'if':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'condition',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_BOOL,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The condition to check if its value is `true` or `false`', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                    [
-                        SchemaDefinition::ARGNAME_NAME => 'then',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to return if the condition evals to `true`', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                    [
-                        SchemaDefinition::ARGNAME_NAME => 'else',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to return if the condition evals to `false`', 'component-model'),
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'condition',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_BOOL,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The condition to check if its value is `true` or `false`', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'then',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to return if the condition evals to `true`', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'else',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to return if the condition evals to `false`', 'component-model'),
+                        ],
+                    ]
+                );
 
             case 'not':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'value',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_BOOL,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value from which to return its opposite value', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'value',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_BOOL,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value from which to return its opposite value', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
 
             case 'and':
             case 'or':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'values',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_BOOL),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
-                            $translationAPI->__('The array of values on which to execute the `%s` operation', 'component-model'),
-                            strtoupper($fieldName)
-                        ),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'values',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_BOOL),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => sprintf(
+                                $translationAPI->__('The array of values on which to execute the `%s` operation', 'component-model'),
+                                strtoupper($fieldName)
+                            ),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
 
             case 'equals':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'value1',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The first value to compare', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                    [
-                        SchemaDefinition::ARGNAME_NAME => 'value2',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The second value to compare', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'value1',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The first value to compare', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'value2',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The second value to compare', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
 
             case 'empty':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'value',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to check if it is empty', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'value',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to check if it is empty', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
 
             case 'isNull':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'value',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to check if it is null', 'component-model'),
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'value',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to check if it is null', 'component-model'),
+                        ],
+                    ]
+                );
 
             case 'var':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'name',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The name of the variable to retrieve from the `$vars` context object', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'name',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The name of the variable to retrieve from the `$vars` context object', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
 
             case 'sprintf':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'string',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The string containing the placeholders', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                    [
-                        SchemaDefinition::ARGNAME_NAME => 'values',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_STRING),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The values to replace the placeholders with inside the string', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'string',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The string containing the placeholders', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'values',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_STRING),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The values to replace the placeholders with inside the string', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
 
             case 'concat':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'values',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_STRING),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Strings to concatenate', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'values',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_STRING),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Strings to concatenate', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
 
             case 'echo':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'value',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The input to be echoed back', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'value',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The input to be echoed back', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
 
             case 'divide':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'number',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_FLOAT,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Number to divide', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                    [
-                        SchemaDefinition::ARGNAME_NAME => 'by',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_FLOAT,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The division operandum', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'number',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_FLOAT,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Number to divide', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'by',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_FLOAT,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The division operandum', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
 
             case 'arrayRandom':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array of elements from which to randomly select one', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'array',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array of elements from which to randomly select one', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ]
                     ]
-                ];
+                );
 
             case 'arrayJoin':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_STRING),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array of strings to be joined all together', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                    [
-                        SchemaDefinition::ARGNAME_NAME => 'separator',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Separator with which to join all strings in the array', 'component-model'),
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'array',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_STRING),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array of strings to be joined all together', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'separator',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Separator with which to join all strings in the array', 'component-model'),
+                        ],
+                    ]
+                );
 
             case 'arrayItem':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array containing the element to retrieve', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                    [
-                        SchemaDefinition::ARGNAME_NAME => 'position',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Position where the element is placed in the array, starting from 0', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'array',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array containing the element to retrieve', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'position',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Position where the element is placed in the array, starting from 0', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
 
             case 'arraySearch':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array containing the element to search', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                    [
-                        SchemaDefinition::ARGNAME_NAME => 'element',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Element to search in the array and retrieve its position', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'array',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array containing the element to search', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'element',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Element to search in the array and retrieve its position', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
 
             case 'arrayFill':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'target',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array to be added elements coming from the source array', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                    [
-                        SchemaDefinition::ARGNAME_NAME => 'source',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array whose elements will be added to the target array', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                    [
-                        SchemaDefinition::ARGNAME_NAME => 'index',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Property whose value must be the same on both arrays', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                    [
-                        SchemaDefinition::ARGNAME_NAME => 'properties',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_STRING),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Properties to copy from the source to the target array. If empty, all properties in the source array will be copied', 'component-model'),
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'target',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array to be added elements coming from the source array', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'source',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Array whose elements will be added to the target array', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'index',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Property whose value must be the same on both arrays', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'properties',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_STRING),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Properties to copy from the source to the target array. If empty, all properties in the source array will be copied', 'component-model'),
+                        ],
+                    ]
+                );
 
             case 'arrayValues':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array from which to retrieve the values', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'array',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array from which to retrieve the values', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
 
             case 'arrayUnique':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array to operate on', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'array',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array to operate on', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
 
             case 'arrayDiff':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'arrays',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array containing all the arrays. It must have at least 2 elements', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'arrays',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array containing all the arrays. It must have at least 2 elements', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
 
             case 'arrayAddItem':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array to add an item on', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                    [
-                        SchemaDefinition::ARGNAME_NAME => 'value',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to add to the array', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                    [
-                        SchemaDefinition::ARGNAME_NAME => 'key',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Key (string or integer) under which to add the value to the array. If not provided, the value is added without key', 'component-model'),
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'array',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array to add an item on', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'value',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The value to add to the array', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'key',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_MIXED,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('Key (string or integer) under which to add the value to the array. If not provided, the value is added without key', 'component-model'),
+                        ],
+                    ]
+                );
 
             case 'arrayAsQueryStr':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'array',
-                        SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array to represented as a string', 'component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'array',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_MIXED),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The array to represented as a string', 'component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
+
             case 'extract':
-                return [
+                return array_merge(
+                    $schemaFieldArgs,
                     [
-                        SchemaDefinition::ARGNAME_NAME => 'object',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_OBJECT,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The object to retrieve the data from', 'pop-component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                    [
-                        SchemaDefinition::ARGNAME_NAME => 'path',
-                        SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                        SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The path to retrieve data from the object. Paths are separated with \'.\' for each sublevel', 'pop-component-model'),
-                        SchemaDefinition::ARGNAME_MANDATORY => true,
-                    ],
-                ];
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'object',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_OBJECT,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The object to retrieve the data from', 'pop-component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'path',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The path to retrieve data from the object. Paths are separated with \'.\' for each sublevel', 'pop-component-model'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
         }
 
-        return parent::getSchemaFieldArgs($typeResolver, $fieldName);
+        return $schemaFieldArgs;
     }
 
     public function resolveSchemaValidationErrorDescription(TypeResolverInterface $typeResolver, string $fieldName, array $fieldArgs = []): ?string
