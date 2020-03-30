@@ -32,7 +32,7 @@ class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolv
      */
     public function getPipelinePosition(): string
     {
-        return PipelinePositions::FRONT;
+        return PipelinePositions::BEFORE_VALIDATE;
     }
 
     /**
