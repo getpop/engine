@@ -1,10 +1,10 @@
 <?php
-namespace PoP\Engine\TypeResolverDecorators;
+namespace PoP\Engine\TypeResolverDecorators\Cache;
 
 use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
-use PoP\Engine\DirectiveResolvers\LoadCacheDirectiveResolver;
-use PoP\Engine\DirectiveResolvers\SaveCacheDirectiveResolver;
+use PoP\Engine\DirectiveResolvers\Cache\LoadCacheDirectiveResolver;
+use PoP\Engine\DirectiveResolvers\Cache\SaveCacheDirectiveResolver;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\TypeResolverDecorators\AbstractTypeResolverDecorator;
 

@@ -1,8 +1,7 @@
 <?php
-namespace PoP\Engine\DirectiveResolvers;
+namespace PoP\Engine\DirectiveResolvers\Cache;
 
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
-use PoP\ComponentModel\Server\Utils as ServerUtils;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\FieldQuery\FieldQueryInterpreter;
 use PoP\ComponentModel\ComponentConfiguration as ComponentModelComponentConfiguration;

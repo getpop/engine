@@ -1,5 +1,5 @@
 <?php
-namespace PoP\Engine\DirectiveResolvers;
+namespace PoP\Engine\DirectiveResolvers\Cache;
 
 use PoP\Engine\Cache\CacheTypes;
 use PoP\ComponentModel\Feedback\Tokens;

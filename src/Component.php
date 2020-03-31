@@ -5,6 +5,7 @@ use PoP\Root\Component\AbstractComponent;
 use PoP\Root\Component\YAMLServicesTrait;
 use PoP\Engine\Config\ServiceConfiguration;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
+use PoP\ComponentModel\ComponentConfiguration as ComponentModelComponentConfiguration;
 
 /**
  * Initialize component
@@ -37,10 +38,14 @@ class Component extends AbstractComponent
         ContainerBuilderUtils::instantiateNamespaceServices(__NAMESPACE__.'\\Hooks');
         ContainerBuilderUtils::attachFieldResolversFromNamespace(__NAMESPACE__.'\\FieldResolvers', false);
         ContainerBuilderUtils::attachAndRegisterDirectiveResolversFromNamespace(__NAMESPACE__.'\\DirectiveResolvers', false);
-        ContainerBuilderUtils::attachTypeResolverDecoratorsFromNamespace(__NAMESPACE__.'\\TypeResolverDecorators');
+
         if (!Environment::disableGuzzleOperators()) {
             ContainerBuilderUtils::attachFieldResolversFromNamespace(__NAMESPACE__.'\\FieldResolvers\\Guzzle', false);
             ContainerBuilderUtils::attachAndRegisterDirectiveResolversFromNamespace(__NAMESPACE__.'\\DirectiveResolvers\\Guzzle');
+        }
+        if (ComponentModelComponentConfiguration::useComponentModelCache()) {
+            ContainerBuilderUtils::attachAndRegisterDirectiveResolversFromNamespace(__NAMESPACE__.'\\DirectiveResolvers\\Cache');
+            ContainerBuilderUtils::attachTypeResolverDecoratorsFromNamespace(__NAMESPACE__.'\\TypeResolverDecorators\\Cache');
         }
     }
 }
