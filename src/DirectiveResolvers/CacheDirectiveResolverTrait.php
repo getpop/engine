@@ -5,6 +5,7 @@ use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\Server\Utils as ServerUtils;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\FieldQuery\FieldQueryInterpreter;
+use PoP\ComponentModel\ComponentConfiguration as ComponentModelComponentConfiguration;
 
 /**
  * Common functionality between LoadCache and SaveCache directive resolver classes
@@ -18,8 +19,7 @@ trait CacheDirectiveResolverTrait
      */
     public static function getClassesToAttachTo(): array
     {
-        // if (!ServerUtils::useCache()) {
-        if (false) {
+        if (!ComponentModelComponentConfiguration::useComponentModelCache()) {
             return [];
         }
         return parent::getClassesToAttachTo();
