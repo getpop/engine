@@ -43,3 +43,7 @@ services:
     PoP\Engine\DirectiveResolvers\:
         resource: '../src/DirectiveResolvers/*'
         public: true
+
+    PoP\Engine\TypeResolverDecorators\:
+        resource: '../src/TypeResolverDecorators/*'
+        public: true
