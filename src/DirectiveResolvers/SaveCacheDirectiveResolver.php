@@ -71,7 +71,12 @@ class SaveCacheDirectiveResolver extends AbstractGlobalDirectiveResolver
                     ];
                     continue;
                 }
-                $persistentCache->storeCache($cacheID, CacheTypes::CACHE_DIRECTIVE, $dbItems[(string)$id][$fieldOutputKey]);
+                $persistentCache->storeCache(
+                    $cacheID,
+                    CacheTypes::CACHE_DIRECTIVE,
+                    $dbItems[(string)$id][$fieldOutputKey],
+                    $this->directiveArgsForSchema['time']
+                );
             }
         }
     }
