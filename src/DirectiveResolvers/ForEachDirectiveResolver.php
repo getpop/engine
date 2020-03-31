@@ -14,7 +14,8 @@ use PoP\ComponentModel\Feedback\Tokens;
 class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver
 {
     public const DIRECTIVE_NAME = 'forEach';
-    public static function getDirectiveName(): string {
+    public static function getDirectiveName(): string
+    {
         return self::DIRECTIVE_NAME;
     }
 

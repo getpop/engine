@@ -12,7 +12,8 @@ class IncludeDirectiveResolver extends AbstractGlobalDirectiveResolver
     use FilterIDsSatisfyingConditionDirectiveResolverTrait;
 
     const DIRECTIVE_NAME = 'include';
-    public static function getDirectiveName(): string {
+    public static function getDirectiveName(): string
+    {
         return self::DIRECTIVE_NAME;
     }
 

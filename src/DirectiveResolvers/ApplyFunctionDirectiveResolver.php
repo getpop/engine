@@ -17,7 +17,8 @@ use PoP\ComponentModel\Feedback\Tokens;
 class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
 {
     public const DIRECTIVE_NAME = 'applyFunction';
-    public static function getDirectiveName(): string {
+    public static function getDirectiveName(): string
+    {
         return self::DIRECTIVE_NAME;
     }
 

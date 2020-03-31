@@ -11,7 +11,8 @@ use PoP\ComponentModel\Feedback\Tokens;
 class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver
 {
     public const DIRECTIVE_NAME = 'advancePointerInArray';
-    public static function getDirectiveName(): string {
+    public static function getDirectiveName(): string
+    {
         return self::DIRECTIVE_NAME;
     }
 

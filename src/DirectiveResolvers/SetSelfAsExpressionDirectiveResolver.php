@@ -11,7 +11,8 @@ use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolver
 {
     const DIRECTIVE_NAME = 'setSelfAsExpression';
-    public static function getDirectiveName(): string {
+    public static function getDirectiveName(): string
+    {
         return self::DIRECTIVE_NAME;
     }
 
