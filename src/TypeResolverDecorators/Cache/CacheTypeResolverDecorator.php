@@ -23,7 +23,7 @@ class CacheTypeResolverDecorator extends AbstractTypeResolverDecorator
      * @param TypeResolverInterface $typeResolver
      * @return array
      */
-    public function getMandatoryDirectivesForDirectives(TypeResolverInterface $typeResolver): array
+    public function getPrecedingMandatoryDirectivesForDirectives(TypeResolverInterface $typeResolver): array
     {
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         $loadCacheDirective = $fieldQueryInterpreter->getDirective(
