@@ -73,10 +73,34 @@ class LoadCacheDirectiveResolver extends AbstractGlobalDirectiveResolver
             }
         }
         /**
-         * Remove from directives @resolveAndMerge and @cache, nothing for them to do
+         * Remove the IDs from all directives until @cache, which need not be applied since their output is part of the cache
+         * This includes directives @resolveAndMerge and @cache, and others in between such as @translate
+         * Must check that directives which do not apply on the $resultIDItems, such as @cacheControl, are not affected
+         * (check function `needsIDsDataFieldsToExecute` must be `false` for them)
          */
         if ($idsDataFieldsToRemove) {
-            $this->removeIDsDataFields($idsDataFieldsToRemove, $succeedingPipelineIDsDataFields);
+            // Find the position of the @cache directive. Compare by name and not by class, just in case the directive class was overriden
+            $pos = 0;
+            $found = false;
+            while (!$found && $pos < count($succeedingPipelineDirectiveResolverInstances)) {
+                $directiveResolverInstance = $succeedingPipelineDirectiveResolverInstances[$pos];
+                if ($directiveResolverInstance->getDirectiveName() == SaveCacheDirectiveResolver::getDirectiveName()) {
+                    $found = true;
+                } else {
+                    $pos++;
+                }
+            }
+            if ($found) {
+                // Create a subsection array, containing all elements until $pos, by reference
+                // (so the changes applied to this array are also applied on the original one)
+                $pipelineIDsDataFieldsToRemove = [];
+                for ($i=0; $i<=$pos; $i++) {
+                    $pipelineIDsDataFieldsToRemove[] = &$succeedingPipelineIDsDataFields[$i];
+                }
+
+                // Remove the $idsDataFields for them
+                $this->removeIDsDataFields($idsDataFieldsToRemove, $pipelineIDsDataFieldsToRemove);
+            }
         }
     }
     public function getSchemaDirectiveDescription(TypeResolverInterface $typeResolver): ?string
