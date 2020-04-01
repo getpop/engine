@@ -39,6 +39,15 @@ class LoadCacheDirectiveResolver extends AbstractGlobalDirectiveResolver
     }
 
     /**
+     * This directive is added automatically by @cache, it's not added by the user
+     *
+     * @return boolean
+     */
+    public function skipAddingToSchemaDefinition(): bool {
+        return true;
+    }
+
+    /**
      * Save all the field values into the cache
      *
      * @param TypeResolverInterface $typeResolver
