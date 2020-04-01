@@ -4,26 +4,12 @@ namespace PoP\Engine\DirectiveResolvers\Cache;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\FieldQuery\FieldQueryInterpreter;
-use PoP\ComponentModel\ComponentConfiguration as ComponentModelComponentConfiguration;
 
 /**
  * Common functionality between LoadCache and SaveCache directive resolver classes
  */
 trait CacheDirectiveResolverTrait
 {
-    /**
-     * Directive enabled if caching is enabled
-     *
-     * @return array
-     */
-    public static function getClassesToAttachTo(): array
-    {
-        if (!ComponentModelComponentConfiguration::useComponentModelCache()) {
-            return [];
-        }
-        return parent::getClassesToAttachTo();
-    }
-
     /**
      * Caching can be executed only once
      *
