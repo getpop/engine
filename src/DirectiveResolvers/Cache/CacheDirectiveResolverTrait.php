@@ -25,6 +25,16 @@ trait CacheDirectiveResolverTrait
     }
 
     /**
+     * Caching can be executed only once
+     *
+     * @return boolean
+     */
+    public function canExecuteMultipleTimesInField(): bool
+    {
+        return false;
+    }
+
+    /**
      * Create a unique ID under which to store the cache, based on the type, ID and field (without the alias)
      *
      * @param TypeResolverInterface $typeResolver
