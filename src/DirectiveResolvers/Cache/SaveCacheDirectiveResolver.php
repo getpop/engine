@@ -16,6 +16,18 @@ use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
  * and it works together with "@loadCache" which is executed before `@resolveAndMerge`.
  * If @loadCache finds there's a cached value already, then the idsDataFields for directives
  * @resolveAndMerge and this @saveCache (called @cache) will be removed, so they have nothing to do
+ *
+ * Watch out! When caching, all directives on the way to @cache may be cached too!
+ * Then, executing these queries has different results:
+ *
+ * 1. { siteName @cache @translate }
+ * 2. { siteName @translate @cache }
+ *
+ * In the 1st case, the result from @translate is not added to the cache, and @translate will be executed always
+ * In the 2nd case, the result from @translate is added to the cache, and won't be executed again
+ *
+ * However, the directives before @cache are executed, but they are not passed any $idsDataFields to execute upon
+ * Hence, directives where `needsIDsDataFieldsToExecute` is false should not be affected (eg: @cacheControl)
  */
 class SaveCacheDirectiveResolver extends AbstractGlobalDirectiveResolver
 {
