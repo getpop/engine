@@ -18,6 +18,7 @@ class OneYearCacheControlDirectiveResolver extends AbstractCacheControlDirective
             'empty',
             'isNull',
             'extract',
+            'echo',
         ];
     }
 
