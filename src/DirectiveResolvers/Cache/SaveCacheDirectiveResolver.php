@@ -69,6 +69,7 @@ class SaveCacheDirectiveResolver extends AbstractGlobalDirectiveResolver
         $persistentCache = PersistentCacheFacade::getInstance();
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         $translationAPI = TranslationAPIFacade::getInstance();
+        $cacheType = $this->getCacheType();
         foreach ($idsDataFields as $id => $dataFields) {
             foreach ($dataFields['direct'] as $field) {
                 $cacheID = $this->getCacheID($typeResolver, $id, $field);
@@ -86,7 +87,7 @@ class SaveCacheDirectiveResolver extends AbstractGlobalDirectiveResolver
                 }
                 $persistentCache->storeCache(
                     $cacheID,
-                    CacheTypes::CACHE_DIRECTIVE,
+                    $cacheType,
                     $dbItems[(string)$id][$fieldOutputKey],
                     $this->directiveArgsForSchema['time']
                 );

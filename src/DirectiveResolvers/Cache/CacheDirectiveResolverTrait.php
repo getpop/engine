@@ -1,9 +1,11 @@
 <?php
 namespace PoP\Engine\DirectiveResolvers\Cache;
 
-use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
-use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
+use PoP\Engine\Cache\CacheTypes;
+use PoP\ComponentModel\Engine_Vars;
 use PoP\FieldQuery\FieldQueryInterpreter;
+use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
+use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 
 /**
  * Common functionality between LoadCache and SaveCache directive resolver classes
@@ -18,6 +20,20 @@ trait CacheDirectiveResolverTrait
     public function canExecuteMultipleTimesInField(): bool
     {
         return false;
+    }
+
+    /**
+     * Namespaced/normal schemas must be stored under different keys or it produces
+     * an error when switching from one to the other (eg: doing /?use_namespace=1)
+     *
+     * @return string
+     */
+    protected function getCacheType(): string
+    {
+        $vars = Engine_Vars::getVars();
+        return $vars['namespace-types-and-interfaces'] ?
+            CacheTypes::NAMESPACED_CACHE_DIRECTIVE :
+            CacheTypes::CACHE_DIRECTIVE;
     }
 
     /**
@@ -40,7 +56,7 @@ trait CacheDirectiveResolverTrait
             $noAliasField = $field;
         }
         $components = [
-            $typeResolver->getTypeName(),
+            $typeResolver->getNamespacedTypeName(),
             $id,
             $noAliasField
         ];

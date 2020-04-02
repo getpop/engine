@@ -73,12 +73,13 @@ class LoadCacheDirectiveResolver extends AbstractGlobalDirectiveResolver
         $persistentCache = PersistentCacheFacade::getInstance();
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         $idsDataFieldsToRemove = [];
+        $cacheType = $this->getCacheType();
         foreach ($idsDataFields as $id => $dataFields) {
             foreach ($dataFields['direct'] as $field) {
                 $cacheID = $this->getCacheID($typeResolver, $id, $field);
                 $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);
-                if ($persistentCache->hasCache($cacheID, CacheTypes::CACHE_DIRECTIVE)) {
-                    $dbItems[(string)$id][$fieldOutputKey] = $persistentCache->getCache($cacheID, CacheTypes::CACHE_DIRECTIVE);
+                if ($persistentCache->hasCache($cacheID, $cacheType)) {
+                    $dbItems[(string)$id][$fieldOutputKey] = $persistentCache->getCache($cacheID, $cacheType);
                     $idsDataFieldsToRemove[(string)$id]['direct'][] = $field;
                 }
             }
