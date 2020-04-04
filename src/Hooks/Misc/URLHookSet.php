@@ -9,7 +9,7 @@ class URLHookSet extends AbstractHookSet
     protected function init()
     {
         $this->hooksAPI->addFilter(
-            '\PoP\ComponentModel\Utils:current_url:remove_params',
+            'RequestUtils:current_url:remove_params',
             [$this, 'getParamsToRemoveFromURL']
         );
     }
