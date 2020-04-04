@@ -2,7 +2,7 @@
 namespace PoP\Engine\DirectiveResolvers\Cache;
 
 use PoP\Engine\Cache\CacheTypes;
-use PoP\ComponentModel\Engine_Vars;
+use PoP\ComponentModel\State\ApplicationState;
 use PoP\FieldQuery\FieldQueryInterpreter;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
@@ -30,7 +30,7 @@ trait CacheDirectiveResolverTrait
      */
     protected function getCacheType(): string
     {
-        $vars = Engine_Vars::getVars();
+        $vars = ApplicationState::getVars();
         return $vars['namespace-types-and-interfaces'] ?
             CacheTypes::NAMESPACED_CACHE_DIRECTIVE :
             CacheTypes::CACHE_DIRECTIVE;

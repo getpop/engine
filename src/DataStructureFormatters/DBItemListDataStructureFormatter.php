@@ -2,6 +2,7 @@
 namespace PoP\Engine\DataStructureFormatters;
 
 use PoP\ComponentModel\DataStructure\AbstractJSONDataStructureFormatter;
+use PoP\ComponentModel\State\ApplicationState;
 
 class DBItemListDataStructureFormatter extends AbstractJSONDataStructureFormatter
 {
@@ -31,7 +32,7 @@ class DBItemListDataStructureFormatter extends AbstractJSONDataStructureFormatte
     public function getFormattedData($data)
     {
         // If we are requesting only the databases, then return these as a list of items
-        $vars = \PoP\ComponentModel\Engine_Vars::getVars();
+        $vars = ApplicationState::getVars();
         $dataoutputitems = $vars['dataoutputitems'];
         if (in_array(GD_URLPARAM_DATAOUTPUTITEMS_DATABASES, $dataoutputitems)) {
             $ret = array();

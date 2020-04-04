@@ -3,6 +3,8 @@ namespace PoP\Engine\Hooks\ModuleFilters;
 
 use PoP\Engine\Hooks\AbstractHookSet;
 use PoP\ComponentModel\Facades\ModulePath\ModulePathHelpersFacade;
+use PoP\ComponentModel\ModulePath\ModulePathUtils;
+use PoP\ComponentModel\State\ApplicationState;
 
 class ModulePaths extends AbstractHookSet
 {
@@ -16,7 +18,7 @@ class ModulePaths extends AbstractHookSet
             [$this, 'maybeAddComponent']
         );
         $this->hooksAPI->addAction(
-            '\PoP\ComponentModel\Engine_Vars:addVars',
+            'ApplicationState:addVars',
             [$this, 'addVars'],
             10,
             1
@@ -26,12 +28,12 @@ class ModulePaths extends AbstractHookSet
     {
         $vars = &$vars_in_array[0];
         if ($vars['modulefilter'] == \PoP\ComponentModel\ModuleFilters\ModulePaths::NAME) {
-            $vars['modulepaths'] = \PoP\ComponentModel\Engine_Vars::getModulePaths();
+            $vars['modulepaths'] = ModulePathUtils::getModulePaths();
         }
     }
     public function maybeAddComponent($components)
     {
-        $vars = \PoP\ComponentModel\Engine_Vars::getVars();
+        $vars = ApplicationState::getVars();
         if ($vars['modulefilter'] == \PoP\ComponentModel\ModuleFilters\ModulePaths::NAME) {
             if ($modulepaths = $vars['modulepaths']) {
                 $paths = array_map(

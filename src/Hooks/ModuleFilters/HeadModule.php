@@ -5,6 +5,7 @@ use PoP\Engine\ModuleFilters\Constants;
 use PoP\ComponentModel\Modules\ModuleUtils;
 use PoP\Engine\Hooks\AbstractHookSet;
 use PoP\ComponentModel\ModelInstance\ModelInstance;
+use PoP\ComponentModel\State\ApplicationState;
 
 class HeadModule extends AbstractHookSet
 {
@@ -15,7 +16,7 @@ class HeadModule extends AbstractHookSet
             [$this, 'maybeAddComponent']
         );
         $this->hooksAPI->addAction(
-            '\PoP\ComponentModel\Engine_Vars:addVars',
+            'ApplicationState:addVars',
             [$this, 'addVars'],
             10,
             1
@@ -32,7 +33,7 @@ class HeadModule extends AbstractHookSet
     }
     public function maybeAddComponent($components)
     {
-        $vars = \PoP\ComponentModel\Engine_Vars::getVars();
+        $vars = ApplicationState::getVars();
         if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\HeadModule::NAME) {
             if ($headmodule = $vars['headmodule']) {
                 $components[] = $this->translationAPI->__('head module:', 'engine').ModuleUtils::getModuleFullName($headmodule);

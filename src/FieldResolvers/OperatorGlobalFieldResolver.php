@@ -2,7 +2,7 @@
 namespace PoP\Engine\FieldResolvers;
 
 use PoP\Engine\Misc\Extract;
-use PoP\ComponentModel\Engine_Vars;
+use PoP\ComponentModel\State\ApplicationState;
 use PoP\FieldQuery\FieldQueryUtils;
 use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\ComponentModel\Schema\SchemaDefinition;
@@ -254,7 +254,7 @@ class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
     protected function getSafeVars()
     {
         if (is_null($this->safeVars)) {
-            $this->safeVars = Engine_Vars::getVars();
+            $this->safeVars = ApplicationState::getVars();
             HooksAPIFacade::getInstance()->doAction(
                 self::HOOK_SAFEVARS,
                 array(&$this->safeVars)
