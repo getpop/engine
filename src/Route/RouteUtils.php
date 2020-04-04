@@ -2,7 +2,7 @@
 namespace PoP\Engine\Route;
 
 use PoP\Hooks\Facades\HooksAPIFacade;
-use PoP\ComponentModel\GeneralUtils;
+use PoP\ComponentModel\Misc\GeneralUtils;
 
 class RouteUtils {
 
