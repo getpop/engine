@@ -3,6 +3,7 @@ namespace PoP\Engine\DirectiveResolvers;
 
 use PoP\FieldQuery\QueryHelpers;
 use PoP\Engine\Dataloading\Expressions;
+use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\PipelinePositions;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
@@ -14,6 +15,16 @@ class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolv
     public static function getDirectiveName(): string
     {
         return self::DIRECTIVE_NAME;
+    }
+
+    /**
+     * This is a "Scripting" type directive
+     *
+     * @return string
+     */
+    public function getDirectiveType(): string
+    {
+        return DirectiveTypes::SCRIPTING;
     }
 
     /**

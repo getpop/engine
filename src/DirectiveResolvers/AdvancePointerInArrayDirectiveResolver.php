@@ -3,10 +3,11 @@ namespace PoP\Engine\DirectiveResolvers;
 
 use Exception;
 use PoP\Engine\Misc\OperatorHelpers;
+use PoP\ComponentModel\Feedback\Tokens;
 use PoP\ComponentModel\Schema\SchemaDefinition;
+use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
-use PoP\ComponentModel\Feedback\Tokens;
 
 class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver
 {
@@ -14,6 +15,16 @@ class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectiv
     public static function getDirectiveName(): string
     {
         return self::DIRECTIVE_NAME;
+    }
+
+    /**
+     * This is a "Scripting" type directive
+     *
+     * @return string
+     */
+    public function getDirectiveType(): string
+    {
+        return DirectiveTypes::SCRIPTING;
     }
 
     /**

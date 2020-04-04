@@ -2,9 +2,11 @@
 namespace PoP\Engine\DirectiveResolvers;
 
 use PoP\FieldQuery\QueryHelpers;
-use PoP\ComponentModel\Misc\GeneralUtils;
+use PoP\ComponentModel\Feedback\Tokens;
 use PoP\Engine\Dataloading\Expressions;
+use PoP\ComponentModel\Misc\GeneralUtils;
 use PoP\ComponentModel\Schema\SchemaDefinition;
+use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\ComponentModel\Schema\TypeCastingHelpers;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\AbstractTypeResolver;
@@ -12,7 +14,6 @@ use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FeedbackMessageStoreFacade;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
-use PoP\ComponentModel\Feedback\Tokens;
 
 class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
 {
@@ -20,6 +21,16 @@ class ApplyFunctionDirectiveResolver extends AbstractGlobalDirectiveResolver
     public static function getDirectiveName(): string
     {
         return self::DIRECTIVE_NAME;
+    }
+
+    /**
+     * This is a "Scripting" type directive
+     *
+     * @return string
+     */
+    public function getDirectiveType(): string
+    {
+        return DirectiveTypes::SCRIPTING;
     }
 
     public function getSchemaDirectiveArgs(TypeResolverInterface $typeResolver): array
