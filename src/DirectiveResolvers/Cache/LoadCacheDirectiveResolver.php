@@ -1,7 +1,6 @@
 <?php
 namespace PoP\Engine\DirectiveResolvers\Cache;
 
-use PoP\Engine\Cache\CacheTypes;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\PipelinePositions;
 use PoP\ComponentModel\Facades\Cache\PersistentCacheFacade;
@@ -44,7 +43,8 @@ class LoadCacheDirectiveResolver extends AbstractGlobalDirectiveResolver
      *
      * @return boolean
      */
-    public function skipAddingToSchemaDefinition(): bool {
+    public function skipAddingToSchemaDefinition(): bool
+    {
         return true;
     }
 

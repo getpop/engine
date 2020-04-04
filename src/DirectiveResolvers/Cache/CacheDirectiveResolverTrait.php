@@ -2,8 +2,9 @@
 namespace PoP\Engine\DirectiveResolvers\Cache;
 
 use PoP\Engine\Cache\CacheTypes;
-use PoP\ComponentModel\State\ApplicationState;
 use PoP\FieldQuery\FieldQueryInterpreter;
+use PoP\ComponentModel\State\ApplicationState;
+use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 
@@ -20,6 +21,16 @@ trait CacheDirectiveResolverTrait
     public function canExecuteMultipleTimesInField(): bool
     {
         return false;
+    }
+
+    /**
+     * This is a "Schema" type directive
+     *
+     * @return string
+     */
+    public function getDirectiveType(): string
+    {
+        return DirectiveTypes::SCHEMA;
     }
 
     /**
