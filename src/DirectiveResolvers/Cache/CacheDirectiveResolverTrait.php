@@ -14,16 +14,6 @@ use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 trait CacheDirectiveResolverTrait
 {
     /**
-     * Caching can be executed only once
-     *
-     * @return boolean
-     */
-    public function canExecuteMultipleTimesInField(): bool
-    {
-        return false;
-    }
-
-    /**
      * This is a "Schema" type directive
      *
      * @return string
