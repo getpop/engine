@@ -47,3 +47,7 @@ services:
     PoP\Engine\TypeResolverDecorators\:
         resource: '../src/TypeResolverDecorators/*'
         public: true
+
+    PoP\Engine\TypeResolvers\:
+        resource: '../src/TypeResolvers/*'
+        public: true
