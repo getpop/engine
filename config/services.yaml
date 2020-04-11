@@ -21,6 +21,10 @@ services:
         class: \PoP\Engine\Engine\Engine
         public: true
 
+    root_object:
+        class: \PoP\Engine\ObjectModels\Root
+        public: true
+
     PoP\Engine\Hooks\:
         resource: '../src/Hooks/*'
         public: true
