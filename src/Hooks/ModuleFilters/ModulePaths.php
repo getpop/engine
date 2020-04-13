@@ -37,12 +37,12 @@ class ModulePaths extends AbstractHookSet
         if ($vars['modulefilter'] == \PoP\ComponentModel\ModuleFilters\ModulePaths::NAME) {
             if ($modulepaths = $vars['modulepaths']) {
                 $paths = array_map(
-                    function($modulepath) {
+                    function ($modulepath) {
                         return $this->modulePathHelpers->stringifyModulePath($modulepath);
                     },
                     $modulepaths
                 );
-                $components[] = $this->translationAPI->__('module paths:', 'engine').implode(',', $paths);
+                $components[] = $this->translationAPI->__('module paths:', 'engine') . implode(',', $paths);
             }
         }
 

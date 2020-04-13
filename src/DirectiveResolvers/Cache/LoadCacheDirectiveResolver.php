@@ -106,7 +106,7 @@ class LoadCacheDirectiveResolver extends AbstractGlobalDirectiveResolver
                 // Create a subsection array, containing all elements until $pos, by reference
                 // (so the changes applied to this array are also applied on the original one)
                 $pipelineIDsDataFieldsToRemove = [];
-                for ($i=0; $i<=$pos; $i++) {
+                for ($i = 0; $i <= $pos; $i++) {
                     $pipelineIDsDataFieldsToRemove[] = &$succeedingPipelineIDsDataFields[$i];
                 }
 

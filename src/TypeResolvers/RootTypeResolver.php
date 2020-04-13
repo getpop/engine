@@ -55,4 +55,3 @@ class RootTypeResolver extends AbstractTypeResolver
         }
     }
 }
-

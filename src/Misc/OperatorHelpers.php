@@ -29,7 +29,7 @@ class OperatorHelpers
                 $dataPointer = &$dataPointer[$pathLevel];
             } elseif (is_array($dataPointer) && isset($dataPointer[0]) && is_array($dataPointer[0]) && isset($dataPointer[0][$pathLevel])) {
                 // If it is an array, then retrieve that property from each element of the array
-                $dataPointerArray = array_map(function($item) use($pathLevel) {
+                $dataPointerArray = array_map(function ($item) use ($pathLevel) {
                     return $item[$pathLevel];
                 }, $dataPointer);
                 $dataPointer = &$dataPointerArray;

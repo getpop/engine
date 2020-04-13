@@ -13,4 +13,3 @@ class Environment
         return isset($_ENV['DISABLE_GUZZLE_OPERATORS']) ? strtolower($_ENV['DISABLE_GUZZLE_OPERATORS']) == "true" : false;
     }
 }
-

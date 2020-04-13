@@ -4,7 +4,8 @@ namespace PoP\Engine\Route;
 use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\ComponentModel\Misc\GeneralUtils;
 
-class RouteUtils {
+class RouteUtils
+{
 
     public static function getRouteURL($route)
     {
@@ -12,7 +13,7 @@ class RouteUtils {
         // (then, the id for domain.com/en/slug/ is "slug" and not "en/slug")
         $cmsengineapi = \PoP\Engine\FunctionAPIFactory::getInstance();
         $homeurl = GeneralUtils::maybeAddTrailingSlash($cmsengineapi->getHomeURL());
-        return $homeurl.$route.'/';
+        return $homeurl . $route . '/';
     }
 
     public static function getRouteTitle($route)

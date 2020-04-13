@@ -14,7 +14,7 @@ class Initialization
         $hooksAPI = HooksAPIFacade::getInstance();
         $hooksAPI->addAction(
             'popcms:boot',
-            function() {
+            function () {
                 // Boot all the components
                 ComponentManager::boot();
             },
@@ -23,7 +23,7 @@ class Initialization
 
         $hooksAPI->addAction(
             'popcms:boot',
-            function() {
+            function () {
                 // Boot all the components
                 ComponentManager::afterBoot();
             },

@@ -52,7 +52,7 @@ trait CacheDirectiveResolverTrait
         if ($fieldAliasPositionSpan = $fieldQueryInterpreter->getFieldAliasPositionSpanInField($field)) {
             $aliasPos = $fieldAliasPositionSpan[FieldQueryInterpreter::ALIAS_POSITION_KEY];
             $aliasLength = $fieldAliasPositionSpan[FieldQueryInterpreter::ALIAS_LENGTH_KEY];
-            $noAliasField = substr($field, 0, $aliasPos).substr($field, $aliasPos+$aliasLength);
+            $noAliasField = substr($field, 0, $aliasPos) . substr($field, $aliasPos + $aliasLength);
         } else {
             $noAliasField = $field;
         }

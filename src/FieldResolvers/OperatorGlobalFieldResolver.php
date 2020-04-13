@@ -13,7 +13,7 @@ use PoP\ComponentModel\FieldResolvers\AbstractGlobalFieldResolver;
 
 class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
 {
-    public const HOOK_SAFEVARS = __CLASS__.':safeVars';
+    public const HOOK_SAFEVARS = __CLASS__ . ':safeVars';
     public static function getFieldNamesToResolve(): array
     {
         return [
@@ -276,12 +276,12 @@ class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
             case 'not':
                 return !$fieldArgs['value'];
             case 'and':
-                return array_reduce($fieldArgs['values'], function($accumulated, $value) {
+                return array_reduce($fieldArgs['values'], function ($accumulated, $value) {
                     $accumulated = $accumulated && $value;
                     return $accumulated;
                 }, true);
             case 'or':
-                return array_reduce($fieldArgs['values'], function($accumulated, $value) {
+                return array_reduce($fieldArgs['values'], function ($accumulated, $value) {
                     $accumulated = $accumulated || $value;
                     return $accumulated;
                 }, false);

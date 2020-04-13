@@ -28,4 +28,3 @@ class RequestCheckpointProcessor extends CheckpointProcessorBase
         return parent::process($checkpoint);
     }
 }
-

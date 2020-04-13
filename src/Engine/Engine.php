@@ -40,7 +40,7 @@ class Engine extends \PoP\ComponentModel\Engine\Engine implements EngineInterfac
     {
         if ($redirect = SettingsManagerFactory::getInstance()->getRedirectUrl()) {
             if ($query = $_SERVER['QUERY_STRING']) {
-                $redirect .= '?'.$query;
+                $redirect .= '?' . $query;
             }
 
             $cmsengineapi = \PoP\Engine\FunctionAPIFactory::getInstance();
