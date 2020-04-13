@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace PoP\Engine\Config;
 
 use PoP\Root\Component\PHPServiceConfigurationTrait;

@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace PoP\Engine\ObjectFacades;
 
 use PoP\Engine\ObjectModels\Root;

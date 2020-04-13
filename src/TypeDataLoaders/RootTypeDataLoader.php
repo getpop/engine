@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace PoP\Engine\TypeDataLoaders;
 
 use PoP\Engine\ObjectFacades\RootObjectFacade;

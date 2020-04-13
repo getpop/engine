@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace PoP\Engine\ModuleFilters;
 
 use PoP\ComponentModel\ModuleFilters\AbstractModuleFilter;
@@ -7,7 +10,7 @@ use PoP\ComponentModel\State\ApplicationState;
 class MainContentModule extends AbstractModuleFilter
 {
     public const NAME = 'maincontentmodule';
-    
+
     public function getName()
     {
         return self::NAME;

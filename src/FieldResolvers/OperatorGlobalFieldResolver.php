@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace PoP\Engine\FieldResolvers;
 
 use PoP\Engine\Misc\Extract;

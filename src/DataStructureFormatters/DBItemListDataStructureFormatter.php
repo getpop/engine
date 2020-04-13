@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace PoP\Engine\DataStructureFormatters;
 
 use PoP\ComponentModel\DataStructure\AbstractJSONDataStructureFormatter;
@@ -12,7 +15,7 @@ class DBItemListDataStructureFormatter extends AbstractJSONDataStructureFormatte
         return self::NAME;
     }
 
-    protected function getJsonEncodeType()
+    protected function getJsonEncodeType(): ?int
     {
         return JSON_FORCE_OBJECT;
     }

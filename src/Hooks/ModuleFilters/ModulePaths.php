@@ -1,4 +1,7 @@
 <?php
+
+declare(strict_types=1);
+
 namespace PoP\Engine\Hooks\ModuleFilters;
 
 use PoP\Engine\Hooks\AbstractHookSet;
