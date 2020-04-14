@@ -19,7 +19,7 @@
     "prefer-stable": true,
     "require": {
         "php": "~7.1",
-        "getpop/migrate-engine": "~0.1",
+        "getpop/migrate-engine": "dev-master",
         "getpop/hooks": "~0.1",
         "getpop/root": "~0.1",
         "getpop/translation": "~0.1",
