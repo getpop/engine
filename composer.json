@@ -19,15 +19,15 @@
     "prefer-stable": true,
     "require": {
         "php": "~7.1",
-        "getpop/migrate-engine": "~0.1",
+        "getpop/migrate-engine": "dev-master",
         "getpop/hooks": "~0.1",
         "getpop/translation": "~0.1",
         "getpop/loosecontracts": "~0.1",
-        "getpop/routing": "~0.1",
-        "getpop/modulerouting": "~0.1",
-        "getpop/component-model": "~0.1",
-        "getpop/cache-control": "~0.1",
-        "getpop/guzzle-helpers": "~0.1",
+        "getpop/routing": "dev-master",
+        "getpop/modulerouting": "dev-master",
+        "getpop/component-model": "dev-master",
+        "getpop/cache-control": "dev-master",
+        "getpop/guzzle-helpers": "dev-master",
         "psr/cache": "^1.0"
     },
     "require-dev": {
