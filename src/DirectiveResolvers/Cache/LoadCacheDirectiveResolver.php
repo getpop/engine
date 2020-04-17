@@ -13,6 +13,7 @@ use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
 use PoP\Engine\DirectiveResolvers\Cache\CacheDirectiveResolverTrait;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 use PoP\ComponentModel\DirectiveResolvers\RemoveIDsDataFieldsDirectiveResolverTrait;
+use PoP\Engine\Cache\CacheTypes;
 
 /**
  * Load the field value from the cache. This directive is executed before `@resolveAndMerge`,
@@ -76,7 +77,7 @@ class LoadCacheDirectiveResolver extends AbstractGlobalDirectiveResolver
         $persistentCache = PersistentCacheFacade::getInstance();
         $fieldQueryInterpreter = FieldQueryInterpreterFacade::getInstance();
         $idsDataFieldsToRemove = [];
-        $cacheType = $this->getCacheType();
+        $cacheType = CacheTypes::CACHE_DIRECTIVE;
         foreach ($idsDataFields as $id => $dataFields) {
             foreach ($dataFields['direct'] as $field) {
                 $cacheID = $this->getCacheID($typeResolver, $id, $field);

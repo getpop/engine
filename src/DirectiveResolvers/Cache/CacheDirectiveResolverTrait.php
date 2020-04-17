@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace PoP\Engine\DirectiveResolvers\Cache;
 
-use PoP\Engine\Cache\CacheTypes;
+use PoP\API\Cache\CacheUtils;
 use PoP\FieldQuery\FieldQueryInterpreter;
-use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
 use PoP\ComponentModel\Facades\Schema\FieldQueryInterpreterFacade;
@@ -24,20 +23,6 @@ trait CacheDirectiveResolverTrait
     public function getDirectiveType(): string
     {
         return DirectiveTypes::SCHEMA;
-    }
-
-    /**
-     * Namespaced/normal schemas must be stored under different keys or it produces
-     * an error when switching from one to the other (eg: doing /?use_namespace=1)
-     *
-     * @return string
-     */
-    protected function getCacheType(): string
-    {
-        $vars = ApplicationState::getVars();
-        return $vars['namespace-types-and-interfaces'] ?
-            CacheTypes::NAMESPACED_CACHE_DIRECTIVE :
-            CacheTypes::CACHE_DIRECTIVE;
     }
 
     /**
@@ -59,11 +44,15 @@ trait CacheDirectiveResolverTrait
         } else {
             $noAliasField = $field;
         }
-        $components = [
-            $typeResolver->getNamespacedTypeName(),
-            $id,
-            $noAliasField
-        ];
+        $components = array_merge(
+            // The namespacing and version constraints also affect the result of the field, so incorporate them too
+            CacheUtils::getSchemaCacheKeyComponents(),
+            [
+                'name' => $typeResolver->getNamespacedTypeName(),
+                'id' => $id,
+                'field' => $noAliasField,
+            ]
+        );
         $cacheID = implode('|', $components);
         /**
          * Hash this key, because the $field may contain reserved characters, such as "()" for the field args:
