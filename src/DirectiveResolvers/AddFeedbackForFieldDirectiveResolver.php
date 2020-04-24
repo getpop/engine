@@ -85,7 +85,7 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
         array &$schemaErrors,
         array &$schemaWarnings,
         array &$schemaDeprecations
-    ) {
+    ): void {
         $type = $this->directiveArgsForSchema['type'] ?? $this->getDefaultFeedbackType();
         $target = $this->directiveArgsForSchema['target'] ?? $this->getDefaultFeedbackTarget();
         if ($target == self::FEEDBACK_TARGET_DB) {
