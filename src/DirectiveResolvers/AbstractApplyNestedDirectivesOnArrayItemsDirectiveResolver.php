@@ -95,9 +95,13 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
         array &$dbErrors,
         array &$dbWarnings,
         array &$dbDeprecations,
+        array &$dbNotices,
+        array &$dbTraces,
         array &$schemaErrors,
         array &$schemaWarnings,
-        array &$schemaDeprecations
+        array &$schemaDeprecations,
+        array &$schemaNotices,
+        array &$schemaTraces
     ): void {
         $translationAPI = TranslationAPIFacade::getInstance();
 
@@ -252,9 +256,13 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                 $dbErrors,
                 $dbWarnings,
                 $dbDeprecations,
+                $dbNotices,
+                $dbTraces,
                 $schemaErrors,
                 $schemaWarnings,
-                $schemaDeprecations
+                $schemaDeprecations,
+                $schemaNotices,
+                $schemaTraces
             );
 
             // 3. Compose the array from the results for each array item

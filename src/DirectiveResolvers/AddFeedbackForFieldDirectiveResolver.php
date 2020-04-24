@@ -16,8 +16,7 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
 {
     public const FEEDBACK_TYPE_WARNING = 'warning';
     public const FEEDBACK_TYPE_DEPRECATION = 'deprecation';
-    public const FEEDBACK_TYPE_LOG = 'log';
-    public const FEEDBACK_TYPE_MESSAGE = 'message';
+    public const FEEDBACK_TYPE_NOTICE = 'notice';
     public const FEEDBACK_TARGET_DB = 'db';
     public const FEEDBACK_TARGET_SCHEMA = 'schema';
 
@@ -82,9 +81,13 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
         array &$dbErrors,
         array &$dbWarnings,
         array &$dbDeprecations,
+        array &$dbNotices,
+        array &$dbTraces,
         array &$schemaErrors,
         array &$schemaWarnings,
-        array &$schemaDeprecations
+        array &$schemaDeprecations,
+        array &$schemaNotices,
+        array &$schemaTraces
     ): void {
         $type = $this->directiveArgsForSchema['type'] ?? $this->getDefaultFeedbackType();
         $target = $this->directiveArgsForSchema['target'] ?? $this->getDefaultFeedbackTarget();
@@ -122,6 +125,8 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
                     $dbWarnings[(string)$id][] = $feedbackMessageEntry;
                 } elseif ($type == self::FEEDBACK_TYPE_DEPRECATION) {
                     $dbDeprecations[(string)$id][] = $feedbackMessageEntry;
+                } elseif ($type == self::FEEDBACK_TYPE_NOTICE) {
+                    $dbNotices[(string)$id][] = $feedbackMessageEntry;
                 }
             }
         } elseif ($target == self::FEEDBACK_TARGET_SCHEMA) {
@@ -131,6 +136,8 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
                 $schemaWarnings[] = $feedbackMessageEntry;
             } elseif ($type == self::FEEDBACK_TYPE_DEPRECATION) {
                 $schemaDeprecations[] = $feedbackMessageEntry;
+            } elseif ($type == self::FEEDBACK_TYPE_NOTICE) {
+                $schemaNotices[] = $feedbackMessageEntry;
             }
         }
     }
@@ -185,14 +192,13 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
         return [
             self::FEEDBACK_TYPE_WARNING,
             self::FEEDBACK_TYPE_DEPRECATION,
-            self::FEEDBACK_TYPE_LOG,
-            self::FEEDBACK_TYPE_MESSAGE,
+            self::FEEDBACK_TYPE_NOTICE,
         ];
     }
 
     protected function getDefaultFeedbackType(): string
     {
-        return self::FEEDBACK_TYPE_MESSAGE;
+        return self::FEEDBACK_TYPE_NOTICE;
     }
 
     protected function getFeedbackTargets(): array
