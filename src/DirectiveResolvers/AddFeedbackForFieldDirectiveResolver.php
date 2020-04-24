@@ -14,6 +14,13 @@ use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 
 class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolver
 {
+    public const FEEDBACK_TYPE_WARNING = 'warning';
+    public const FEEDBACK_TYPE_DEPRECATION = 'deprecation';
+    public const FEEDBACK_TYPE_LOG = 'log';
+    public const FEEDBACK_TYPE_MESSAGE = 'message';
+    public const FEEDBACK_TARGET_DB = 'db';
+    public const FEEDBACK_TARGET_SCHEMA = 'schema';
+
     const DIRECTIVE_NAME = 'addFeedbackForField';
     public static function getDirectiveName(): string
     {
@@ -81,9 +88,9 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
     ) {
         $type = $this->directiveArgsForSchema['type'] ?? $this->getDefaultFeedbackType();
         $target = $this->directiveArgsForSchema['target'] ?? $this->getDefaultFeedbackTarget();
-        if ($target == 'db') {
+        if ($target == self::FEEDBACK_TARGET_DB) {
             $translationAPI = TranslationAPIFacade::getInstance();
-            foreach ($idsDataFields as $id => $dataFields) {
+            foreach (array_keys($idsDataFields) as $id) {
                 // Use either the default value passed under param "value" or, if this is NULL, use a predefined value
                 $expressions = $this->getExpressionsForResultItem($id, $variables, $messages);
                 $resultItem = $resultIDItems[$id];
@@ -111,18 +118,18 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
                     continue;
                 }
                 $feedbackMessageEntry = $this->getFeedbackMessageEntry($message);
-                if ($type == 'warning') {
+                if ($type == self::FEEDBACK_TYPE_WARNING) {
                     $dbWarnings[(string)$id][] = $feedbackMessageEntry;
-                } elseif ($type == 'deprecation') {
+                } elseif ($type == self::FEEDBACK_TYPE_DEPRECATION) {
                     $dbDeprecations[(string)$id][] = $feedbackMessageEntry;
                 }
             }
-        } elseif ($target == 'schema') {
+        } elseif ($target == self::FEEDBACK_TARGET_SCHEMA) {
             $message = $this->directiveArgsForSchema['message'];
             $feedbackMessageEntry = $this->getFeedbackMessageEntry($message);
-            if ($type == 'warning') {
+            if ($type == self::FEEDBACK_TYPE_WARNING) {
                 $schemaWarnings[] = $feedbackMessageEntry;
-            } elseif ($type == 'deprecation') {
+            } elseif ($type == self::FEEDBACK_TYPE_DEPRECATION) {
                 $schemaDeprecations[] = $feedbackMessageEntry;
             }
         }
@@ -156,7 +163,6 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
                 SchemaDefinition::ARGNAME_NAME => 'type',
                 SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_ENUM,
                 SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The type of feedback', 'engine'),
-                SchemaDefinition::ARGNAME_MANDATORY => true,
                 SchemaDefinition::ARGNAME_ENUMVALUES => SchemaHelpers::convertToSchemaFieldArgEnumValueDefinitions(
                     $this->getFeedbackTypes()
                 ),
@@ -166,7 +172,6 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
                 SchemaDefinition::ARGNAME_NAME => 'target',
                 SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_ENUM,
                 SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The target for the feedback', 'engine'),
-                SchemaDefinition::ARGNAME_MANDATORY => true,
                 SchemaDefinition::ARGNAME_ENUMVALUES => SchemaHelpers::convertToSchemaFieldArgEnumValueDefinitions(
                     $this->getFeedbackTargets()
                 ),
@@ -178,26 +183,28 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
     protected function getFeedbackTypes(): array
     {
         return [
-            'warning',
-            'deprecation',
+            self::FEEDBACK_TYPE_WARNING,
+            self::FEEDBACK_TYPE_DEPRECATION,
+            self::FEEDBACK_TYPE_LOG,
+            self::FEEDBACK_TYPE_MESSAGE,
         ];
     }
 
     protected function getDefaultFeedbackType(): string
     {
-        return 'deprecation';
+        return self::FEEDBACK_TYPE_MESSAGE;
     }
 
     protected function getFeedbackTargets(): array
     {
         return [
-            'db',
-            'schema',
+            self::FEEDBACK_TARGET_DB,
+            self::FEEDBACK_TARGET_SCHEMA,
         ];
     }
 
     protected function getDefaultFeedbackTarget(): string
     {
-        return 'schema';
+        return self::FEEDBACK_TARGET_SCHEMA;
     }
 }
