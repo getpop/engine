@@ -36,6 +36,11 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
         return DirectiveTypes::SYSTEM;
     }
 
+    public function canExecuteMultipleTimesInField(): bool
+    {
+        return true;
+    }
+
     /**
      * Execute always, even if validation is false
      *
