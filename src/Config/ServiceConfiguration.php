@@ -42,7 +42,7 @@ class ServiceConfiguration
             'addMandatoryDirectiveClass',
             SetSelfAsExpressionDirectiveResolver::class
         );
-        if (CacheControlComponent::isEnabled()) {
+        if (CacheControlComponent::isEnabled() && $_SERVER['REQUEST_METHOD'] == 'GET') {
             ContainerBuilderUtils::injectValuesIntoService(
                 'dataloading_engine',
                 'addMandatoryDirectives',
