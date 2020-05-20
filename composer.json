@@ -38,10 +38,7 @@
     "autoload": {
         "psr-4": {
             "PoP\\Engine\\": "src"
-        },
-        "files": [
-            "initialize.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {
