@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace PoP\Engine\Bootloader;
+namespace PoP\Engine;
 
 use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\Root\Managers\ComponentManager;
 
-class Initialization
+class Bootloader
 {
-    public static function init()
+    public static function bootComponents()
     {
         // Boot all the components
         ComponentManager::beforeBoot();
