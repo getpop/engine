@@ -20,13 +20,20 @@ Via Composer
 composer require getpop/engine
 ```
 
-<!--
 ## Usage
 
-``` php
+Initialize the component:
 
+``` php
+\PoP\Engine\Component::initialize();
 ```
--->
+
+After all components in PoP have been initialized, boot them:
+
+``` php
+// Initialize the PoP Engine through the Bootloader
+\PoP\Engine\Bootloader::bootComponents();
+```
 
 ## Standards
 
