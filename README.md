@@ -31,8 +31,8 @@ Initialize the component:
 After all components in PoP have been initialized, boot them:
 
 ``` php
-// Initialize the PoP Engine through the Bootloader
-\PoP\Engine\Bootloader::bootComponents();
+// Boot all PoP components
+\PoP\Engine\ComponentLoader::bootComponents();
 ```
 
 ## Standards
