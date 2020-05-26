@@ -25,7 +25,9 @@ composer require getpop/engine
 Initialize the component:
 
 ``` php
-\PoP\Engine\Component::initialize();
+\PoP\Root\ComponentLoader::initializeComponents([
+    \PoP\Engine\Component::class,
+]);
 ```
 
 After all components in PoP have been initialized, boot them:
