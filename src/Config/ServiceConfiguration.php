@@ -15,7 +15,7 @@ class ServiceConfiguration
 {
     use PHPServiceConfigurationTrait;
 
-    protected static function configure()
+    protected static function configure(): void
     {
         // Add ModuleFilter to the ModuleFilterManager
         ContainerBuilderUtils::injectServicesIntoService(

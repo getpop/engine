@@ -32,24 +32,8 @@ services:
     PoP\Engine\ModuleFilters\:
         resource: '../src/ModuleFilters/*'
 
-    PoP\Engine\FieldResolvers\:
-        resource: '../src/FieldResolvers/*'
-        public: true
-
     PoP\Engine\RouteModuleProcessors\:
         resource: '../src/RouteModuleProcessors/*'
-        public: true
-
-    PoP\Engine\DataStructureFormatters\:
-        resource: '../src/DataStructureFormatters/*'
-        public: true
-
-    PoP\Engine\DirectiveResolvers\:
-        resource: '../src/DirectiveResolvers/*'
-        public: true
-
-    PoP\Engine\TypeResolverDecorators\:
-        resource: '../src/TypeResolverDecorators/*'
         public: true
 
     PoP\Engine\TypeResolvers\:
