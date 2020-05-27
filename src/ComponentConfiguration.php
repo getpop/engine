@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PoP\Engine;
 
+use PoP\ComponentModel\ComponentConfiguration\EnvironmentValueHelpers;
 use PoP\ComponentModel\ComponentConfiguration\ComponentConfigurationTrait;
 
 class ComponentConfiguration
@@ -17,14 +18,17 @@ class ComponentConfiguration
         // Define properties
         $envVariable = Environment::ADD_MANDATORY_CACHE_CONTROL_DIRECTIVE;
         $selfProperty = &self::$addMandatoryCacheControlDirective;
-        $callback = [Environment::class, 'addMandatoryCacheControlDirective'];
+        $defaultValue = true;
+        $callback = [EnvironmentValueHelpers::class, 'toBool'];
+        $useHook = false;
 
         // Initialize property from the environment/hook
         self::maybeInitializeConfigurationValue(
             $envVariable,
             $selfProperty,
+            $defaultValue,
             $callback,
-            false
+            $useHook
         );
         return $selfProperty;
     }

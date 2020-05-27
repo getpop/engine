@@ -17,9 +17,4 @@ class Environment
     {
         return isset($_ENV['DISABLE_GUZZLE_OPERATORS']) ? strtolower($_ENV['DISABLE_GUZZLE_OPERATORS']) == "true" : false;
     }
-
-    public static function addMandatoryCacheControlDirective(): bool
-    {
-        return isset($_ENV[self::ADD_MANDATORY_CACHE_CONTROL_DIRECTIVE]) ? strtolower($_ENV[self::ADD_MANDATORY_CACHE_CONTROL_DIRECTIVE]) == "true" : true;
-    }
 }
