@@ -9,7 +9,7 @@ use PoP\ComponentModel\Container\ContainerBuilderUtils;
 use PoP\Engine\DirectiveResolvers\SetSelfAsExpressionDirectiveResolver;
 use PoP\CacheControl\DirectiveResolvers\CacheControlDirectiveResolver;
 use PoP\CacheControl\Component as CacheControlComponent;
-use PoP\Engine\Environment;
+use PoP\Engine\ComponentConfiguration;
 
 class ServiceConfiguration
 {
@@ -43,7 +43,7 @@ class ServiceConfiguration
             'addMandatoryDirectiveClass',
             SetSelfAsExpressionDirectiveResolver::class
         );
-        if (Environment::addMandatoryCacheControlDirective()) {
+        if (ComponentConfiguration::addMandatoryCacheControlDirective()) {
             static::configureCacheControl();
         }
     }
