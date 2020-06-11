@@ -28,6 +28,15 @@ class FunctionGlobalFieldResolver extends AbstractGlobalFieldResolver
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
 
+    public function isSchemaFieldResponseNonNullable(TypeResolverInterface $typeResolver, string $fieldName): bool
+    {
+        switch ($fieldName) {
+            case 'getSelfProp':
+                return true;
+        }
+        return parent::isSchemaFieldResponseNonNullable($typeResolver, $fieldName);
+    }
+
     public function getSchemaFieldDescription(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         $translationAPI = TranslationAPIFacade::getInstance();
@@ -72,7 +81,8 @@ class FunctionGlobalFieldResolver extends AbstractGlobalFieldResolver
     {
         switch ($fieldName) {
             case 'getSelfProp':
-                // Retrieve the property from either 'dbItems' (i.e. it was loaded during the current iteration) or 'previousDBItems' (loaded during a previous iteration)
+                // Retrieve the property from either 'dbItems' (i.e. it was loaded during the current iteration)
+                // or 'previousDBItems' (loaded during a previous iteration)
                 $self = $fieldArgs['self'];
                 $property = $fieldArgs['property'];
                 return array_key_exists($property, $self['dbItems']) ? $self['dbItems'][$property] : $self['previousDBItems'][$property];
