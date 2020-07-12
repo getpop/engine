@@ -14,6 +14,9 @@ use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 
 class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolver
 {
+    public const ENUM_FIELD_FEEDBACK_TYPE = 'FieldFeedbackType';
+    public const ENUM_FIELD_FEEDBACK_TARGET = 'FieldFeedbackTarget';
+
     public const FEEDBACK_TYPE_WARNING = 'warning';
     public const FEEDBACK_TYPE_DEPRECATION = 'deprecation';
     public const FEEDBACK_TYPE_NOTICE = 'notice';
@@ -175,6 +178,7 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
                 SchemaDefinition::ARGNAME_NAME => 'type',
                 SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_ENUM,
                 SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The type of feedback', 'engine'),
+                SchemaDefinition::ARGNAME_ENUMNAME => self::ENUM_FIELD_FEEDBACK_TYPE,
                 SchemaDefinition::ARGNAME_ENUMVALUES => SchemaHelpers::convertToSchemaFieldArgEnumValueDefinitions(
                     $this->getFeedbackTypes()
                 ),
@@ -184,6 +188,7 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
                 SchemaDefinition::ARGNAME_NAME => 'target',
                 SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_ENUM,
                 SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The target for the feedback', 'engine'),
+                SchemaDefinition::ARGNAME_ENUMNAME => self::ENUM_FIELD_FEEDBACK_TARGET,
                 SchemaDefinition::ARGNAME_ENUMVALUES => SchemaHelpers::convertToSchemaFieldArgEnumValueDefinitions(
                     $this->getFeedbackTargets()
                 ),
