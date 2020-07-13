@@ -5,24 +5,18 @@ declare(strict_types=1);
 namespace PoP\Engine\DirectiveResolvers;
 
 use PoP\ComponentModel\Feedback\Tokens;
+use PoP\Engine\Enums\FieldFeedbackTypeEnum;
 use PoP\ComponentModel\Schema\SchemaHelpers;
+use PoP\Engine\Enums\FieldFeedbackTargetEnum;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\ComponentModel\Directives\DirectiveTypes;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\ComponentModel\TypeResolvers\TypeResolverInterface;
+use PoP\ComponentModel\Facades\Instances\InstanceManagerFacade;
 use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
 
 class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolver
 {
-    public const ENUM_FIELD_FEEDBACK_TYPE = 'FieldFeedbackType';
-    public const ENUM_FIELD_FEEDBACK_TARGET = 'FieldFeedbackTarget';
-
-    public const FEEDBACK_TYPE_WARNING = 'warning';
-    public const FEEDBACK_TYPE_DEPRECATION = 'deprecation';
-    public const FEEDBACK_TYPE_NOTICE = 'notice';
-    public const FEEDBACK_TARGET_DB = 'db';
-    public const FEEDBACK_TARGET_SCHEMA = 'schema';
-
     const DIRECTIVE_NAME = 'addFeedbackForField';
     public static function getDirectiveName(): string
     {
@@ -99,7 +93,7 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
     ): void {
         $type = $this->directiveArgsForSchema['type'] ?? $this->getDefaultFeedbackType();
         $target = $this->directiveArgsForSchema['target'] ?? $this->getDefaultFeedbackTarget();
-        if ($target == self::FEEDBACK_TARGET_DB) {
+        if ($target == FieldFeedbackTargetEnum::DB) {
             $translationAPI = TranslationAPIFacade::getInstance();
             foreach (array_keys($idsDataFields) as $id) {
                 // Use either the default value passed under param "value" or, if this is NULL, use a predefined value
@@ -129,22 +123,22 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
                     continue;
                 }
                 $feedbackMessageEntry = $this->getFeedbackMessageEntry($message);
-                if ($type == self::FEEDBACK_TYPE_WARNING) {
+                if ($type == FieldFeedbackTypeEnum::WARNING) {
                     $dbWarnings[(string)$id][] = $feedbackMessageEntry;
-                } elseif ($type == self::FEEDBACK_TYPE_DEPRECATION) {
+                } elseif ($type == FieldFeedbackTypeEnum::DEPRECATION) {
                     $dbDeprecations[(string)$id][] = $feedbackMessageEntry;
-                } elseif ($type == self::FEEDBACK_TYPE_NOTICE) {
+                } elseif ($type == FieldFeedbackTypeEnum::NOTICE) {
                     $dbNotices[(string)$id][] = $feedbackMessageEntry;
                 }
             }
-        } elseif ($target == self::FEEDBACK_TARGET_SCHEMA) {
+        } elseif ($target == FieldFeedbackTargetEnum::SCHEMA) {
             $message = $this->directiveArgsForSchema['message'];
             $feedbackMessageEntry = $this->getFeedbackMessageEntry($message);
-            if ($type == self::FEEDBACK_TYPE_WARNING) {
+            if ($type == FieldFeedbackTypeEnum::WARNING) {
                 $schemaWarnings[] = $feedbackMessageEntry;
-            } elseif ($type == self::FEEDBACK_TYPE_DEPRECATION) {
+            } elseif ($type == FieldFeedbackTypeEnum::DEPRECATION) {
                 $schemaDeprecations[] = $feedbackMessageEntry;
-            } elseif ($type == self::FEEDBACK_TYPE_NOTICE) {
+            } elseif ($type == FieldFeedbackTypeEnum::NOTICE) {
                 $schemaNotices[] = $feedbackMessageEntry;
             }
         }
@@ -167,6 +161,9 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
     public function getSchemaDirectiveArgs(TypeResolverInterface $typeResolver): array
     {
         $translationAPI = TranslationAPIFacade::getInstance();
+        $instanceManager = InstanceManagerFacade::getInstance();
+        $fieldFeedbackTypeEnum = $instanceManager->getInstance(FieldFeedbackTypeEnum::class);
+        $fieldFeedbackTargetEnum = $instanceManager->getInstance(FieldFeedbackTargetEnum::class);
         return [
             [
                 SchemaDefinition::ARGNAME_NAME => 'message',
@@ -178,9 +175,9 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
                 SchemaDefinition::ARGNAME_NAME => 'type',
                 SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_ENUM,
                 SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The type of feedback', 'engine'),
-                SchemaDefinition::ARGNAME_ENUMNAME => self::ENUM_FIELD_FEEDBACK_TYPE,
+                SchemaDefinition::ARGNAME_ENUMNAME => $fieldFeedbackTypeEnum->getName(),
                 SchemaDefinition::ARGNAME_ENUMVALUES => SchemaHelpers::convertToSchemaFieldArgEnumValueDefinitions(
-                    $this->getFeedbackTypes()
+                    $fieldFeedbackTypeEnum->getValues()
                 ),
                 SchemaDefinition::ARGNAME_DEFAULT_VALUE => $this->getDefaultFeedbackType(),
             ],
@@ -188,39 +185,22 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
                 SchemaDefinition::ARGNAME_NAME => 'target',
                 SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_ENUM,
                 SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The target for the feedback', 'engine'),
-                SchemaDefinition::ARGNAME_ENUMNAME => self::ENUM_FIELD_FEEDBACK_TARGET,
+                SchemaDefinition::ARGNAME_ENUMNAME => $fieldFeedbackTargetEnum->getName(),
                 SchemaDefinition::ARGNAME_ENUMVALUES => SchemaHelpers::convertToSchemaFieldArgEnumValueDefinitions(
-                    $this->getFeedbackTargets()
+                    $fieldFeedbackTargetEnum->getValues()
                 ),
                 SchemaDefinition::ARGNAME_DEFAULT_VALUE => $this->getDefaultFeedbackTarget(),
             ],
         ];
     }
 
-    protected function getFeedbackTypes(): array
-    {
-        return [
-            self::FEEDBACK_TYPE_WARNING,
-            self::FEEDBACK_TYPE_DEPRECATION,
-            self::FEEDBACK_TYPE_NOTICE,
-        ];
-    }
-
     protected function getDefaultFeedbackType(): string
     {
-        return self::FEEDBACK_TYPE_NOTICE;
-    }
-
-    protected function getFeedbackTargets(): array
-    {
-        return [
-            self::FEEDBACK_TARGET_DB,
-            self::FEEDBACK_TARGET_SCHEMA,
-        ];
+        return FieldFeedbackTypeEnum::NOTICE;
     }
 
     protected function getDefaultFeedbackTarget(): string
     {
-        return self::FEEDBACK_TARGET_SCHEMA;
+        return FieldFeedbackTargetEnum::SCHEMA;
     }
 }
