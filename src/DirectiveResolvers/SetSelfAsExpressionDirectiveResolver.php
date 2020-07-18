@@ -55,7 +55,7 @@ class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolv
      *
      * @return boolean
      */
-    public function canExecuteMultipleTimesInField(): bool
+    public function isRepeatable(): bool
     {
         return false;
     }

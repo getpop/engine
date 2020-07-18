@@ -33,7 +33,7 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
         return DirectiveTypes::SYSTEM;
     }
 
-    public function canExecuteMultipleTimesInField(): bool
+    public function isRepeatable(): bool
     {
         return true;
     }
