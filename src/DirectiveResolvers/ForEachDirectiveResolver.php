@@ -72,6 +72,7 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
     protected function getArrayItems(array &$array, $id, string $field, TypeResolverInterface $typeResolver, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$dbDeprecations): ?array
     {
         if ($if = $this->directiveArgsForSchema['if']) {
+            $translationAPI = TranslationAPIFacade::getInstance();
             // If it is a field, execute the function against all the values in the array
             // Those that satisfy the condition stay, the others are filtered out
             // We must add each item in the array as expression `%value%`, over which the if function can be evaluated
@@ -100,7 +101,7 @@ class ForEachDirectiveResolver extends AbstractApplyNestedDirectivesOnArrayItems
                         $dbErrors[(string)$id][] = [
                             Tokens::PATH => [$this->directive],
                             Tokens::MESSAGE => sprintf(
-                                $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
+                                $translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
                                 $value,
                                 $id,
                                 $error->getErrorMessage(),

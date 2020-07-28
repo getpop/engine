@@ -381,6 +381,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
      */
     protected function addExpressionsForResultItem(TypeResolverInterface $typeResolver, $id, string $field, array &$resultIDItems, array &$dbItems, array &$previousDBItems, array &$variables, array &$messages, array &$dbErrors, array &$dbWarnings, array &$dbDeprecations, array &$schemaErrors, array &$schemaWarnings, array &$schemaDeprecations)
     {
+        $translationAPI = TranslationAPIFacade::getInstance();
         // Enable the query to provide variables to pass down
         $addExpressions = $this->directiveArgsForSchema['addExpressions'] ?? [];
         $appendExpressions = $this->directiveArgsForSchema['appendExpressions'] ?? [];
@@ -417,7 +418,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                         $dbErrors[(string)$id][] = [
                             Tokens::PATH => [$this->directive],
                             Tokens::MESSAGE => sprintf(
-                                $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
+                                $translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
                                 $value,
                                 $id,
                                 $error->getErrorMessage(),
@@ -449,7 +450,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                         $dbErrors[(string)$id][] = [
                             Tokens::PATH => [$this->directive],
                             Tokens::MESSAGE => sprintf(
-                                $this->translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
+                                $translationAPI->__('Executing field \'%s\' on object with ID \'%s\' produced error: %s. Setting expression \'%s\' was ignored', 'pop-component-model'),
                                 $value,
                                 $id,
                                 $error->getErrorMessage(),
