@@ -35,7 +35,7 @@ class Component extends AbstractComponent
     public static function getDependedMigrationPlugins(): array
     {
         return [
-            'migrate-engine',
+            'getpop/migrate-engine',
         ];
     }
 
