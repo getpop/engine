@@ -73,7 +73,7 @@ class SetSelfAsExpressionDirectiveResolver extends AbstractGlobalDirectiveResolv
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         return [
-            Expressions::NAME_SELF => $translationAPI->__('Object containing all properties for the current object, fetched either in the current or a previous iteration. These properties can be accessed through helper function `getSelfProp`', 'component-model'),
+            Expressions::NAME_SELF => $translationAPI->__('Object containing all properties for the current object, fetched either in the current or a previous iteration. These properties can be accessed through helper function `getDynamicVariableProp`', 'component-model'),
         ];
     }
 

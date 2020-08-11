@@ -16,14 +16,14 @@ class FunctionGlobalFieldResolver extends AbstractGlobalFieldResolver
     public static function getFieldNamesToResolve(): array
     {
         return [
-            'getSelfProp',
+            'getDynamicVariableProp',
         ];
     }
 
     public function getSchemaFieldType(TypeResolverInterface $typeResolver, string $fieldName): ?string
     {
         $types = [
-            'getSelfProp' => SchemaDefinition::TYPE_MIXED,
+            'getDynamicVariableProp' => SchemaDefinition::TYPE_MIXED,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -31,7 +31,7 @@ class FunctionGlobalFieldResolver extends AbstractGlobalFieldResolver
     public function isSchemaFieldResponseNonNullable(TypeResolverInterface $typeResolver, string $fieldName): bool
     {
         switch ($fieldName) {
-            case 'getSelfProp':
+            case 'getDynamicVariableProp':
                 return true;
         }
         return parent::isSchemaFieldResponseNonNullable($typeResolver, $fieldName);
@@ -41,8 +41,8 @@ class FunctionGlobalFieldResolver extends AbstractGlobalFieldResolver
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $descriptions = [
-            'getSelfProp' => sprintf(
-                $translationAPI->__('Get a property from the current object, as stored under expression `%s`', 'pop-component-model'),
+            'getDynamicVariableProp' => sprintf(
+                $translationAPI->__('Get a property from a dynamic variable, such as `%s`', 'pop-component-model'),
                 QueryHelpers::getExpressionQuery(Expressions::NAME_SELF)
             ),
         ];
@@ -54,20 +54,20 @@ class FunctionGlobalFieldResolver extends AbstractGlobalFieldResolver
         $schemaFieldArgs = parent::getSchemaFieldArgs($typeResolver, $fieldName);
         $translationAPI = TranslationAPIFacade::getInstance();
         switch ($fieldName) {
-            case 'getSelfProp':
+            case 'getDynamicVariableProp':
                 return array_merge(
                     $schemaFieldArgs,
                     [
                         [
-                            SchemaDefinition::ARGNAME_NAME => 'self',
+                            SchemaDefinition::ARGNAME_NAME => 'variable',
                             SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_OBJECT,
-                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The `$self` object containing all data for the current object', 'component-model'),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The dynamic variable to access properties from', 'component-model'),
                             SchemaDefinition::ARGNAME_MANDATORY => true,
                         ],
                         [
                             SchemaDefinition::ARGNAME_NAME => 'property',
                             SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
-                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The property to access from the current object', 'component-model'),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The property to access from the dynamic variable', 'component-model'),
                             SchemaDefinition::ARGNAME_MANDATORY => true,
                         ],
                     ]
@@ -80,7 +80,7 @@ class FunctionGlobalFieldResolver extends AbstractGlobalFieldResolver
     public function resolveValue(TypeResolverInterface $typeResolver, $resultItem, string $fieldName, array $fieldArgs = [], ?array $variables = null, ?array $expressions = null, array $options = [])
     {
         switch ($fieldName) {
-            case 'getSelfProp':
+            case 'getDynamicVariableProp':
                 // Retrieve the property from either 'dbItems' (i.e. it was loaded during the current iteration)
                 // or 'previousDBItems' (loaded during a previous iteration)
                 $self = $fieldArgs['self'];
