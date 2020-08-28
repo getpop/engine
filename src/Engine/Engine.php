@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace PoP\Engine\Engine;
 
-use PoP\CacheControl\Component as CacheControlComponent;
+use Exception;
 use PoP\Translation\Facades\TranslationAPIFacade;
 use PoP\CacheControl\Facades\CacheControlEngineFacade;
 use PoP\ComponentModel\Settings\SettingsManagerFactory;
+use PoP\CacheControl\Component as CacheControlComponent;
 use PoP\LooseContracts\Facades\LooseContractManagerFacade;
 use PoP\ComponentModel\Facades\DataStructure\DataStructureManagerFacade;
 
