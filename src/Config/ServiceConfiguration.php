@@ -17,7 +17,7 @@ class ServiceConfiguration
 
     protected static function configure(): void
     {
-        // Add ModuleFilter to the ModuleFilterManager
+        // Add ModuleFilters to the ModuleFilterManager
         ContainerBuilderUtils::injectServicesIntoService(
             'module_filter_manager',
             'PoP\\Engine\\ModuleFilters',
