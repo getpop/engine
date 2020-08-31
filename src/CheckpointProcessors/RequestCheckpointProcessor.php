@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PoP\Engine\CheckpointProcessors;
 
-use PoP\ComponentModel\CheckpointProcessorBase;
+use PoP\Engine\CheckpointProcessors\AbstractCheckpointProcessor;
 use PoP\ComponentModel\Error;
 
-class RequestCheckpointProcessor extends CheckpointProcessorBase
+class RequestCheckpointProcessor extends AbstractCheckpointProcessor
 {
     public const DOING_POST = 'doing-post';
 
