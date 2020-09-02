@@ -162,7 +162,13 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
     {
         $translationAPI = TranslationAPIFacade::getInstance();
         $instanceManager = InstanceManagerFacade::getInstance();
+        /**
+         * @var FieldFeedbackTypeEnum
+         */
         $fieldFeedbackTypeEnum = $instanceManager->getInstance(FieldFeedbackTypeEnum::class);
+        /**
+         * @var FieldFeedbackTargetEnum
+         */
         $fieldFeedbackTargetEnum = $instanceManager->getInstance(FieldFeedbackTargetEnum::class);
         return [
             [
