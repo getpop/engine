@@ -25,7 +25,7 @@ class RootTypeResolver extends AbstractTypeResolver
         return $translationAPI->__('Root type, starting from which the query is executed', 'api');
     }
 
-    public function getID($resultItem)
+    public function getID(object $resultItem)
     {
         $root = $resultItem;
         return $root->getID();
