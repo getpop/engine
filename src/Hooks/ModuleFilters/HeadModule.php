@@ -25,7 +25,10 @@ class HeadModule extends AbstractHookSet
             1
         );
     }
-    public function addVars($vars_in_array)
+    /**
+     * @param array<array> $vars_in_array
+     */
+    public function addVars(array $vars_in_array): void
     {
         $vars = &$vars_in_array[0];
         if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\HeadModule::NAME) {

@@ -18,7 +18,10 @@ class MainContentModule extends AbstractHookSet
             1
         );
     }
-    public function augmentVarsProperties($vars_in_array)
+    /**
+     * @param array<array> $vars_in_array
+     */
+    public function augmentVarsProperties(array $vars_in_array): void
     {
         $vars = &$vars_in_array[0];
 

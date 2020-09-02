@@ -10,7 +10,8 @@ use PoP\ComponentModel\State\ApplicationState;
 class DBItemListDataStructureFormatter extends AbstractJSONDataStructureFormatter
 {
     public const NAME = 'dbitemlist';
-    public static function getName()
+
+    public static function getName(): string
     {
         return self::NAME;
     }
