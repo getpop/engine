@@ -20,9 +20,9 @@
     "require": {
         "php": "~7.2",
         "getpop/migrate-engine": "dev-master",
-        "getpop/hooks": "~0.1",
-        "getpop/translation": "~0.1",
-        "getpop/loosecontracts": "~0.1",
+        "getpop/hooks": "dev-master",
+        "getpop/translation": "dev-master",
+        "getpop/loosecontracts": "dev-master",
         "getpop/routing": "dev-master",
         "getpop/modulerouting": "dev-master",
         "getpop/component-model": "dev-master",
