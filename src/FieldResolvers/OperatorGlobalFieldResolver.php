@@ -32,6 +32,7 @@ class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
             'extract',
             'time',
             'echo',
+            'sprintf',
         ];
     }
 
@@ -50,6 +51,7 @@ class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
             'extract' => SchemaDefinition::TYPE_MIXED,
             'time' => SchemaDefinition::TYPE_INT,
             'echo' => SchemaDefinition::TYPE_MIXED,
+            'sprintf' => SchemaDefinition::TYPE_STRING,
         ];
         return $types[$fieldName] ?? parent::getSchemaFieldType($typeResolver, $fieldName);
     }
@@ -65,6 +67,7 @@ class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
             case 'isNull':
             case 'context':
             case 'time':
+            case 'sprintf':
                 return true;
         }
         return parent::isSchemaFieldResponseNonNullable($typeResolver, $fieldName);
@@ -86,6 +89,7 @@ class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
             'extract' => $translationAPI->__('Given an object, it retrieves the data under a certain path', 'pop-component-model'),
             'time' => $translationAPI->__('Return the time now (https://php.net/manual/en/function.time.php)', 'component-model'),
             'echo' => $translationAPI->__('Repeat back the input, whatever it is', 'function-fields'),
+            'sprintf' => $translationAPI->__('Replace placeholders inside a string with provided values', 'function-fields'),
         ];
         return $descriptions[$fieldName] ?? parent::getSchemaFieldDescription($typeResolver, $fieldName);
     }
@@ -237,6 +241,25 @@ class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
                         ],
                     ]
                 );
+
+            case 'sprintf':
+                return array_merge(
+                    $schemaFieldArgs,
+                    [
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'string',
+                            SchemaDefinition::ARGNAME_TYPE => SchemaDefinition::TYPE_STRING,
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The string containing the placeholders', 'function-fields'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                        [
+                            SchemaDefinition::ARGNAME_NAME => 'values',
+                            SchemaDefinition::ARGNAME_TYPE => TypeCastingHelpers::makeArray(SchemaDefinition::TYPE_STRING),
+                            SchemaDefinition::ARGNAME_DESCRIPTION => $translationAPI->__('The values to replace the placeholders with inside the string', 'function-fields'),
+                            SchemaDefinition::ARGNAME_MANDATORY => true,
+                        ],
+                    ]
+                );
         }
 
         return $schemaFieldArgs;
@@ -335,6 +358,8 @@ class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
                 return time();
             case 'echo':
                 return $fieldArgs['value'];
+            case 'sprintf':
+                return sprintf($fieldArgs['string'], ...$fieldArgs['values']);
         }
 
         return parent::resolveValue($typeResolver, $resultItem, $fieldName, $fieldArgs, $variables, $expressions, $options);
