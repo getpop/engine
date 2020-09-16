@@ -9,8 +9,9 @@ use PoP\Translation\TranslationAPIInterface;
 
 abstract class AbstractHookSet
 {
-    protected $hooksAPI;
-    protected $translationAPI;
+    protected HooksAPIInterface $hooksAPI;
+    protected TranslationAPIInterface $translationAPI;
+
     public function __construct(
         HooksAPIInterface $hooksAPI,
         TranslationAPIInterface $translationAPI

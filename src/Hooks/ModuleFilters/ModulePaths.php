@@ -5,17 +5,15 @@ declare(strict_types=1);
 namespace PoP\Engine\Hooks\ModuleFilters;
 
 use PoP\Engine\Hooks\AbstractHookSet;
-use PoP\ComponentModel\Facades\ModulePath\ModulePathHelpersFacade;
-use PoP\ComponentModel\ModulePath\ModulePathUtils;
 use PoP\ComponentModel\State\ApplicationState;
+use PoP\ComponentModel\ModulePath\ModulePathUtils;
+use PoP\ComponentModel\ModulePath\ModulePathHelpersInterface;
+use PoP\ComponentModel\Facades\ModulePath\ModulePathHelpersFacade;
 
 class ModulePaths extends AbstractHookSet
 {
-    protected $modulePathHelpers;
-
     protected function init()
     {
-        $this->modulePathHelpers = ModulePathHelpersFacade::getInstance();
         $this->hooksAPI->addFilter(
             'PoP\ComponentModel\ModelInstance\ModelInstance:componentsFromVars:result',
             [$this, 'maybeAddComponent']
@@ -42,10 +40,9 @@ class ModulePaths extends AbstractHookSet
         $vars = ApplicationState::getVars();
         if ($vars['modulefilter'] == \PoP\ComponentModel\ModuleFilters\ModulePaths::NAME) {
             if ($modulepaths = $vars['modulepaths']) {
+                $modulePathHelpers = ModulePathHelpersFacade::getInstance();
                 $paths = array_map(
-                    function ($modulepath) {
-                        return $this->modulePathHelpers->stringifyModulePath($modulepath);
-                    },
+                    fn ($modulepath) => $modulePathHelpers->stringifyModulePath($modulepath),
                     $modulepaths
                 );
                 $components[] = $this->translationAPI->__('module paths:', 'engine') . implode(',', $paths);

@@ -16,6 +16,11 @@ use PoP\ComponentModel\FieldResolvers\AbstractGlobalFieldResolver;
 
 class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
 {
+    /**
+     * @var array<string, mixed>
+     */
+    protected ?array $safeVars = null;
+
     public const HOOK_SAFEVARS = __CLASS__ . ':safeVars';
     public static function getFieldNamesToResolve(): array
     {

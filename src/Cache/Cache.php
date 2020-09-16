@@ -11,7 +11,8 @@ use PoP\ComponentModel\ModelInstance\ModelInstanceInterface;
 
 class Cache extends \PoP\ComponentModel\Cache\Cache
 {
-    protected $hooksAPI;
+    protected HooksAPIInterface $hooksAPI;
+
     public function __construct(
         CacheItemPoolInterface $cacheItemPool,
         HooksAPIInterface $hooksAPI,
