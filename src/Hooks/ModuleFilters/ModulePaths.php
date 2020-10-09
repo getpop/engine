@@ -30,7 +30,7 @@ class ModulePaths extends AbstractHookSet
      */
     public function addVars(array $vars_in_array): void
     {
-        $vars = &$vars_in_array[0];
+        [&$vars] = $vars_in_array;
         if ($vars['modulefilter'] == \PoP\ComponentModel\ModuleFilters\ModulePaths::NAME) {
             $vars['modulepaths'] = ModulePathUtils::getModulePaths();
         }

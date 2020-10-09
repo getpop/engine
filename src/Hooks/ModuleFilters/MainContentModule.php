@@ -23,7 +23,7 @@ class MainContentModule extends AbstractHookSet
      */
     public function augmentVarsProperties(array $vars_in_array): void
     {
-        $vars = &$vars_in_array[0];
+        [&$vars] = $vars_in_array;
 
         // Function `getRouteModuleByMostAllmatchingVarsProperties` actually needs to access all values in $vars
         // Hence, calculate only at the very end

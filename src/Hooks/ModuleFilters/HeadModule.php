@@ -30,7 +30,7 @@ class HeadModule extends AbstractHookSet
      */
     public function addVars(array $vars_in_array): void
     {
-        $vars = &$vars_in_array[0];
+        [&$vars] = $vars_in_array;
         if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\HeadModule::NAME) {
             if ($headmodule = $_REQUEST[Constants::URLPARAM_HEADMODULE]) {
                 $vars['headmodule'] = ModuleUtils::getModuleFromOutputName($headmodule);
