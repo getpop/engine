@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace PoP\Engine\Config;
 
+use PoP\Engine\ComponentConfiguration;
 use PoP\Root\Component\PHPServiceConfigurationTrait;
 use PoP\ComponentModel\Container\ContainerBuilderUtils;
-use PoP\Engine\DirectiveResolvers\SetSelfAsExpressionDirectiveResolver;
-use PoP\CacheControl\DirectiveResolvers\CacheControlDirectiveResolver;
 use PoP\CacheControl\Component as CacheControlComponent;
-use PoP\Engine\ComponentConfiguration;
+use PoP\ComponentModel\Engine\DataloadingEngineInterface;
+use PoP\ModuleRouting\RouteModuleProcessorManagerInterface;
+use PoP\ComponentModel\DataStructure\DataStructureManagerInterface;
+use PoP\ComponentModel\ModuleFiltering\ModuleFilterManagerInterface;
+use PoP\CacheControl\DirectiveResolvers\CacheControlDirectiveResolver;
+use PoP\Engine\DirectiveResolvers\SetSelfAsExpressionDirectiveResolver;
 
 class ServiceConfiguration
 {
@@ -19,27 +23,27 @@ class ServiceConfiguration
     {
         // Add ModuleFilters to the ModuleFilterManager
         ContainerBuilderUtils::injectServicesIntoService(
-            'module_filter_manager',
+            ModuleFilterManagerInterface::class,
             'PoP\\Engine\\ModuleFilters',
             'add'
         );
 
         // Add RouteModuleProcessors to the Manager
         ContainerBuilderUtils::injectServicesIntoService(
-            'route_module_processor_manager',
+            RouteModuleProcessorManagerInterface::class,
             'PoP\\Engine\\RouteModuleProcessors',
             'add'
         );
 
         ContainerBuilderUtils::injectServicesIntoService(
-            'data_structure_manager',
+            DataStructureManagerInterface::class,
             'PoP\\Engine\\DataStructureFormatters',
             'add'
         );
 
         // Inject the mandatory root directives
         ContainerBuilderUtils::injectValuesIntoService(
-            'dataloading_engine',
+            DataloadingEngineInterface::class,
             'addMandatoryDirectiveClass',
             SetSelfAsExpressionDirectiveResolver::class
         );
@@ -52,7 +56,7 @@ class ServiceConfiguration
     {
         if (CacheControlComponent::isEnabled() && $_SERVER['REQUEST_METHOD'] == 'GET') {
             ContainerBuilderUtils::injectValuesIntoService(
-                'dataloading_engine',
+                DataloadingEngineInterface::class,
                 'addMandatoryDirectives',
                 [
                     CacheControlDirectiveResolver::getDirectiveName(),

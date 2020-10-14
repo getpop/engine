@@ -1,41 +1,33 @@
 services:
     _defaults:
-        bind:
-            PoP\Hooks\HooksAPIInterface: '@hooks_api'
-            PoP\Translation\TranslationAPIInterface: '@translation_api'
-            PoP\ComponentModel\ModelInstance\ModelInstanceInterface: '@model_instance'
+        public: true
+        autowire: true
 
     persistent_cache:
         class: \PoP\Engine\Cache\Cache
-        public: true
         arguments:
             $cacheItemPool: '@persistent_cache_item_pool'
 
     memory_cache:
         class: \PoP\Engine\Cache\Cache
-        public: true
         arguments:
             $cacheItemPool: '@memory_cache_item_pool'
 
-    engine:
+    PoP\ComponentModel\Engine\EngineInterface:
         class: \PoP\Engine\Engine\Engine
-        public: true
 
-    root_object:
+    PoP\Engine\ObjectModels\Root:
         class: \PoP\Engine\ObjectModels\Root
-        public: true
 
     PoP\Engine\Hooks\:
         resource: '../src/Hooks/*'
-        public: true
 
     PoP\Engine\ModuleFilters\:
         resource: '../src/ModuleFilters/*'
+        public: false
 
     PoP\Engine\RouteModuleProcessors\:
         resource: '../src/RouteModuleProcessors/*'
-        public: true
 
     PoP\Engine\TypeResolvers\:
         resource: '../src/TypeResolvers/*'
-        public: true
