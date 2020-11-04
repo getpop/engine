@@ -6,7 +6,7 @@ namespace PoP\Engine\Hooks\ModuleFilters;
 
 use PoP\Engine\ModuleFilters\Constants;
 use PoP\ComponentModel\Modules\ModuleUtils;
-use PoP\Engine\Hooks\AbstractHookSet;
+use PoP\Hooks\AbstractHookSet;
 use PoP\ComponentModel\ModelInstance\ModelInstance;
 use PoP\ComponentModel\State\ApplicationState;
 
