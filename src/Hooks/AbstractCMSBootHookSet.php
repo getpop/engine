@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace PoP\Engine\Hooks;
 
+use PoP\Hooks\AbstractHookSet;
+
 abstract class AbstractCMSBootHookSet extends AbstractHookSet
 {
     /**
