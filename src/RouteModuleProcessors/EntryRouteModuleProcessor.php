@@ -8,7 +8,10 @@ use PoP\ModuleRouting\AbstractEntryRouteModuleProcessor;
 
 class EntryRouteModuleProcessor extends AbstractEntryRouteModuleProcessor
 {
-    public function getModulesVarsProperties()
+    /**
+     * @return array<string, string[]>
+     */
+    public function getModulesVarsProperties(): array
     {
         $ret = array();
 
