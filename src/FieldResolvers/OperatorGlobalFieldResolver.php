@@ -270,10 +270,10 @@ class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
         return $schemaFieldArgs;
     }
 
-    public function resolveSchemaValidationErrorDescription(TypeResolverInterface $typeResolver, string $fieldName, array $fieldArgs = []): ?string
+    public function resolveSchemaValidationErrorDescriptions(TypeResolverInterface $typeResolver, string $fieldName, array $fieldArgs = []): ?array
     {
-        if ($error = parent::resolveSchemaValidationErrorDescription($typeResolver, $fieldName, $fieldArgs)) {
-            return $error;
+        if ($errors = parent::resolveSchemaValidationErrorDescriptions($typeResolver, $fieldName, $fieldArgs)) {
+            return $errors;
         }
 
         // Important: The validations below can only be done if no fieldArg contains a field!
@@ -286,10 +286,12 @@ class OperatorGlobalFieldResolver extends AbstractGlobalFieldResolver
                 case 'var':
                     $safeVars = $this->getSafeVars();
                     if (!isset($safeVars[$fieldArgs['name']])) {
-                        return sprintf(
-                            $translationAPI->__('Var \'%s\' does not exist in `$vars`', 'component-model'),
-                            $fieldArgs['name']
-                        );
+                        return [
+                            sprintf(
+                                $translationAPI->__('Var \'%s\' does not exist in `$vars`', 'component-model'),
+                                $fieldArgs['name']
+                            )
+                        ];
                     };
                     return null;
             }
