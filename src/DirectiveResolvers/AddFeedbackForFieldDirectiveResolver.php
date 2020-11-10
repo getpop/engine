@@ -91,8 +91,8 @@ class AddFeedbackForFieldDirectiveResolver extends AbstractGlobalDirectiveResolv
         array &$schemaNotices,
         array &$schemaTraces
     ): void {
-        $type = $this->directiveArgsForSchema['type'] ?? $this->getDefaultFeedbackType();
-        $target = $this->directiveArgsForSchema['target'] ?? $this->getDefaultFeedbackTarget();
+        $type = $this->directiveArgsForSchema['type'];
+        $target = $this->directiveArgsForSchema['target'];
         if ($target == FieldFeedbackTargetEnum::DB) {
             $translationAPI = TranslationAPIFacade::getInstance();
             foreach (array_keys($idsDataFields) as $id) {
