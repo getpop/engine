@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace PoP\Engine\CheckpointProcessors;
 
-use PoP\Engine\CheckpointProcessors\AbstractCheckpointProcessor;
+use PoP\ComponentModel\CheckpointProcessors\AbstractCheckpointProcessor;
 use PoP\ComponentModel\Error;
 
 class RequestCheckpointProcessor extends AbstractCheckpointProcessor
