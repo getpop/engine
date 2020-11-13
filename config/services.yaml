@@ -31,3 +31,9 @@ services:
 
     PoP\Engine\TypeResolvers\:
         resource: '../src/TypeResolvers/*'
+
+    PoP\Engine\Schema\SchemaDefinitionServiceInterface:
+        class: \PoP\Engine\Schema\SchemaDefinitionService
+
+    PoP\ComponentModel\Schema\SchemaDefinitionServiceInterface:
+        class: \PoP\Engine\Schema\SchemaDefinitionService
