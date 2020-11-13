@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PoP\Engine\TypeResolvers;
 
+use PoP\Engine\ObjectModels\Root;
 use PoP\Engine\TypeDataLoaders\RootTypeDataLoader;
 use PoP\ComponentModel\Schema\SchemaDefinition;
 use PoP\Translation\Facades\TranslationAPIFacade;
@@ -12,6 +13,8 @@ use PoP\ComponentModel\Facades\Schema\SchemaDefinitionServiceFacade;
 
 class RootTypeResolver extends AbstractTypeResolver
 {
+    use ReservedNameTypeResolverTrait;
+
     public const NAME = 'Root';
 
     public function getTypeName(): string
@@ -27,6 +30,7 @@ class RootTypeResolver extends AbstractTypeResolver
 
     public function getID(object $resultItem)
     {
+        /** @var Root */
         $root = $resultItem;
         return $root->getID();
     }
