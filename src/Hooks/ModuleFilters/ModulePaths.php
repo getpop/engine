@@ -7,15 +7,15 @@ namespace PoP\Engine\Hooks\ModuleFilters;
 use PoP\Hooks\AbstractHookSet;
 use PoP\ComponentModel\State\ApplicationState;
 use PoP\ComponentModel\ModulePath\ModulePathUtils;
-use PoP\ComponentModel\ModulePath\ModulePathHelpersInterface;
 use PoP\ComponentModel\Facades\ModulePath\ModulePathHelpersFacade;
+use PoP\ComponentModel\ModelInstance\ModelInstance;
 
 class ModulePaths extends AbstractHookSet
 {
     protected function init()
     {
         $this->hooksAPI->addFilter(
-            'PoP\ComponentModel\ModelInstance\ModelInstance:componentsFromVars:result',
+            ModelInstance::HOOK_COMPONENTSFROMVARS_RESULT,
             [$this, 'maybeAddComponent']
         );
         $this->hooksAPI->addAction(
