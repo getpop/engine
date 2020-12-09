@@ -31,14 +31,14 @@ class ModulePaths extends AbstractHookSet
     public function addVars(array $vars_in_array): void
     {
         [&$vars] = $vars_in_array;
-        if ($vars['modulefilter'] == \PoP\ComponentModel\ModuleFilters\ModulePaths::NAME) {
+        if (isset($vars['modulefilter']) && $vars['modulefilter'] == \PoP\ComponentModel\ModuleFilters\ModulePaths::NAME) {
             $vars['modulepaths'] = ModulePathUtils::getModulePaths();
         }
     }
     public function maybeAddComponent($components)
     {
         $vars = ApplicationState::getVars();
-        if ($vars['modulefilter'] == \PoP\ComponentModel\ModuleFilters\ModulePaths::NAME) {
+        if (isset($vars['modulefilter']) && $vars['modulefilter'] == \PoP\ComponentModel\ModuleFilters\ModulePaths::NAME) {
             if ($modulepaths = $vars['modulepaths']) {
                 $modulePathHelpers = ModulePathHelpersFacade::getInstance();
                 $paths = array_map(

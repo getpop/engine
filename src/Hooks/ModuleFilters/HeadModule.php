@@ -31,7 +31,7 @@ class HeadModule extends AbstractHookSet
     public function addVars(array $vars_in_array): void
     {
         [&$vars] = $vars_in_array;
-        if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\HeadModule::NAME) {
+        if (isset($vars['modulefilter']) && $vars['modulefilter'] == \PoP\Engine\ModuleFilters\HeadModule::NAME) {
             if ($headmodule = $_REQUEST[Constants::URLPARAM_HEADMODULE] ?? null) {
                 $vars['headmodule'] = ModuleUtils::getModuleFromOutputName($headmodule);
             }
@@ -40,7 +40,7 @@ class HeadModule extends AbstractHookSet
     public function maybeAddComponent($components)
     {
         $vars = ApplicationState::getVars();
-        if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\HeadModule::NAME) {
+        if (isset($vars['modulefilter']) && $vars['modulefilter'] == \PoP\Engine\ModuleFilters\HeadModule::NAME) {
             if ($headmodule = $vars['headmodule']) {
                 $components[] = $this->translationAPI->__('head module:', 'engine') . ModuleUtils::getModuleFullName($headmodule);
             }

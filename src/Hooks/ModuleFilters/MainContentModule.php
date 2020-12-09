@@ -28,7 +28,7 @@ class MainContentModule extends AbstractHookSet
         // Function `getRouteModuleByMostAllmatchingVarsProperties` actually needs to access all values in $vars
         // Hence, calculate only at the very end
         // If filtering module by "maincontent", then calculate which is the main content module
-        if ($vars['modulefilter'] == \PoP\Engine\ModuleFilters\MainContentModule::NAME) {
+        if (isset($vars['modulefilter']) && $vars['modulefilter'] == \PoP\Engine\ModuleFilters\MainContentModule::NAME) {
             $vars['maincontentmodule'] = RouteModuleProcessorManagerFacade::getInstance()->getRouteModuleByMostAllmatchingVarsProperties(POP_PAGEMODULEGROUPPLACEHOLDER_MAINCONTENTMODULE);
         }
     }

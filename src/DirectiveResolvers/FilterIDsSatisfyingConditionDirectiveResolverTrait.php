@@ -29,7 +29,7 @@ trait FilterIDsSatisfyingConditionDirectiveResolverTrait
                 continue;
             }
             // $resultItemDirectiveArgs has all the right directiveArgs values. Now we can evaluate on it
-            if ($resultItemDirectiveArgs['if']) {
+            if ($resultItemDirectiveArgs['if'] ?? null) {
                 $idsSatisfyingCondition[] = $id;
             }
         }
