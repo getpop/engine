@@ -18,7 +18,7 @@ class OperatorHelpers
             json_encode($data)
         ));
     }
-    public static function &getPointerToArrayItemUnderPath(array $data, string $path)
+    public static function &getPointerToArrayItemUnderPath(array &$data, string $path)
     {
         $dataPointer = &$data;
 
@@ -43,5 +43,20 @@ class OperatorHelpers
             }
         }
         return $dataPointer;
+    }
+    public static function setValueToArrayItemUnderPath(array &$data, string $path, $value): void
+    {
+        $dataPointer = &$data;
+
+        // Iterate the data array to the provided path.
+        foreach (explode(POP_CONSTANT_APIJSONRESPONSE_PATHDELIMITERSYMBOL, $path) as $pathLevel) {
+            if (!isset($dataPointer[$pathLevel])) {
+                // If we reached the end of the array and can't keep going down any level more, then it's an error
+                self::throwNoArrayItemUnderPathException($data, $path);
+            }
+            $dataPointer = &$dataPointer[$pathLevel];
+        }
+        // We reached the end. Set the value
+        $dataPointer = $value;
     }
 }

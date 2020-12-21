@@ -77,12 +77,10 @@ class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectiv
             $arrayItemPointer = OperatorHelpers::getPointerToArrayItemUnderPath($array, $path);
         } catch (Exception $e) {
             // Add an error and return null
-            if (!is_null($dbErrors)) {
-                $dbErrors[(string)$id][] = [
-                    Tokens::PATH => [$this->directive],
-                    Tokens::MESSAGE => $e->getMessage(),
-                ];
-            }
+            $dbErrors[(string)$id][] = [
+                Tokens::PATH => [$this->directive],
+                Tokens::MESSAGE => $e->getMessage(),
+            ];
             return null;
         }
 
@@ -90,5 +88,39 @@ class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectiv
         return [
             $path => &$arrayItemPointer,
         ];
+    }
+    /**
+     * Place the result for the array in the original property
+     * @param int|string $arrayItemKey
+     */
+    protected function addProcessedItemBackToDBItems(
+        TypeResolverInterface $typeResolver,
+        array &$dbItems,
+        array &$dbErrors,
+        array &$dbWarnings,
+        array &$dbDeprecations,
+        array &$dbNotices,
+        array &$dbTraces,
+        $id,
+        string $fieldOutputKey,
+        $arrayItemKey,
+        $arrayItemValue
+    ): void {
+        foreach ($arrayItemValue as $itemKey => $itemValue) {
+            // Use function below since we may need to iterate a path
+            // Eg: $arrayItemKey => "meta.content"
+            try {
+                OperatorHelpers::setValueToArrayItemUnderPath(
+                    $dbItems[(string)$id][$fieldOutputKey][$itemKey],
+                    $arrayItemKey,
+                    $itemValue
+                );
+            } catch (Exception $e) {
+                $dbErrors[(string)$id][] = [
+                    Tokens::PATH => [$this->directive],
+                    Tokens::MESSAGE => $e->getMessage(),
+                ];
+            }
+        }
     }
 }

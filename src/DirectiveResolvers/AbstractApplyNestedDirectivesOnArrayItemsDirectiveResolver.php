@@ -269,6 +269,7 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
             foreach ($idsDataFields as $id => $dataFields) {
                 foreach ($dataFields['direct'] as $field) {
                     $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);
+                    // var_dump('++', $field, $fieldOutputKey);
                     $isValueInDBItems = array_key_exists($fieldOutputKey, $dbItems[(string)$id] ?? []);
                     $value = $isValueInDBItems ?
                         $dbItems[(string)$id][$fieldOutputKey] :
@@ -325,11 +326,30 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
                             continue;
                         }
                         // Place the result for the array in the original property
-                        $dbItems[(string)$id][$fieldOutputKey][$key] = $arrayItemValue;
+                        $this->addProcessedItemBackToDBItems($typeResolver, $dbItems, $dbErrors, $dbWarnings, $dbDeprecations, $dbNotices, $dbTraces, $id, $fieldOutputKey, $key, $arrayItemValue);
                     }
                 }
             }
         }
+    }
+    /**
+     * Place the result for the array in the original property
+     * @param int|string $arrayItemKey
+     */
+    protected function addProcessedItemBackToDBItems(
+        TypeResolverInterface $typeResolver,
+        array &$dbItems,
+        array &$dbErrors,
+        array &$dbWarnings,
+        array &$dbDeprecations,
+        array &$dbNotices,
+        array &$dbTraces,
+        $id,
+        string $fieldOutputKey,
+        $arrayItemKey,
+        $arrayItemValue
+    ): void {
+        $dbItems[(string)$id][$fieldOutputKey][$arrayItemKey] = $arrayItemValue;
     }
 
     /**
