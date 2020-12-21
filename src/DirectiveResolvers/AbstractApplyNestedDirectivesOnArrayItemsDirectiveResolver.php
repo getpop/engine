@@ -269,7 +269,6 @@ abstract class AbstractApplyNestedDirectivesOnArrayItemsDirectiveResolver extend
             foreach ($idsDataFields as $id => $dataFields) {
                 foreach ($dataFields['direct'] as $field) {
                     $fieldOutputKey = $fieldQueryInterpreter->getFieldOutputKey($field);
-                    // var_dump('++', $field, $fieldOutputKey);
                     $isValueInDBItems = array_key_exists($fieldOutputKey, $dbItems[(string)$id] ?? []);
                     $value = $isValueInDBItems ?
                         $dbItems[(string)$id][$fieldOutputKey] :
