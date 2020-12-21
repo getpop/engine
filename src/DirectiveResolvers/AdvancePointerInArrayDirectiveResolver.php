@@ -90,7 +90,16 @@ class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectiv
         ];
     }
     /**
-     * Place the result for the array in the original property
+     * Place the result for the array in the original property.
+     *
+     * Enables to support this query, having the translation
+     * replace the original string, under the original entry in the array:
+     *
+     * ?query=posts.title|blockMetadata(blockName:core/paragraph)@translated<advancePointerInArray(path:meta.content)<forEach<translate(from:en,to:fr)>>>
+     *
+     * Otherwise it adds the results under a parallel entry, not overriding
+     * the original ones.
+     *
      * @param int|string $arrayItemKey
      */
     protected function addProcessedItemBackToDBItems(
@@ -106,6 +115,10 @@ class AdvancePointerInArrayDirectiveResolver extends AbstractApplyNestedDirectiv
         $arrayItemKey,
         $arrayItemValue
     ): void {
+        if (!is_array($arrayItemValue)) {
+            parent::addProcessedItemBackToDBItems($typeResolver, $dbItems, $dbErrors, $dbWarnings, $dbDeprecations, $dbNotices, $dbTraces, $id, $fieldOutputKey, $arrayItemKey, $arrayItemValue);
+            return;
+        }
         foreach ($arrayItemValue as $itemKey => $itemValue) {
             // Use function below since we may need to iterate a path
             // Eg: $arrayItemKey => "meta.content"
