@@ -2,10 +2,7 @@
     "name": "getpop/engine",
     "type": "library",
     "description": "Engine for PoP",
-    "keywords": [
-        "PoP",
-        "engine"
-    ],
+    "keywords": ["PoP", "engine"],
     "homepage": "https://github.com/getpop/engine",
     "license": "MIT",
     "authors": [
@@ -31,7 +28,7 @@
     "require-dev": {
         "phpstan/phpstan": "^0.12",
         "phpunit/phpunit": ">=9.3",
-        "rector/rector": "^0.8.17",
+        "rector/rector": "^0.9",
         "squizlabs/php_codesniffer": "^3.0"
     },
     "autoload": {
@@ -49,7 +46,7 @@
         "check-style": "phpcs src tests",
         "fix-style": "phpcbf src tests",
         "analyse": "phpstan analyse -c phpstan.neon.dist",
-        "downgrade-code": "rector process --dry-run --ansi"
+        "preview-code-downgrade": "rector process --dry-run --ansi"
     },
     "extra": {
         "branch-alias": {
