@@ -22,11 +22,20 @@ services:
     PoP\Engine\LooseContracts\:
         resource: '../src/LooseContracts/*'
 
+    PoP\Engine\FormInputs\:
+        resource: '../src/FormInputs/*'
+
     PoP\Engine\ModuleFilters\:
         resource: '../src/ModuleFilters/*'
 
     PoP\Engine\RouteModuleProcessors\:
         resource: '../src/RouteModuleProcessors/*'
+
+    PoP\Engine\ModuleProcessors\:
+        resource: '../src/ModuleProcessors/*'
+
+    PoP\Engine\Enums\:
+        resource: '../src/Enums/*'
 
     PoP\Engine\TypeResolvers\:
         resource: '../src/TypeResolvers/*'
