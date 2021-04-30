@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace PoP\Engine\ConditionalOnEnvironment\UseComponentModelCache\SchemaServices\DirectiveResolvers;
+namespace PoP\Engine\ConditionalOnContext\UseComponentModelCache\SchemaServices\DirectiveResolvers;
 
 use PoP\Engine\Cache\CacheTypes;
 use PoP\ComponentModel\Feedback\Tokens;
