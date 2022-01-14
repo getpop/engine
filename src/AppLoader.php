@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace PoP\Engine;
 
-use PoP\Hooks\Facades\HooksAPIFacade;
 use PoP\Root\App;
-use PoP\Root\AppLoader as RootAppLoader;
+use PoP\Root\AppLoader as UpstreamAppLoader;
 
-class AppLoader extends RootAppLoader
+class AppLoader extends UpstreamAppLoader
 {
     /**
      * Trigger "beforeBoot", "boot" and "afterBoot" events on all the Components,
@@ -20,20 +19,19 @@ class AppLoader extends RootAppLoader
         // Boot all the components
         App::getComponentManager()->beforeBoot();
 
-        $hooksAPI = HooksAPIFacade::getInstance();
-        $hooksAPI->addAction(
+        App::addAction(
             'popcms:boot',
             fn() => App::getAppStateManager()->initializeAppState(),
             0
         );
 
-        $hooksAPI->addAction(
+        App::addAction(
             'popcms:boot',
             fn () => App::getComponentManager()->boot(),
             4
         );
 
-        $hooksAPI->addAction(
+        App::addAction(
             'popcms:boot',
             fn () => App::getComponentManager()->afterBoot(),
             8
