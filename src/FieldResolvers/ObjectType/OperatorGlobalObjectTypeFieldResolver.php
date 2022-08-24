@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace PoP\Engine\FieldResolvers\ObjectType;
 
+use PoP\ComponentModel\TypeResolvers\InputTypeResolverInterface;
 use PoP\ComponentModel\QueryResolution\FieldDataAccessorInterface;
 use ArgumentCountError;
 use PoP\Root\Feedback\FeedbackItemResolution;
@@ -33,6 +34,7 @@ class OperatorGlobalObjectTypeFieldResolver extends AbstractGlobalObjectTypeFiel
     }
     final protected function getBooleanScalarTypeResolver(): BooleanScalarTypeResolver
     {
+        /** @var BooleanScalarTypeResolver */
         return $this->booleanScalarTypeResolver ??= $this->instanceManager->getInstance(BooleanScalarTypeResolver::class);
     }
     final public function setIntScalarTypeResolver(IntScalarTypeResolver $intScalarTypeResolver): void
@@ -41,6 +43,7 @@ class OperatorGlobalObjectTypeFieldResolver extends AbstractGlobalObjectTypeFiel
     }
     final protected function getIntScalarTypeResolver(): IntScalarTypeResolver
     {
+        /** @var IntScalarTypeResolver */
         return $this->intScalarTypeResolver ??= $this->instanceManager->getInstance(IntScalarTypeResolver::class);
     }
     final public function setStringScalarTypeResolver(StringScalarTypeResolver $stringScalarTypeResolver): void
@@ -49,6 +52,7 @@ class OperatorGlobalObjectTypeFieldResolver extends AbstractGlobalObjectTypeFiel
     }
     final protected function getStringScalarTypeResolver(): StringScalarTypeResolver
     {
+        /** @var StringScalarTypeResolver */
         return $this->stringScalarTypeResolver ??= $this->instanceManager->getInstance(StringScalarTypeResolver::class);
     }
     final public function setArrayTraversionHelperService(ArrayTraversionHelperServiceInterface $arrayTraversionHelperService): void
@@ -57,9 +61,13 @@ class OperatorGlobalObjectTypeFieldResolver extends AbstractGlobalObjectTypeFiel
     }
     final protected function getArrayTraversionHelperService(): ArrayTraversionHelperServiceInterface
     {
+        /** @var ArrayTraversionHelperServiceInterface */
         return $this->arrayTraversionHelperService ??= $this->instanceManager->getInstance(ArrayTraversionHelperServiceInterface::class);
     }
 
+    /**
+     * @return string[]
+     */
     public function getFieldNamesToResolve(): array
     {
         return [
@@ -130,6 +138,9 @@ class OperatorGlobalObjectTypeFieldResolver extends AbstractGlobalObjectTypeFiel
         };
     }
 
+    /**
+     * @return array<string,InputTypeResolverInterface>
+     */
     public function getFieldArgNameTypeResolvers(ObjectTypeResolverInterface $objectTypeResolver, string $fieldName): array
     {
         return match ($fieldName) {
@@ -237,12 +248,12 @@ class OperatorGlobalObjectTypeFieldResolver extends AbstractGlobalObjectTypeFiel
             case 'not':
                 return !$fieldDataAccessor->getValue('value');
             case 'and':
-                return array_reduce($fieldDataAccessor->getValue('values'), function ($accumulated, $value) {
+                return array_reduce($fieldDataAccessor->getValue('values'), function ($accumulated, $value): bool {
                     $accumulated = $accumulated && $value;
                     return $accumulated;
                 }, true);
             case 'or':
-                return array_reduce($fieldDataAccessor->getValue('values'), function ($accumulated, $value) {
+                return array_reduce($fieldDataAccessor->getValue('values'), function ($accumulated, $value): bool {
                     $accumulated = $accumulated || $value;
                     return $accumulated;
                 }, false);
