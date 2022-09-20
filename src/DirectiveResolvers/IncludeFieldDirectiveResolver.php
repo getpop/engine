@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace PoP\Engine\DirectiveResolvers;
 
-use PoP\ComponentModel\DirectiveResolvers\DirectiveResolverInterface;
+use PoP\ComponentModel\DirectiveResolvers\FieldDirectiveResolverInterface;
 use PoP\ComponentModel\TypeResolvers\InputTypeResolverInterface;
 use PoP\ComponentModel\QueryResolution\FieldDataAccessProviderInterface;
-use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalDirectiveResolver;
+use PoP\ComponentModel\DirectiveResolvers\AbstractGlobalFieldDirectiveResolver;
 use PoP\ComponentModel\Engine\EngineIterationFieldSet;
 use PoP\ComponentModel\Feedback\EngineIterationFeedbackStore;
 use PoP\ComponentModel\Schema\SchemaTypeModifiers;
@@ -17,9 +17,9 @@ use PoP\ComponentModel\TypeResolvers\ScalarType\BooleanScalarTypeResolver;
 use PoP\GraphQLParser\Spec\Parser\Ast\FieldInterface;
 use SplObjectStorage;
 
-class SkipDirectiveResolver extends AbstractGlobalDirectiveResolver
+class IncludeFieldDirectiveResolver extends AbstractGlobalFieldDirectiveResolver
 {
-    use FilterIDsSatisfyingConditionDirectiveResolverTrait;
+    use FilterIDsSatisfyingConditionFieldDirectiveResolverTrait;
 
     private ?BooleanScalarTypeResolver $booleanScalarTypeResolver = null;
 
@@ -35,7 +35,7 @@ class SkipDirectiveResolver extends AbstractGlobalDirectiveResolver
 
     public function getDirectiveName(): string
     {
-        return 'skip';
+        return 'include';
     }
 
     /**
@@ -52,7 +52,7 @@ class SkipDirectiveResolver extends AbstractGlobalDirectiveResolver
      * @param array<FieldDataAccessProviderInterface> $succeedingPipelineFieldDataAccessProviders
      * @param array<string,array<string|int,SplObjectStorage<FieldInterface,mixed>>> $previouslyResolvedIDFieldValues
      * @param array<string|int,SplObjectStorage<FieldInterface,mixed>> $resolvedIDFieldValues
-     * @param array<DirectiveResolverInterface> $succeedingPipelineDirectiveResolvers
+     * @param array<FieldDirectiveResolverInterface> $succeedingPipelineFieldDirectiveResolvers
      * @param array<string|int,object> $idObjects
      * @param array<string,array<string|int,SplObjectStorage<FieldInterface,array<string|int>>>> $unionTypeOutputKeyIDs
      * @param array<string,mixed> $messages
@@ -61,7 +61,7 @@ class SkipDirectiveResolver extends AbstractGlobalDirectiveResolver
         RelationalTypeResolverInterface $relationalTypeResolver,
         array $idFieldSet,
         FieldDataAccessProviderInterface $fieldDataAccessProvider,
-        array $succeedingPipelineDirectiveResolvers,
+        array $succeedingPipelineFieldDirectiveResolvers,
         array $idObjects,
         array $unionTypeOutputKeyIDs,
         array $previouslyResolvedIDFieldValues,
@@ -71,14 +71,16 @@ class SkipDirectiveResolver extends AbstractGlobalDirectiveResolver
         array &$messages,
         EngineIterationFeedbackStore $engineIterationFeedbackStore,
     ): void {
-        // Check the condition field. If it is satisfied, then skip those fields
-        $idsToRemove = $this->getIDsSatisfyingCondition($relationalTypeResolver, $idObjects, $idFieldSet, $messages, $engineIterationFeedbackStore);
+        // Check the condition field. If it is satisfied, then keep those fields, otherwise remove them from the $idFieldSet in the upcoming stages of the pipeline
+        $includeFieldSetForIDs = $this->getIDsSatisfyingCondition($relationalTypeResolver, $idObjects, $idFieldSet, $messages, $engineIterationFeedbackStore);
+        $idsToRemove = array_diff(array_keys($idFieldSet), $includeFieldSetForIDs);
         $this->removeFieldSetForIDs($idFieldSet, $idsToRemove, $succeedingPipelineIDFieldSet);
     }
     public function getDirectiveDescription(RelationalTypeResolverInterface $relationalTypeResolver): ?string
     {
-        return $this->__('Include the field value in the output only if the argument \'if\' evals to `false`', 'engine');
+        return $this->__('Include the field value in the output only if the argument \'if\' evals to `true`', 'api');
     }
+
     /**
      * @return array<string,InputTypeResolverInterface>
      */
@@ -102,7 +104,7 @@ class SkipDirectiveResolver extends AbstractGlobalDirectiveResolver
     public function getDirectiveArgDescription(RelationalTypeResolverInterface $relationalTypeResolver, string $directiveArgName): ?string
     {
         return match ($directiveArgName) {
-            'if' => $this->__('Argument that must evaluate to `false` to include the field value in the output', 'engine'),
+            'if' => $this->__('Argument that must evaluate to `true` to include the field value in the output', 'api'),
             default => parent::getDirectiveArgDescription($relationalTypeResolver, $directiveArgName),
         };
     }
